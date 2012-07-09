@@ -1,0 +1,5 @@
+babeltrace (1.0.0~rc4-1) unstable; urgency=low
+
+  * Initial release (Closes: #680789)
+
+ -- Jon Bernard <jbernard@debian.org>  Sun, 08 Jul 2012 14:15:43 -0400

@@ -1,3 +1,10 @@
+babeltrace (1.0.0~rc5-1) unstable; urgency=low
+
+  * [a467b75] New upstream version 1.0.0~rc5
+  * [6f7518a] Update header references in libbabeltrace-dev.install
+
+ -- Jon Bernard <jbernard@debian.org>  Tue, 11 Sep 2012 15:14:28 -0400
+
 babeltrace (1.0.0~rc4-1) unstable; urgency=low
 
   * Initial release (Closes: #680789)

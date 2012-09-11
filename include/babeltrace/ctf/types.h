@@ -31,6 +31,8 @@
 #include <stdio.h>
 #include <babeltrace/mmap-align.h>
 
+#define LAST_OFFSET_POISON	((ssize_t) -1L)
+
 struct bt_stream_callbacks;
 
 struct packet_index {
@@ -50,12 +52,14 @@ struct packet_index {
 struct ctf_stream_pos {
 	struct stream_pos parent;
 	int fd;			/* backing file fd. -1 if unset. */
-	GArray *packet_index;	/* contains struct packet_index */
+	GArray *packet_cycles_index;	/* contains struct packet_index in cycles */
+	GArray *packet_real_index;	/* contains struct packet_index in ns */
 	int prot;		/* mmap protection */
 	int flags;		/* mmap flags */
 
 	/* Current position */
 	off_t mmap_offset;	/* mmap offset in the file, in bytes */
+	off_t mmap_base_offset;	/* offset of start of packet in mmap, in bytes */
 	size_t packet_size;	/* current packet size, in bits */
 	size_t content_size;	/* current content size, in bits */
 	uint32_t *content_size_loc; /* pointer to current content size */
@@ -145,7 +149,8 @@ char *ctf_get_pos_addr(struct ctf_stream_pos *pos)
 {
 	/* Only makes sense to get the address after aligning on CHAR_BIT */
 	assert(!(pos->offset % CHAR_BIT));
-	return mmap_align_addr(pos->base_mma) + (pos->offset / CHAR_BIT);
+	return mmap_align_addr(pos->base_mma) +
+		pos->mmap_base_offset + (pos->offset / CHAR_BIT);
 }
 
 static inline

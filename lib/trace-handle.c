@@ -31,6 +31,9 @@ struct bt_trace_handle *bt_trace_handle_create(struct bt_context *ctx)
 {
 	struct bt_trace_handle *th;
 
+	if (!ctx)
+		return NULL;
+
 	th = g_new0(struct bt_trace_handle, 1);
 	th->id = ctx->last_trace_handle_id++;
 	return th;
@@ -43,6 +46,9 @@ void bt_trace_handle_destroy(struct bt_trace_handle *th)
 
 int bt_trace_handle_get_id(struct bt_trace_handle *th)
 {
+	if (!th)
+		return -1;
+
 	return th->id;
 }
 
@@ -50,25 +56,66 @@ const char *bt_trace_handle_get_path(struct bt_context *ctx, int handle_id)
 {
 	struct bt_trace_handle *handle;
 
+	if (!ctx)
+		return NULL;
+
 	handle = g_hash_table_lookup(ctx->trace_handles,
 			(gpointer) (unsigned long) handle_id);
+	if (!handle)
+		return NULL;
 	return handle->path;
 }
 
-uint64_t bt_trace_handle_get_timestamp_begin(struct bt_context *ctx, int handle_id)
+uint64_t bt_trace_handle_get_timestamp_begin(struct bt_context *ctx,
+		int handle_id, enum bt_clock_type type)
 {
 	struct bt_trace_handle *handle;
+	uint64_t ret;
+
+	if (!ctx)
+		return -1ULL;
 
 	handle = g_hash_table_lookup(ctx->trace_handles,
 			(gpointer) (unsigned long) handle_id);
-	return handle->timestamp_begin;
+	if (!handle) {
+		ret = -1ULL;
+		goto end;
+	}
+	if (type == BT_CLOCK_REAL) {
+		ret = handle->real_timestamp_begin;
+	} else if (type == BT_CLOCK_CYCLES) {
+		ret = handle->cycles_timestamp_begin;
+	} else {
+		ret = -1ULL;
+	}
+
+end:
+	return ret;
 }
 
-uint64_t bt_trace_handle_get_timestamp_end(struct bt_context *ctx, int handle_id)
+uint64_t bt_trace_handle_get_timestamp_end(struct bt_context *ctx,
+		int handle_id, enum bt_clock_type type)
 {
 	struct bt_trace_handle *handle;
+	uint64_t ret;
+
+	if (!ctx)
+		return -1ULL;
 
 	handle = g_hash_table_lookup(ctx->trace_handles,
 			(gpointer) (unsigned long) handle_id);
-	return handle->timestamp_end;
+	if (!handle) {
+		ret = -1ULL;
+		goto end;
+	}
+	if (type == BT_CLOCK_REAL) {
+		ret = handle->real_timestamp_end;
+	} else if (type == BT_CLOCK_CYCLES) {
+		ret = handle->cycles_timestamp_end;
+	} else {
+		ret = -1ULL;
+	}
+
+end:
+	return ret;
 }

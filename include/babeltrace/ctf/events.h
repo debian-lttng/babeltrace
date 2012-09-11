@@ -25,6 +25,7 @@
 
 #include <stdint.h>
 #include <babeltrace/context.h>
+#include <babeltrace/clock-types.h>
 
 struct definition;
 struct bt_ctf_event;
@@ -89,21 +90,31 @@ const struct definition *bt_ctf_get_top_level_scope(const struct bt_ctf_event *e
 const char *bt_ctf_event_name(const struct bt_ctf_event *event);
 
 /*
- * bt_ctf_get_timestamp_raw: returns the timestamp of the event as written in
- * the packet or -1ULL on error
+ * bt_ctf_get_cycles: returns the timestamp of the event as written
+ * in the packet (in cycles) or -1ULL on error.
  */
-uint64_t bt_ctf_get_timestamp_raw(const struct bt_ctf_event *event);
+uint64_t bt_ctf_get_cycles(const struct bt_ctf_event *event);
 
 /*
- * bt_ctf_get_timestamp: returns the timestamp of the event offsetted with the
- * system clock source or -1ULL on error
+ * bt_ctf_get_timestamp: returns the timestamp of the event offsetted
+ * with the system clock source (in ns) or -1ULL on error
  */
 uint64_t bt_ctf_get_timestamp(const struct bt_ctf_event *event);
 
 /*
- * bt_ctf_get_field_list: set list pointer to an array of definition
+ * bt_ctf_get_field_list: obtain the list of fields for compound type
+ *
+ * This function can be used to obtain the list of fields 
+ * contained within a compound type: array, sequence,
+ * structure, or variant.
+
+ * This function sets the "list" pointer to an array of definition
  * pointers and set count to the number of elements in the array.
  * Return 0 on success and a negative value on error.
+ *
+ * The content pointed to by "list" should *not* be freed. It stays
+ * valid as long as the event is unchanged (as long as the iterator
+ * from which the event is extracted is unchanged).
  */
 int bt_ctf_get_field_list(const struct bt_ctf_event *event,
 		const struct definition *scope,
@@ -181,15 +192,21 @@ int bt_ctf_get_array_len(const struct definition *field);
  *
  * If the field does not exist or is not of the type requested, the value
  * returned is undefined. To check if an error occured, use the
- * bt_ctf_field_error() function after accessing a field.
+ * bt_ctf_field_get_error() function after accessing a field.
+ *
+ * bt_ctf_get_enum_int gets the integer field of an enumeration.
+ * bt_ctf_get_enum_str gets the string matching the current enumeration
+ * value, or NULL if the current value does not match any string.
  */
 uint64_t bt_ctf_get_uint64(const struct definition *field);
 int64_t bt_ctf_get_int64(const struct definition *field);
+const struct definition *bt_ctf_get_enum_int(const struct definition *field);
+const char *bt_ctf_get_enum_str(const struct definition *field);
 char *bt_ctf_get_char_array(const struct definition *field);
 char *bt_ctf_get_string(const struct definition *field);
 
 /*
- * bt_ctf_field_error: returns the last error code encountered while
+ * bt_ctf_field_get_error: returns the last error code encountered while
  * accessing a field and reset the error flag.
  * Return 0 if no error, a negative value otherwise.
  */

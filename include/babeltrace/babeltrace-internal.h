@@ -46,6 +46,7 @@ struct trace_collection {
 	uint64_t offset_first;
 	int64_t delta_offset_first_sum;
 	int offset_nr;
+	int clock_use_offset_avg;
 };
 
 extern int opt_all_field_names,
@@ -58,9 +59,11 @@ extern int opt_all_field_names,
 	opt_trace_domain_field,
 	opt_trace_procname_field,
 	opt_trace_vpid_field,
+	opt_trace_hostname_field,
+	opt_trace_default_fields,
 	opt_loglevel_field,
 	opt_delta_field,
-	opt_clock_raw,
+	opt_clock_cycles,
 	opt_clock_seconds,
 	opt_clock_date,
 	opt_clock_gmt,

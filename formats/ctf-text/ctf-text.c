@@ -46,6 +46,8 @@ int opt_all_field_names,
 	opt_trace_domain_field,
 	opt_trace_procname_field,
 	opt_trace_vpid_field,
+	opt_trace_hostname_field,
+	opt_trace_default_fields = 1,
 	opt_loglevel_field,
 	opt_delta_field = 1;
 
@@ -246,9 +248,19 @@ int ctf_text_write_event(struct stream_pos *ppos, struct ctf_stream_definition *
 		fflush(pos->fp);
 		fprintf(stderr, "[warning] Tracer discarded %" PRIu64 " events between [",
 			stream->events_discarded);
-		ctf_print_timestamp(stderr, stream, stream->prev_timestamp);
-		fprintf(stderr, "] and [");
-		ctf_print_timestamp(stderr, stream, stream->prev_timestamp_end);
+		if (opt_clock_cycles) {
+			ctf_print_timestamp(stderr, stream,
+					stream->prev_cycles_timestamp);
+			fprintf(stderr, "] and [");
+			ctf_print_timestamp(stderr, stream,
+					stream->prev_cycles_timestamp_end);
+		} else {
+			ctf_print_timestamp(stderr, stream,
+					stream->prev_real_timestamp);
+			fprintf(stderr, "] and [");
+			ctf_print_timestamp(stderr, stream,
+					stream->prev_real_timestamp_end);
+		}
 		fprintf(stderr, "]. You should consider recording a new trace with larger buffers or with fewer events enabled.\n");
 		fflush(stderr);
 		stream->events_discarded = 0;
@@ -260,7 +272,11 @@ int ctf_text_write_event(struct stream_pos *ppos, struct ctf_stream_definition *
 			fprintf(pos->fp, "timestamp = ");
 		else
 			fprintf(pos->fp, "[");
-		ctf_print_timestamp(pos->fp, stream, stream->timestamp);
+		if (opt_clock_cycles) {
+			ctf_print_timestamp(pos->fp, stream, stream->cycles_timestamp);
+		} else {
+			ctf_print_timestamp(pos->fp, stream, stream->real_timestamp);
+		}
 		if (!pos->print_names)
 			fprintf(pos->fp, "]");
 
@@ -277,8 +293,8 @@ int ctf_text_write_event(struct stream_pos *ppos, struct ctf_stream_definition *
 			fprintf(pos->fp, "delta = ");
 		else
 			fprintf(pos->fp, "(");
-		if (pos->last_timestamp != -1ULL) {
-			delta = stream->timestamp - pos->last_timestamp;
+		if (pos->last_real_timestamp != -1ULL) {
+			delta = stream->real_timestamp - pos->last_real_timestamp;
 			delta_sec = delta / NSEC_PER_SEC;
 			delta_nsec = delta % NSEC_PER_SEC;
 			fprintf(pos->fp, "+%" PRIu64 ".%09" PRIu64,
@@ -293,7 +309,8 @@ int ctf_text_write_event(struct stream_pos *ppos, struct ctf_stream_definition *
 			fprintf(pos->fp, ", ");
 		else
 			fprintf(pos->fp, " ");
-		pos->last_timestamp = stream->timestamp;
+		pos->last_real_timestamp = stream->real_timestamp;
+		pos->last_cycles_timestamp = stream->cycles_timestamp;
 	}
 
 	if ((opt_trace_field || opt_all_fields) && stream_class->trace->path[0] != '\0') {
@@ -307,7 +324,18 @@ int ctf_text_write_event(struct stream_pos *ppos, struct ctf_stream_definition *
 		else
 			fprintf(pos->fp, " ");
 	}
-	if ((opt_trace_domain_field && !opt_all_fields) && stream_class->trace->env.domain[0] != '\0') {
+	if ((opt_trace_hostname_field || opt_all_fields || opt_trace_default_fields)
+			&& stream_class->trace->env.hostname[0] != '\0') {
+		set_field_names_print(pos, ITEM_HEADER);
+		if (pos->print_names) {
+			fprintf(pos->fp, "trace:hostname = ");
+		}
+		fprintf(pos->fp, "%s", stream_class->trace->env.hostname);
+		if (pos->print_names)
+			fprintf(pos->fp, ", ");
+		dom_print = 1;
+	}
+	if ((opt_trace_domain_field || opt_all_fields) && stream_class->trace->env.domain[0] != '\0') {
 		set_field_names_print(pos, ITEM_HEADER);
 		if (pos->print_names) {
 			fprintf(pos->fp, "trace:domain = ");
@@ -317,7 +345,8 @@ int ctf_text_write_event(struct stream_pos *ppos, struct ctf_stream_definition *
 			fprintf(pos->fp, ", ");
 		dom_print = 1;
 	}
-	if ((opt_trace_procname_field && !opt_all_fields) && stream_class->trace->env.procname[0] != '\0') {
+	if ((opt_trace_procname_field || opt_all_fields || opt_trace_default_fields)
+			&& stream_class->trace->env.procname[0] != '\0') {
 		set_field_names_print(pos, ITEM_HEADER);
 		if (pos->print_names) {
 			fprintf(pos->fp, "trace:procname = ");
@@ -329,7 +358,8 @@ int ctf_text_write_event(struct stream_pos *ppos, struct ctf_stream_definition *
 			fprintf(pos->fp, ", ");
 		dom_print = 1;
 	}
-	if ((opt_trace_vpid_field && !opt_all_fields) && stream_class->trace->env.vpid != -1) {
+	if ((opt_trace_vpid_field || opt_all_fields || opt_trace_default_fields)
+			&& stream_class->trace->env.vpid != -1) {
 		set_field_names_print(pos, ITEM_HEADER);
 		if (pos->print_names) {
 			fprintf(pos->fp, "trace:vpid = ");
@@ -448,7 +478,6 @@ int ctf_text_write_event(struct stream_pos *ppos, struct ctf_stream_definition *
 	/* newline */
 	fprintf(pos->fp, "\n");
 	pos->field_nr = 0;
-	stream->consumed = 1;
 
 	return 0;
 
@@ -467,7 +496,8 @@ struct trace_descriptor *ctf_text_open_trace(const char *path, int flags,
 
 	pos = g_new0(struct ctf_text_stream_pos, 1);
 
-	pos->last_timestamp = -1ULL;
+	pos->last_real_timestamp = -1ULL;
+	pos->last_cycles_timestamp = -1ULL;
 	switch (flags & O_ACCMODE) {
 	case O_RDWR:
 		if (!path)

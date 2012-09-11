@@ -705,7 +705,7 @@ static yyconst flex_int32_t yy_rule_can_match_eol[70] =
 #include "ctf-parser.h"
 #include "ctf-ast.h"
 
-extern
+__attribute__((visibility("hidden")))
 void setstring(struct ctf_scanner *scanner, YYSTYPE *lvalp, const char *src);
 
 static void yyunput (int c, register char * yy_bp , yyscan_t yyscanner)
@@ -806,6 +806,10 @@ char *yyget_text (yyscan_t yyscanner );
 int yyget_lineno (yyscan_t yyscanner );
 
 void yyset_lineno (int line_number ,yyscan_t yyscanner );
+
+int yyget_column  (yyscan_t yyscanner );
+
+void yyset_column (int column_no ,yyscan_t yyscanner );
 
 YYSTYPE * yyget_lval (yyscan_t yyscanner );
 
@@ -962,7 +966,7 @@ YY_DECL
 				 * and strings.
 				 */ 
 
-#line 966 "ctf-lexer.c"
+#line 970 "ctf-lexer.c"
 
     yylval = yylval_param;
 
@@ -1411,7 +1415,7 @@ YY_RULE_SETUP
 #line 129 "ctf-lexer.l"
 ECHO;
 	YY_BREAK
-#line 1415 "ctf-lexer.c"
+#line 1419 "ctf-lexer.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(comment_ml):
 case YY_STATE_EOF(comment_sl):

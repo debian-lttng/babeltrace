@@ -1,10 +1,15 @@
-#ifndef _BABELTRACE_H
-#define _BABELTRACE_H
+#ifndef _BABELTRACE_CLOCK_TYPES_H
+#define _BABELTRACE_CLOCK_TYPES_H
 
 /*
- * BabelTrace API
+ * BabelTrace
  *
- * Copyright 2010-2011 - Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+ * Clock types header
+ *
+ * Copyright 2012 EfficiOS Inc. and Linux Foundation
+ *
+ * Author: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+ *         Julien Desfossez <julien.desfossez@efficios.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -17,9 +22,12 @@
  * all copies or substantial portions of the Software.
  */
 
-#include <babeltrace/context.h>
-#include <babeltrace/format.h>
-#include <babeltrace/iterator.h>
-#include <babeltrace/trace-handle.h>
+/*
+ * The Babeltrace clock representations
+ */
+enum bt_clock_type {
+	BT_CLOCK_CYCLES = 0,
+	BT_CLOCK_REAL,
+};
 
-#endif /* _BABELTRACE_H */
+#endif /* _BABELTRACE_CLOCK_TYPES_H */

@@ -36,10 +36,17 @@ struct bt_saved_pos;
  *
  * type represents the type of seek to use.
  * u is the argument of the seek if necessary :
- * - seek_time is the timestamp to seek to when using BT_SEEK_TIME, it
- *   is expressed in "raw" seconds (not offsetted)
+ * - seek_time is the real timestamp to seek to when using BT_SEEK_TIME, it
+ *   is expressed in nanoseconds
  * - restore is a position saved with bt_iter_get_pos, it is used with
  *   BT_SEEK_RESTORE.
+ *
+ * Note about BT_SEEK_LAST: if many events happen to be at the last
+ * timestamp, it is implementation-defined which event will be the last,
+ * and the order of events with the same timestamp may not be the same
+ * as normal iteration on the trace. Therefore, it is recommended to
+ * only use BT_SEEK_LAST to get the timestamp of the last event(s) in
+ * the trace.
  */
 struct bt_iter_pos {
 	enum {
@@ -47,7 +54,7 @@ struct bt_iter_pos {
 		BT_SEEK_RESTORE,	/* uses u.restore */
 		BT_SEEK_CUR,
 		BT_SEEK_BEGIN,
-		BT_SEEK_END,
+		BT_SEEK_LAST,
 	} type;
 	union {
 		uint64_t seek_time;
@@ -94,7 +101,7 @@ int bt_iter_set_pos(struct bt_iter *iter, const struct bt_iter_pos *pos);
  *
  * This function allocates and returns a new bt_iter_pos (which must be freed
  * with bt_iter_free_pos) to be able to restore an iterator position based on a
- * timestamp.
+ * real timestamp.
  */
 struct bt_iter_pos *bt_iter_create_time_pos(struct bt_iter *iter,
 		uint64_t timestamp);

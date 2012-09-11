@@ -34,7 +34,7 @@
 /*
  * thread local storage to store the last error that occured
  * while reading a field, this variable must be accessed by
- * bt_ctf_field_error only
+ * bt_ctf_field_get_error only
  */
 __thread int bt_ctf_last_field_error = 0;
 
@@ -42,8 +42,12 @@ const struct definition *bt_ctf_get_top_level_scope(const struct bt_ctf_event *c
 		enum bt_ctf_scope scope)
 {
 	struct definition *tmp = NULL;
-	struct ctf_event_definition *event = ctf_event->parent;
+	struct ctf_event_definition *event;
 
+	if (!ctf_event)
+		return NULL;
+
+	event = ctf_event->parent;
 	switch (scope) {
 	case BT_TRACE_PACKET_HEADER:
 		if (!event->stream)
@@ -91,28 +95,28 @@ const struct definition *bt_ctf_get_field(const struct bt_ctf_event *ctf_event,
 	struct definition *def;
 	char *field_underscore;
 
-	if (scope) {
-		def = lookup_definition(scope, field);
-		/*
-		 * optionally a field can have an underscore prefix, try
-		 * to lookup the field with this prefix if it failed
-		 */
-		if (!def) {
-			field_underscore = g_new(char, strlen(field) + 2);
-			field_underscore[0] = '_';
-			strcpy(&field_underscore[1], field);
-			def = lookup_definition(scope, field_underscore);
-			g_free(field_underscore);
-		}
-		if (bt_ctf_field_type(def) == CTF_TYPE_VARIANT) {
-			struct definition_variant *variant_definition;
-			variant_definition = container_of(def,
-					struct definition_variant, p);
-			return variant_definition->current_field;
-		}
-		return def;
+	if (!ctf_event || !scope || !field)
+		return NULL;
+
+	def = lookup_definition(scope, field);
+	/*
+	 * optionally a field can have an underscore prefix, try
+	 * to lookup the field with this prefix if it failed
+	 */
+	if (!def) {
+		field_underscore = g_new(char, strlen(field) + 2);
+		field_underscore[0] = '_';
+		strcpy(&field_underscore[1], field);
+		def = lookup_definition(scope, field_underscore);
+		g_free(field_underscore);
 	}
-	return NULL;
+	if (bt_ctf_field_type(def) == CTF_TYPE_VARIANT) {
+		struct definition_variant *variant_definition;
+		variant_definition = container_of(def,
+				struct definition_variant, p);
+		return variant_definition->current_field;
+	}
+	return def;
 }
 
 const struct definition *bt_ctf_get_index(const struct bt_ctf_event *ctf_event,
@@ -120,6 +124,9 @@ const struct definition *bt_ctf_get_index(const struct bt_ctf_event *ctf_event,
 		unsigned int index)
 {
 	struct definition *ret = NULL;
+
+	if (!ctf_event || !field)
+		return NULL;
 
 	if (bt_ctf_field_type(field) == CTF_TYPE_ARRAY) {
 		struct definition_array *array_definition;
@@ -139,10 +146,12 @@ const char *bt_ctf_event_name(const struct bt_ctf_event *ctf_event)
 {
 	struct ctf_event_declaration *event_class;
 	struct ctf_stream_declaration *stream_class;
-	struct ctf_event_definition *event = ctf_event->parent;
+	struct ctf_event_definition *event;
 
-	if (!event)
+	if (!ctf_event)
 		return NULL;
+
+	event = ctf_event->parent;
 	stream_class = event->stream->stream_class;
 	event_class = g_ptr_array_index(stream_class->events_by_id,
 			event->stream->event_id);
@@ -151,16 +160,18 @@ const char *bt_ctf_event_name(const struct bt_ctf_event *ctf_event)
 
 const char *bt_ctf_field_name(const struct definition *def)
 {
-	if (def)
-		return rem_(g_quark_to_string(def->name));
-	return NULL;
+	if (!def)
+		return NULL;
+
+	return rem_(g_quark_to_string(def->name));
 }
 
 enum ctf_type_id bt_ctf_field_type(const struct definition *def)
 {
-	if (def)
-		return def->declaration->id;
-	return CTF_TYPE_UNKNOWN;
+	if (!def)
+		return CTF_TYPE_UNKNOWN;
+
+	return def->declaration->id;
 }
 
 int bt_ctf_get_field_list(const struct bt_ctf_event *ctf_event,
@@ -168,6 +179,9 @@ int bt_ctf_get_field_list(const struct bt_ctf_event *ctf_event,
 		struct definition const * const **list,
 		unsigned int *count)
 {
+	if (!ctf_event || !scope || !list || !count)
+		return -EINVAL;
+
 	switch (bt_ctf_field_type(scope)) {
 	case CTF_TYPE_INTEGER:
 	case CTF_TYPE_FLOAT:
@@ -188,6 +202,7 @@ int bt_ctf_get_field_list(const struct bt_ctf_event *ctf_event,
 		} else {
 			goto error;
 		}
+		break;
 	}
 	case CTF_TYPE_UNTAGGED_VARIANT:
 		goto error;
@@ -205,6 +220,7 @@ int bt_ctf_get_field_list(const struct bt_ctf_event *ctf_event,
 		} else {
 			goto error;
 		}
+		break;
 	}
 	case CTF_TYPE_ARRAY:
 	{
@@ -220,6 +236,7 @@ int bt_ctf_get_field_list(const struct bt_ctf_event *ctf_event,
 		} else {
 			goto error;
 		}
+		break;
 	}
 	case CTF_TYPE_SEQUENCE:
 	{
@@ -235,6 +252,7 @@ int bt_ctf_get_field_list(const struct bt_ctf_event *ctf_event,
 		} else {
 			goto error;
 		}
+		break;
 	}
 	default:
 		break;
@@ -254,8 +272,12 @@ struct bt_context *bt_ctf_event_get_context(const struct bt_ctf_event *ctf_event
 	struct bt_context *ret = NULL;
 	struct ctf_file_stream *cfs;
 	struct ctf_trace *trace;
-	struct ctf_event_definition *event = ctf_event->parent;
+	struct ctf_event_definition *event;
 
+	if (!ctf_event)
+		return NULL;
+
+	event = ctf_event->parent;
 	cfs = container_of(event->stream, struct ctf_file_stream,
 			parent);
 	trace = cfs->parent.stream_class->trace;
@@ -270,8 +292,12 @@ int bt_ctf_event_get_handle_id(const struct bt_ctf_event *ctf_event)
 	int ret = -1;
 	struct ctf_file_stream *cfs;
 	struct ctf_trace *trace;
-	struct ctf_event_definition *event = ctf_event->parent;
+	struct ctf_event_definition *event;
 
+	if (!ctf_event)
+		return -EINVAL;
+
+	event = ctf_event->parent;
 	cfs = container_of(event->stream, struct ctf_file_stream,
 			parent);
 	trace = cfs->parent.stream_class->trace;
@@ -281,22 +307,30 @@ int bt_ctf_event_get_handle_id(const struct bt_ctf_event *ctf_event)
 	return ret;
 }
 
-uint64_t bt_ctf_get_timestamp_raw(const struct bt_ctf_event *ctf_event)
+uint64_t bt_ctf_get_timestamp(const struct bt_ctf_event *ctf_event)
 {
-	struct ctf_event_definition *event = ctf_event->parent;
+	struct ctf_event_definition *event;
+
+	if (!ctf_event)
+		return -1ULL;
+
+	event = ctf_event->parent;
 	if (event && event->stream->has_timestamp)
-		return ctf_get_timestamp_raw(event->stream,
-				event->stream->timestamp);
+		return event->stream->real_timestamp;
 	else
 		return -1ULL;
 }
 
-uint64_t bt_ctf_get_timestamp(const struct bt_ctf_event *ctf_event)
+uint64_t bt_ctf_get_cycles(const struct bt_ctf_event *ctf_event)
 {
-	struct ctf_event_definition *event = ctf_event->parent;
+	struct ctf_event_definition *event;
+
+	if (!ctf_event)
+		return -1ULL;
+
+	event = ctf_event->parent;
 	if (event && event->stream->has_timestamp)
-		return ctf_get_timestamp(event->stream,
-				event->stream->timestamp);
+		return event->stream->cycles_timestamp;
 	else
 		return -1ULL;
 }
@@ -322,7 +356,7 @@ int bt_ctf_get_int_signedness(const struct definition *field)
 	if (field && bt_ctf_field_type(field) == CTF_TYPE_INTEGER) {
 		ret = get_int_signedness(field);
 	} else {
-		ret = -1;
+		ret = -EINVAL;
 		bt_ctf_field_set_error(-EINVAL);
 	}
 
@@ -336,7 +370,7 @@ int bt_ctf_get_int_base(const struct definition *field)
 	if (field && bt_ctf_field_type(field) == CTF_TYPE_INTEGER) {
 		ret = get_int_base(field);
 	} else {
-		ret = -1;
+		ret = -EINVAL;
 		bt_ctf_field_set_error(-EINVAL);
 	}
 
@@ -350,7 +384,7 @@ int bt_ctf_get_int_byte_order(const struct definition *field)
 	if (field && bt_ctf_field_type(field) == CTF_TYPE_INTEGER) {
 		ret = get_int_byte_order(field);
 	} else {
-		ret = -1;
+		ret = -EINVAL;
 		bt_ctf_field_set_error(-EINVAL);
 	}
 
@@ -364,10 +398,58 @@ ssize_t bt_ctf_get_int_len(const struct definition *field)
 	if (field && bt_ctf_field_type(field) == CTF_TYPE_INTEGER) {
 		ret = (ssize_t) get_int_len(field);
 	} else {
-		ret = -1;
+		ret = -EINVAL;
 		bt_ctf_field_set_error(-EINVAL);
 	}
 
+	return ret;
+}
+
+const struct definition *bt_ctf_get_enum_int(const struct definition *field)
+{
+	struct definition_enum *def_enum;
+
+	if (!field || bt_ctf_field_type(field) != CTF_TYPE_ENUM) {
+		bt_ctf_field_set_error(-EINVAL);
+		return NULL;
+	}
+	def_enum = container_of(field, struct definition_enum, p);
+	return &def_enum->integer->p;
+}
+
+const char *bt_ctf_get_enum_str(const struct definition *field)
+{
+	struct definition_enum *def_enum;
+	struct declaration_enum *decl_enum;
+	GArray *array;
+	const char *ret;
+
+	if (!field || bt_ctf_field_type(field) != CTF_TYPE_ENUM) {
+		bt_ctf_field_set_error(-EINVAL);
+		return NULL;
+	}
+	def_enum = container_of(field, struct definition_enum, p);
+	decl_enum = def_enum->declaration;
+	if (get_int_signedness(&def_enum->integer->p)) {
+		array = enum_int_to_quark_set(decl_enum,
+			get_signed_int(&def_enum->integer->p));
+	} else {
+		array = enum_uint_to_quark_set(decl_enum,
+			get_unsigned_int(&def_enum->integer->p));
+	}
+	if (!array) {
+		bt_ctf_field_set_error(-ENOENT);
+		return NULL;
+	}
+
+	if (array->len == 0) {
+		g_array_unref(array);
+		bt_ctf_field_set_error(-ENOENT);
+		return NULL;
+	}	
+	/* Return first string. Arbitrary choice. */
+	ret = g_quark_to_string(g_array_index(array, GQuark, 0));
+	g_array_unref(array);
 	return ret;
 }
 
@@ -376,7 +458,7 @@ enum ctf_string_encoding bt_ctf_get_encoding(const struct definition *field)
 	enum ctf_string_encoding ret = 0;
 
 	if (!field)
-		goto end;
+		goto error;
 
 	if (bt_ctf_field_type(field) == CTF_TYPE_INTEGER)
 		ret = get_int_encoding(field);
@@ -384,8 +466,6 @@ enum ctf_string_encoding bt_ctf_get_encoding(const struct definition *field)
 		ret = get_string_encoding(field);
 	else
 		goto error;
-
-end:
 	return ret;
 
 error:
@@ -409,7 +489,7 @@ int bt_ctf_get_array_len(const struct definition *field)
 
 uint64_t bt_ctf_get_uint64(const struct definition *field)
 {
-	unsigned int ret = 0;
+	uint64_t ret = 0;
 
 	if (field && bt_ctf_field_type(field) == CTF_TYPE_INTEGER)
 		ret = get_unsigned_int(field);
@@ -421,7 +501,7 @@ uint64_t bt_ctf_get_uint64(const struct definition *field)
 
 int64_t bt_ctf_get_int64(const struct definition *field)
 {
-	int ret = 0;
+	int64_t ret = 0;
 
 	if (field && bt_ctf_field_type(field) == CTF_TYPE_INTEGER)
 		ret = get_signed_int(field);
@@ -464,7 +544,7 @@ int bt_ctf_get_event_decl_list(int handle_id, struct bt_context *ctx,
 	struct trace_descriptor *td;
 	struct ctf_trace *tin;
 
-	if (!ctx)
+	if (!ctx || !list || !count)
 		goto error;
 
 	handle = g_hash_table_lookup(ctx->trace_handles,
@@ -487,6 +567,7 @@ const char *bt_ctf_get_decl_event_name(const struct bt_ctf_event_decl *event)
 {
 	if (!event)
 		return NULL;
+
 	return g_quark_to_string(event->parent.name);
 }
 
@@ -501,6 +582,9 @@ int bt_ctf_get_decl_fields(struct bt_ctf_event_decl *event_decl,
 	GPtrArray *fields_array = NULL;
 	int ret = 0;
 	*count = 0;
+
+	if (!event_decl || !list || !count)
+		return -EINVAL;
 
 	switch (scope) {
 	case BT_EVENT_CONTEXT:
@@ -605,7 +689,8 @@ end:
 
 const char *bt_ctf_get_decl_field_name(const struct bt_ctf_field_decl *field)
 {
-	if (field)
-		return rem_(g_quark_to_string(((struct declaration_field *) field)->name));
-	return NULL;
+	if (!field)
+		return NULL;
+
+	return rem_(g_quark_to_string(((struct declaration_field *) field)->name));
 }

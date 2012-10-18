@@ -88,22 +88,23 @@ extern int yydebug;
      STRING = 297,
      STRUCT = 298,
      TRACE = 299,
-     CLOCK = 300,
-     TYPEALIAS = 301,
-     TYPEDEF = 302,
-     UNSIGNED = 303,
-     VARIANT = 304,
-     VOID = 305,
-     _BOOL = 306,
-     _COMPLEX = 307,
-     _IMAGINARY = 308,
-     DECIMAL_CONSTANT = 309,
-     OCTAL_CONSTANT = 310,
-     HEXADECIMAL_CONSTANT = 311,
-     TOK_ALIGN = 312,
-     IDENTIFIER = 313,
-     ID_TYPE = 314,
-     ERROR = 315
+     CALLSITE = 300,
+     CLOCK = 301,
+     TYPEALIAS = 302,
+     TYPEDEF = 303,
+     UNSIGNED = 304,
+     VARIANT = 305,
+     VOID = 306,
+     _BOOL = 307,
+     _COMPLEX = 308,
+     _IMAGINARY = 309,
+     DECIMAL_CONSTANT = 310,
+     OCTAL_CONSTANT = 311,
+     HEXADECIMAL_CONSTANT = 312,
+     TOK_ALIGN = 313,
+     IDENTIFIER = 314,
+     ID_TYPE = 315,
+     ERROR = 316
    };
 #endif
 /* Tokens.  */
@@ -149,22 +150,23 @@ extern int yydebug;
 #define STRING 297
 #define STRUCT 298
 #define TRACE 299
-#define CLOCK 300
-#define TYPEALIAS 301
-#define TYPEDEF 302
-#define UNSIGNED 303
-#define VARIANT 304
-#define VOID 305
-#define _BOOL 306
-#define _COMPLEX 307
-#define _IMAGINARY 308
-#define DECIMAL_CONSTANT 309
-#define OCTAL_CONSTANT 310
-#define HEXADECIMAL_CONSTANT 311
-#define TOK_ALIGN 312
-#define IDENTIFIER 313
-#define ID_TYPE 314
-#define ERROR 315
+#define CALLSITE 300
+#define CLOCK 301
+#define TYPEALIAS 302
+#define TYPEDEF 303
+#define UNSIGNED 304
+#define VARIANT 305
+#define VOID 306
+#define _BOOL 307
+#define _COMPLEX 308
+#define _IMAGINARY 309
+#define DECIMAL_CONSTANT 310
+#define OCTAL_CONSTANT 311
+#define HEXADECIMAL_CONSTANT 312
+#define TOK_ALIGN 313
+#define IDENTIFIER 314
+#define ID_TYPE 315
+#define ERROR 316
 
 
 
@@ -172,7 +174,7 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 2049 of yacc.c  */
-#line 920 "ctf-parser.y"
+#line 947 "ctf-parser.y"
 
 	long long ll;
 	char c;
@@ -181,7 +183,7 @@ typedef union YYSTYPE
 
 
 /* Line 2049 of yacc.c  */
-#line 185 "ctf-parser.h"
+#line 187 "ctf-parser.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

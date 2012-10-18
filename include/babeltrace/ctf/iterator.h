@@ -25,6 +25,10 @@
 
 #include <babeltrace/iterator.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct bt_ctf_iter;
 struct bt_ctf_event;
 
@@ -69,5 +73,31 @@ void bt_ctf_iter_destroy(struct bt_ctf_iter *iter);
  * Return current event on success, NULL on end of trace.
  */
 struct bt_ctf_event *bt_ctf_iter_read_event(struct bt_ctf_iter *iter);
+
+/*
+ * bt_ctf_iter_read_event_flags: Read the iterator's current event data.
+ *
+ * @iter: trace collection iterator (input). Should NOT be NULL.
+ * @flags: pointer passed by the user, in which the trace reader populates
+ * flags on special condition (BT_ITER_FLAG_*).
+ *
+ * Return current event on success, NULL on end of trace.
+ */
+struct bt_ctf_event *bt_ctf_iter_read_event_flags(struct bt_ctf_iter *iter,
+		int *flags);
+
+/*
+ * bt_ctf_get_lost_events_count: returns the number of events discarded
+ * immediately prior to the last event read
+ *
+ * @iter: trace collection iterator (input). Should NOT be NULL.
+ *
+ * Return the number of lost events or -1ULL on error.
+ */
+uint64_t bt_ctf_get_lost_events_count(struct bt_ctf_iter *iter);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _BABELTRACE_CTF_ITERATOR_H */

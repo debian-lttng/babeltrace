@@ -26,6 +26,10 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef int bt_intern_str;
 
 /* forward declaration */
@@ -58,7 +62,7 @@ struct format {
 			void (*packet_seek)(struct stream_pos *pos,
 				size_t index, int whence),
 			FILE *metadata_fp);
-	void (*close_trace)(struct trace_descriptor *descriptor);
+	int (*close_trace)(struct trace_descriptor *descriptor);
 	void (*set_context)(struct trace_descriptor *descriptor,
 			struct bt_context *ctx);
 	void (*set_handle)(struct trace_descriptor *descriptor,
@@ -73,7 +77,10 @@ struct format {
 extern struct format *bt_lookup_format(bt_intern_str qname);
 extern void bt_fprintf_format_list(FILE *fp);
 extern int bt_register_format(struct format *format);
+extern void bt_unregister_format(struct format *format);
 
-/* TBD: format unregistration */
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _BABELTRACE_FORMAT_H */

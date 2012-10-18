@@ -47,12 +47,18 @@
 #define PARTIAL_ERROR_SLEEP	3	/* 3 seconds */
 
 #define DEFAULT_FILE_ARRAY_SIZE	1
-static char *opt_input_format, *opt_output_format;
-/* Pointer into const argv */
-static const char *opt_input_format_arg, *opt_output_format_arg;
 
+static char *opt_input_format, *opt_output_format;
+
+/*
+ * We are not freeing opt_input_paths ipath elements when exiting from
+ * main() for backward compatibility with libpop 0.13, which does not
+ * allocate copies for arguments returned by poptGetArg(), and for
+ * general compatibility with the documented behavior. This is known to
+ * cause a small memory leak with libpop 0.16.
+ */
 static GPtrArray *opt_input_paths;
-static const char *opt_output_path;
+static char *opt_output_path;
 
 static struct format *fmt_read;
 
@@ -67,6 +73,9 @@ void strlower(char *str)
 
 enum {
 	OPT_NONE = 0,
+	OPT_OUTPUT_PATH,
+	OPT_INPUT_FORMAT,
+	OPT_OUTPUT_FORMAT,
 	OPT_HELP,
 	OPT_LIST,
 	OPT_VERBOSE,
@@ -82,11 +91,19 @@ enum {
 	OPT_CLOCK_FORCE_CORRELATE,
 };
 
+/*
+ * We are _not_ using POPT_ARG_STRING ability to store directly into
+ * variables, because we want to cast the return to non-const, which is
+ * not possible without using poptGetOptArg explicitly. This helps us
+ * controlling memory allocation correctly without making assumptions
+ * about undocumented behaviors. poptGetOptArg is documented as
+ * requiring the returned const char * to be freed by the caller.
+ */
 static struct poptOption long_options[] = {
 	/* longName, shortName, argInfo, argPtr, value, descrip, argDesc */
-	{ "output", 'w', POPT_ARG_STRING, &opt_output_path, OPT_NONE, NULL, NULL },
-	{ "input-format", 'i', POPT_ARG_STRING, &opt_input_format_arg, OPT_NONE, NULL, NULL },
-	{ "output-format", 'o', POPT_ARG_STRING, &opt_output_format_arg, OPT_NONE, NULL, NULL },
+	{ "output", 'w', POPT_ARG_STRING, NULL, OPT_NONE, NULL, NULL },
+	{ "input-format", 'i', POPT_ARG_STRING, NULL, OPT_INPUT_FORMAT, NULL, NULL },
+	{ "output-format", 'o', POPT_ARG_STRING, NULL, OPT_OUTPUT_FORMAT, NULL, NULL },
 	{ "help", 'h', POPT_ARG_NONE, NULL, OPT_HELP, NULL, NULL },
 	{ "list", 'l', POPT_ARG_NONE, NULL, OPT_LIST, NULL, NULL },
 	{ "verbose", 'v', POPT_ARG_NONE, NULL, OPT_VERBOSE, NULL, NULL },
@@ -134,7 +151,7 @@ static void usage(FILE *fp)
 	fprintf(fp, "                                        (default: payload,context)\n");
 	fprintf(fp, "  -f, --fields name1<,name2,...> Print additional fields:\n");
 	fprintf(fp, "                                     all, trace, trace:hostname, trace:domain,\n");
-	fprintf(fp, "                                     trace:procname, trace:vpid, loglevel.\n");
+	fprintf(fp, "                                     trace:procname, trace:vpid, loglevel, emf, callsite.\n");
 	fprintf(fp, "                                     (default: trace:hostname,trace:procname,trace:vpid)\n");
 	fprintf(fp, "      --clock-cycles             Timestamp in cycles\n");
 	fprintf(fp, "      --clock-offset seconds     Clock offset in seconds\n");
@@ -151,6 +168,7 @@ static void usage(FILE *fp)
 static int get_names_args(poptContext *pc)
 {
 	char *str, *strlist, *strctx;
+	int ret = 0;
 
 	opt_payload_field_names = 0;
 	opt_context_field_names = 0;
@@ -178,15 +196,20 @@ static int get_names_args(poptContext *pc)
 			opt_payload_field_names = 0;
 		} else {
 			fprintf(stderr, "[error] unknown field name type %s\n", str);
-			return -EINVAL;
+			free(strlist);
+			ret = -EINVAL;
+			goto end;
 		}
 	} while ((str = strtok_r(NULL, ",", &strctx)));
-	return 0;
+end:
+	free(strlist);
+	return ret;
 }
 
 static int get_fields_args(poptContext *pc)
 {
 	char *str, *strlist, *strctx;
+	int ret = 0;
 
 	strlist = (char *) poptGetOptArg(*pc);
 	if (!strlist) {
@@ -209,12 +232,19 @@ static int get_fields_args(poptContext *pc)
 			opt_trace_vpid_field = 1;
 		else if (!strcmp(str, "loglevel"))
 			opt_loglevel_field = 1;
+		else if (!strcmp(str, "emf"))
+			opt_emf_field = 1;
+		else if (!strcmp(str, "callsite"))
+			opt_callsite_field = 1;
 		else {
 			fprintf(stderr, "[error] unknown field type %s\n", str);
-			return -EINVAL;
+			ret = -EINVAL;
+			goto end;
 		}
 	} while ((str = strtok_r(NULL, ",", &strctx)));
-	return 0;
+end:
+	free(strlist);
+	return ret;
 }
 
 /*
@@ -241,6 +271,27 @@ static int parse_options(int argc, char **argv)
 
 	while ((opt = poptGetNextOpt(pc)) != -1) {
 		switch (opt) {
+		case OPT_OUTPUT_PATH:
+			opt_output_path = (char *) poptGetOptArg(pc);
+			if (!opt_output_path) {
+				ret = -EINVAL;
+				goto end;
+			}
+			break;
+		case OPT_INPUT_FORMAT:
+			opt_input_format = (char *) poptGetOptArg(pc);
+			if (!opt_input_format) {
+				ret = -EINVAL;
+				goto end;
+			}
+			break;
+		case OPT_OUTPUT_FORMAT:
+			opt_output_format = (char *) poptGetOptArg(pc);
+			if (!opt_output_format) {
+				ret = -EINVAL;
+				goto end;
+			}
+			break;
 		case OPT_HELP:
 			usage(stdout);
 			ret = 1;	/* exit cleanly */
@@ -275,10 +326,10 @@ static int parse_options(int argc, char **argv)
 			break;
 		case OPT_CLOCK_OFFSET:
 		{
-			const char *str;
+			char *str;
 			char *endptr;
 
-			str = poptGetOptArg(pc);
+			str = (char *) poptGetOptArg(pc);
 			if (!str) {
 				fprintf(stderr, "[error] Missing --clock-offset argument\n");
 				ret = -EINVAL;
@@ -289,8 +340,10 @@ static int parse_options(int argc, char **argv)
 			if (*endptr != '\0' || str == endptr || errno != 0) {
 				fprintf(stderr, "[error] Incorrect --clock-offset argument: %s\n", str);
 				ret = -EINVAL;
+				free(str);
 				goto end;
 			}
+			free(str);
 			break;
 		}
 		case OPT_CLOCK_SECONDS:
@@ -385,6 +438,7 @@ static int traverse_trace_dir(const char *fpath, const struct stat *sb,
 
 	return 0;
 }
+
 /*
  * bt_context_add_traces_recursive: Open a trace recursively
  *
@@ -436,6 +490,7 @@ int bt_context_add_traces_recursive(struct bt_context *ctx, const char *path,
 			g_string_free(trace_path, TRUE);
 		}
 	}
+
 	g_ptr_array_free(traversed_paths, TRUE);
 	traversed_paths = NULL;
 
@@ -511,22 +566,10 @@ int main(int argc, char **argv)
 	printf_verbose("Verbose mode active.\n");
 	printf_debug("Debug mode active.\n");
 
-	if (opt_input_format_arg) {
-		opt_input_format = strdup(opt_input_format_arg);
-		if (!opt_input_format) {
-			partial_error = 1;
-			goto end;
-		}
+	if (opt_input_format)
 		strlower(opt_input_format);
-	}
-	if (opt_output_format_arg) {
-		opt_output_format = strdup(opt_output_format_arg);
-		if (!opt_output_format) {
-			partial_error = 1;
-			goto end;
-		}
+	if (opt_output_format)
 		strlower(opt_output_format);
-	}
 
 	printf_verbose("Converting from directory(ies):\n");
 	for (i = 0; i < opt_input_paths->len; i++) {
@@ -634,6 +677,7 @@ error_td_read:
 end:
 	free(opt_input_format);
 	free(opt_output_format);
+	free(opt_output_path);
 	g_ptr_array_free(opt_input_paths, TRUE);
 	if (partial_error)
 		exit(EXIT_FAILURE);

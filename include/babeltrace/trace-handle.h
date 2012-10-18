@@ -25,6 +25,10 @@
 #include <stdint.h>
 #include <babeltrace/clock-types.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  * trace_handle : unique identifier of a trace
  *
@@ -50,7 +54,7 @@ uint64_t bt_trace_handle_get_timestamp_begin(struct bt_context *ctx,
 
 /*
  * bt_trace_handle_get_timestamp_end : returns the destruction timestamp
- * (in anoseconds or cycles depending on type) of the buffers of a trace
+ * (in nanoseconds or cycles depending on type) of the buffers of a trace
  * or -1ULL on error.
  */
 uint64_t bt_trace_handle_get_timestamp_end(struct bt_context *ctx,
@@ -62,5 +66,9 @@ uint64_t bt_trace_handle_get_timestamp_end(struct bt_context *ctx,
  * Returns -1 on error
  */
 int bt_ctf_event_get_handle_id(const struct bt_ctf_event *event);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _BABELTRACE_TRACE_HANDLE_H */

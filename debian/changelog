@@ -1,3 +1,9 @@
+babeltrace (1.0.0-1) unstable; urgency=low
+
+  * [b518b33] New upstream version 1.0.0
+
+ -- Jon Bernard <jbernard@debian.org>  Sat, 27 Oct 2012 13:36:47 -0400
+
 babeltrace (1.0.0~rc6-1) unstable; urgency=low
 
   * [511e498] New upstream version 1.0.0~rc6

@@ -583,11 +583,11 @@ int ctf_init_pos(struct ctf_stream_pos *pos, int fd, int open_flags)
 
 int ctf_fini_pos(struct ctf_stream_pos *pos)
 {
-	int ret;
-
 	if (pos->prot == PROT_WRITE && pos->content_size_loc)
 		*pos->content_size_loc = pos->offset;
 	if (pos->base_mma) {
+		int ret;
+
 		/* unmap old base */
 		ret = munmap_align(pos->base_mma);
 		if (ret) {
@@ -902,6 +902,9 @@ int ctf_open_trace_metadata_packet_read(struct ctf_trace *td, FILE *in,
 			return -EINVAL;
 	}
 
+	if ((header.content_size / CHAR_BIT) < header_sizeof(header))
+		return -EINVAL;
+
 	toread = (header.content_size / CHAR_BIT) - header_sizeof(header);
 
 	for (;;) {
@@ -1028,7 +1031,6 @@ int ctf_open_trace_metadata_read(struct ctf_trace *td,
 		metadata_stream->pos.fd = openat(td->dirfd, "metadata", O_RDONLY);
 		if (metadata_stream->pos.fd < 0) {
 			fprintf(stderr, "Unable to open metadata.\n");
-			g_free(metadata_stream);
 			ret = -1;
 			goto end_free;
 		}
@@ -1941,9 +1943,11 @@ static
 int ctf_close_trace(struct trace_descriptor *tdp)
 {
 	struct ctf_trace *td = container_of(tdp, struct ctf_trace, parent);
-	int i, ret;
+	int ret;
 
 	if (td->streams) {
+		int i;
+
 		for (i = 0; i < td->streams->len; i++) {
 			struct ctf_stream_declaration *stream;
 			int j;

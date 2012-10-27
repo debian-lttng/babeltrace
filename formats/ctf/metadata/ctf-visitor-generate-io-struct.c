@@ -823,7 +823,6 @@ struct declaration *ctf_declaration_struct_visit(FILE *fd,
 {
 	struct declaration_struct *struct_declaration;
 	struct ctf_node *iter;
-	int ret;
 
 	/*
 	 * For named struct (without body), lookup in
@@ -851,6 +850,8 @@ struct declaration *ctf_declaration_struct_visit(FILE *fd,
 			}
 		}
 		if (!bt_list_empty(min_align)) {
+			int ret;
+
 			ret = get_unary_unsigned(min_align, &min_align_value);
 			if (ret) {
 				fprintf(fd, "[error] %s: unexpected unary expression for structure \"align\" attribute\n", __func__);
@@ -861,12 +862,16 @@ struct declaration *ctf_declaration_struct_visit(FILE *fd,
 		struct_declaration = struct_declaration_new(declaration_scope,
 							    min_align_value);
 		bt_list_for_each_entry(iter, declaration_list, siblings) {
+			int ret;
+
 			ret = ctf_struct_declaration_list_visit(fd, depth + 1, iter,
 				struct_declaration, trace);
 			if (ret)
 				goto error_free_declaration;
 		}
 		if (name) {
+			int ret;
+
 			ret = register_struct_declaration(g_quark_from_string(name),
 					struct_declaration,
 					declaration_scope);
@@ -890,7 +895,6 @@ struct declaration *ctf_declaration_variant_visit(FILE *fd,
 	struct declaration_untagged_variant *untagged_variant_declaration;
 	struct declaration_variant *variant_declaration;
 	struct ctf_node *iter;
-	int ret;
 
 	/*
 	 * For named variant (without body), lookup in
@@ -916,12 +920,16 @@ struct declaration *ctf_declaration_variant_visit(FILE *fd,
 		}
 		untagged_variant_declaration = untagged_variant_declaration_new(declaration_scope);
 		bt_list_for_each_entry(iter, declaration_list, siblings) {
+			int ret;
+
 			ret = ctf_variant_declaration_list_visit(fd, depth + 1, iter,
 				untagged_variant_declaration, trace);
 			if (ret)
 				goto error;
 		}
 		if (name) {
+			int ret;
+
 			ret = register_variant_declaration(g_quark_from_string(name),
 					untagged_variant_declaration,
 					declaration_scope);
@@ -1051,7 +1059,6 @@ struct declaration *ctf_declaration_enum_visit(FILE *fd, int depth,
 	struct last_enum_value last_value;
 	struct ctf_node *iter;
 	GQuark dummy_id;
-	int ret;
 
 	/*
 	 * For named enum (without body), lookup in
@@ -1107,12 +1114,16 @@ struct declaration *ctf_declaration_enum_visit(FILE *fd, int depth,
 			last_value.u.u = 0;
 		}
 		bt_list_for_each_entry(iter, enumerator_list, siblings) {
+			int ret;
+
 			ret = ctf_enumerator_list_visit(fd, depth + 1, iter, enum_declaration,
 					&last_value);
 			if (ret)
 				goto error;
 		}
 		if (name) {
+			int ret;
+
 			ret = register_enum_declaration(g_quark_from_string(name),
 					enum_declaration,
 					declaration_scope);
@@ -2960,18 +2971,20 @@ error:
 
 int ctf_destroy_metadata(struct ctf_trace *trace)
 {
-	int i, j, k;
+	int i;
 	struct ctf_file_stream *metadata_stream;
 
 	if (trace->streams) {
 		for (i = 0; i < trace->streams->len; i++) {
 			struct ctf_stream_declaration *stream;
+			int j;
 
 			stream = g_ptr_array_index(trace->streams, i);
 			if (!stream)
 				continue;
 			for (j = 0; j < stream->streams->len; j++) {
 				struct ctf_stream_definition *stream_def;
+				int k;
 
 				stream_def = g_ptr_array_index(stream->streams, j);
 				if (!stream_def)

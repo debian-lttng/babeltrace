@@ -81,6 +81,14 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
 #include <stdio.h>
@@ -992,7 +1000,7 @@ void ctf_scanner_free(struct ctf_scanner *scanner)
 
 
 /* Line 336 of yacc.c  */
-#line 996 "ctf-parser.c"
+#line 1004 "ctf-parser.c"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -1156,7 +1164,7 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 350 of yacc.c  */
-#line 947 "ctf-parser.y"
+#line 955 "ctf-parser.y"
 
 	long long ll;
 	char c;
@@ -1165,7 +1173,7 @@ typedef union YYSTYPE
 
 
 /* Line 350 of yacc.c  */
-#line 1169 "ctf-parser.c"
+#line 1177 "ctf-parser.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -1192,7 +1200,7 @@ int yyparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 353 of yacc.c  */
-#line 1196 "ctf-parser.c"
+#line 1204 "ctf-parser.c"
 
 #ifdef short
 # undef short
@@ -1590,31 +1598,31 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   999,   999,  1004,  1012,  1014,  1016,  1018,  1020,  1022,
-    1024,  1026,  1028,  1030,  1032,  1034,  1036,  1038,  1040,  1042,
-    1044,  1046,  1048,  1050,  1052,  1054,  1056,  1058,  1060,  1062,
-    1064,  1071,  1073,  1078,  1080,  1089,  1091,  1096,  1098,  1107,
-    1113,  1119,  1125,  1132,  1139,  1146,  1152,  1158,  1164,  1170,
-    1178,  1187,  1196,  1205,  1217,  1219,  1221,  1240,  1246,  1253,
-    1255,  1257,  1259,  1261,  1263,  1265,  1267,  1278,  1288,  1298,
-    1319,  1323,  1332,  1337,  1343,  1347,  1356,  1361,  1366,  1370,
-    1379,  1384,  1389,  1393,  1402,  1407,  1412,  1416,  1425,  1430,
-    1435,  1439,  1448,  1453,  1458,  1467,  1475,  1484,  1492,  1501,
-    1509,  1518,  1526,  1528,  1536,  1541,  1546,  1551,  1556,  1561,
-    1566,  1571,  1577,  1583,  1594,  1599,  1604,  1609,  1614,  1619,
-    1624,  1629,  1634,  1639,  1644,  1649,  1654,  1660,  1666,  1674,
-    1680,  1688,  1694,  1700,  1708,  1714,  1720,  1729,  1736,  1744,
-    1752,  1758,  1764,  1772,  1781,  1793,  1798,  1803,  1810,  1818,
-    1826,  1834,  1843,  1850,  1859,  1866,  1874,  1883,  1890,  1899,
-    1909,  1914,  1919,  1925,  1932,  1939,  1947,  1954,  1962,  1968,
-    1975,  1982,  1990,  1996,  2003,  2011,  2021,  2022,  2035,  2045,
-    2056,  2066,  2076,  2097,  2106,  2114,  2125,  2134,  2139,  2153,
-    2155,  2163,  2165,  2167,  2176,  2178,  2186,  2191,  2196,  2201,
-    2206,  2211,  2217,  2223,  2229,  2235,  2244,  2246,  2254,  2256,
-    2265,  2270,  2276,  2282,  2290,  2300,  2302,  2310,  2312,  2321,
-    2326,  2332,  2340,  2350,  2352,  2360,  2366,  2372,  2383,  2385,
-    2393,  2400,  2406,  2417,  2421,  2426,  2436,  2437,  2443,  2445,
-    2453,  2465,  2477,  2488,  2498,  2508
+       0,  1007,  1007,  1012,  1020,  1022,  1024,  1026,  1028,  1030,
+    1032,  1034,  1036,  1038,  1040,  1042,  1044,  1046,  1048,  1050,
+    1052,  1054,  1056,  1058,  1060,  1062,  1064,  1066,  1068,  1070,
+    1072,  1079,  1081,  1086,  1088,  1097,  1099,  1104,  1106,  1115,
+    1121,  1127,  1133,  1140,  1147,  1154,  1160,  1166,  1172,  1178,
+    1186,  1195,  1204,  1213,  1225,  1227,  1229,  1248,  1254,  1261,
+    1263,  1265,  1267,  1269,  1271,  1273,  1275,  1286,  1296,  1306,
+    1327,  1331,  1340,  1345,  1351,  1355,  1364,  1369,  1374,  1378,
+    1387,  1392,  1397,  1401,  1410,  1415,  1420,  1424,  1433,  1438,
+    1443,  1447,  1456,  1461,  1466,  1475,  1483,  1492,  1500,  1509,
+    1517,  1526,  1534,  1536,  1544,  1549,  1554,  1559,  1564,  1569,
+    1574,  1579,  1585,  1591,  1602,  1607,  1612,  1617,  1622,  1627,
+    1632,  1637,  1642,  1647,  1652,  1657,  1662,  1668,  1674,  1682,
+    1688,  1696,  1702,  1708,  1716,  1722,  1728,  1737,  1744,  1752,
+    1760,  1766,  1772,  1780,  1789,  1801,  1806,  1811,  1818,  1826,
+    1834,  1842,  1851,  1858,  1867,  1874,  1882,  1891,  1898,  1907,
+    1917,  1922,  1927,  1933,  1940,  1947,  1955,  1962,  1970,  1976,
+    1983,  1990,  1998,  2004,  2011,  2019,  2029,  2030,  2043,  2053,
+    2064,  2074,  2084,  2105,  2114,  2122,  2133,  2142,  2147,  2161,
+    2163,  2171,  2173,  2175,  2184,  2186,  2194,  2199,  2204,  2209,
+    2214,  2219,  2225,  2231,  2237,  2243,  2252,  2254,  2262,  2264,
+    2273,  2278,  2284,  2290,  2298,  2308,  2310,  2318,  2320,  2329,
+    2334,  2340,  2348,  2358,  2360,  2368,  2374,  2380,  2391,  2393,
+    2401,  2408,  2414,  2425,  2429,  2434,  2444,  2445,  2451,  2453,
+    2461,  2473,  2485,  2496,  2506,  2516
 };
 #endif
 
@@ -3231,7 +3239,7 @@ yyreduce:
     {
         case 2:
 /* Line 1787 of yacc.c  */
-#line 1000 "ctf-parser.y"
+#line 1008 "ctf-parser.y"
     {
 			if (set_parent_node((yyvsp[(1) - (1)].n), &ctf_scanner_get_ast(scanner)->root))
 				reparent_error(scanner, "error reparenting to root");
@@ -3240,7 +3248,7 @@ yyreduce:
 
   case 3:
 /* Line 1787 of yacc.c  */
-#line 1005 "ctf-parser.y"
+#line 1013 "ctf-parser.y"
     {
 			if (set_parent_node((yyvsp[(2) - (2)].n), &ctf_scanner_get_ast(scanner)->root))
 				reparent_error(scanner, "error reparenting to root");
@@ -3249,187 +3257,187 @@ yyreduce:
 
   case 4:
 /* Line 1787 of yacc.c  */
-#line 1013 "ctf-parser.y"
+#line 1021 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 5:
 /* Line 1787 of yacc.c  */
-#line 1015 "ctf-parser.y"
+#line 1023 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 6:
 /* Line 1787 of yacc.c  */
-#line 1017 "ctf-parser.y"
+#line 1025 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 7:
 /* Line 1787 of yacc.c  */
-#line 1019 "ctf-parser.y"
+#line 1027 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 8:
 /* Line 1787 of yacc.c  */
-#line 1021 "ctf-parser.y"
+#line 1029 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 9:
 /* Line 1787 of yacc.c  */
-#line 1023 "ctf-parser.y"
+#line 1031 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 10:
 /* Line 1787 of yacc.c  */
-#line 1025 "ctf-parser.y"
+#line 1033 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 11:
 /* Line 1787 of yacc.c  */
-#line 1027 "ctf-parser.y"
+#line 1035 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 12:
 /* Line 1787 of yacc.c  */
-#line 1029 "ctf-parser.y"
+#line 1037 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 13:
 /* Line 1787 of yacc.c  */
-#line 1031 "ctf-parser.y"
+#line 1039 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 14:
 /* Line 1787 of yacc.c  */
-#line 1033 "ctf-parser.y"
+#line 1041 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 15:
 /* Line 1787 of yacc.c  */
-#line 1035 "ctf-parser.y"
+#line 1043 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 16:
 /* Line 1787 of yacc.c  */
-#line 1037 "ctf-parser.y"
+#line 1045 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 17:
 /* Line 1787 of yacc.c  */
-#line 1039 "ctf-parser.y"
+#line 1047 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 18:
 /* Line 1787 of yacc.c  */
-#line 1041 "ctf-parser.y"
+#line 1049 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 19:
 /* Line 1787 of yacc.c  */
-#line 1043 "ctf-parser.y"
+#line 1051 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 20:
 /* Line 1787 of yacc.c  */
-#line 1045 "ctf-parser.y"
+#line 1053 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 21:
 /* Line 1787 of yacc.c  */
-#line 1047 "ctf-parser.y"
+#line 1055 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 22:
 /* Line 1787 of yacc.c  */
-#line 1049 "ctf-parser.y"
+#line 1057 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 23:
 /* Line 1787 of yacc.c  */
-#line 1051 "ctf-parser.y"
+#line 1059 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 24:
 /* Line 1787 of yacc.c  */
-#line 1053 "ctf-parser.y"
+#line 1061 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 25:
 /* Line 1787 of yacc.c  */
-#line 1055 "ctf-parser.y"
+#line 1063 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 26:
 /* Line 1787 of yacc.c  */
-#line 1057 "ctf-parser.y"
+#line 1065 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 27:
 /* Line 1787 of yacc.c  */
-#line 1059 "ctf-parser.y"
+#line 1067 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 28:
 /* Line 1787 of yacc.c  */
-#line 1061 "ctf-parser.y"
+#line 1069 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 29:
 /* Line 1787 of yacc.c  */
-#line 1063 "ctf-parser.y"
+#line 1071 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 30:
 /* Line 1787 of yacc.c  */
-#line 1065 "ctf-parser.y"
+#line 1073 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;		}
     break;
 
   case 31:
 /* Line 1787 of yacc.c  */
-#line 1072 "ctf-parser.y"
+#line 1080 "ctf-parser.y"
     {	(yyval.gs) = (yyvsp[(1) - (1)].gs);					}
     break;
 
   case 32:
 /* Line 1787 of yacc.c  */
-#line 1074 "ctf-parser.y"
+#line 1082 "ctf-parser.y"
     {	(yyval.gs) = gc_string_append(scanner, (yyvsp[(1) - (2)].gs), (yyvsp[(2) - (2)].gs));		}
     break;
 
   case 33:
 /* Line 1787 of yacc.c  */
-#line 1079 "ctf-parser.y"
+#line 1087 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;					}
     break;
 
   case 34:
 /* Line 1787 of yacc.c  */
-#line 1081 "ctf-parser.y"
+#line 1089 "ctf-parser.y"
     {
 			reparent_error(scanner, "escape sequences not supported yet");
 		}
@@ -3437,25 +3445,25 @@ yyreduce:
 
   case 35:
 /* Line 1787 of yacc.c  */
-#line 1090 "ctf-parser.y"
+#line 1098 "ctf-parser.y"
     {	(yyval.gs) = (yyvsp[(1) - (1)].gs);					}
     break;
 
   case 36:
 /* Line 1787 of yacc.c  */
-#line 1092 "ctf-parser.y"
+#line 1100 "ctf-parser.y"
     {	(yyval.gs) = gc_string_append(scanner, (yyvsp[(1) - (2)].gs), (yyvsp[(2) - (2)].gs));		}
     break;
 
   case 37:
 /* Line 1787 of yacc.c  */
-#line 1097 "ctf-parser.y"
+#line 1105 "ctf-parser.y"
     {	(yyval.gs) = yylval.gs;					}
     break;
 
   case 38:
 /* Line 1787 of yacc.c  */
-#line 1099 "ctf-parser.y"
+#line 1107 "ctf-parser.y"
     {
 			reparent_error(scanner, "escape sequences not supported yet");
 		}
@@ -3463,7 +3471,7 @@ yyreduce:
 
   case 39:
 /* Line 1787 of yacc.c  */
-#line 1108 "ctf-parser.y"
+#line 1116 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_UNARY_EXPRESSION);
 			(yyval.n)->u.unary_expression.type = UNARY_STRING;
@@ -3473,7 +3481,7 @@ yyreduce:
 
   case 40:
 /* Line 1787 of yacc.c  */
-#line 1114 "ctf-parser.y"
+#line 1122 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_UNARY_EXPRESSION);
 			(yyval.n)->u.unary_expression.type = UNARY_STRING;
@@ -3483,7 +3491,7 @@ yyreduce:
 
   case 41:
 /* Line 1787 of yacc.c  */
-#line 1120 "ctf-parser.y"
+#line 1128 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_UNARY_EXPRESSION);
 			(yyval.n)->u.unary_expression.type = UNARY_STRING;
@@ -3493,7 +3501,7 @@ yyreduce:
 
   case 42:
 /* Line 1787 of yacc.c  */
-#line 1126 "ctf-parser.y"
+#line 1134 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_UNARY_EXPRESSION);
 			(yyval.n)->u.unary_expression.type = UNARY_UNSIGNED_CONSTANT;
@@ -3504,7 +3512,7 @@ yyreduce:
 
   case 43:
 /* Line 1787 of yacc.c  */
-#line 1133 "ctf-parser.y"
+#line 1141 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_UNARY_EXPRESSION);
 			(yyval.n)->u.unary_expression.type = UNARY_UNSIGNED_CONSTANT;
@@ -3515,7 +3523,7 @@ yyreduce:
 
   case 44:
 /* Line 1787 of yacc.c  */
-#line 1140 "ctf-parser.y"
+#line 1148 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_UNARY_EXPRESSION);
 			(yyval.n)->u.unary_expression.type = UNARY_UNSIGNED_CONSTANT;
@@ -3526,7 +3534,7 @@ yyreduce:
 
   case 45:
 /* Line 1787 of yacc.c  */
-#line 1147 "ctf-parser.y"
+#line 1155 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_UNARY_EXPRESSION);
 			(yyval.n)->u.unary_expression.type = UNARY_STRING;
@@ -3536,7 +3544,7 @@ yyreduce:
 
   case 46:
 /* Line 1787 of yacc.c  */
-#line 1153 "ctf-parser.y"
+#line 1161 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_UNARY_EXPRESSION);
 			(yyval.n)->u.unary_expression.type = UNARY_STRING;
@@ -3546,7 +3554,7 @@ yyreduce:
 
   case 47:
 /* Line 1787 of yacc.c  */
-#line 1159 "ctf-parser.y"
+#line 1167 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_UNARY_EXPRESSION);
 			(yyval.n)->u.unary_expression.type = UNARY_STRING;
@@ -3556,7 +3564,7 @@ yyreduce:
 
   case 48:
 /* Line 1787 of yacc.c  */
-#line 1165 "ctf-parser.y"
+#line 1173 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_UNARY_EXPRESSION);
 			(yyval.n)->u.unary_expression.type = UNARY_NESTED;
@@ -3566,7 +3574,7 @@ yyreduce:
 
   case 49:
 /* Line 1787 of yacc.c  */
-#line 1171 "ctf-parser.y"
+#line 1179 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_UNARY_EXPRESSION);
 			(yyval.n)->u.unary_expression.type = UNARY_SBRAC;
@@ -3578,7 +3586,7 @@ yyreduce:
 
   case 50:
 /* Line 1787 of yacc.c  */
-#line 1179 "ctf-parser.y"
+#line 1187 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_UNARY_EXPRESSION);
 			(yyval.n)->u.unary_expression.type = UNARY_STRING;
@@ -3591,7 +3599,7 @@ yyreduce:
 
   case 51:
 /* Line 1787 of yacc.c  */
-#line 1188 "ctf-parser.y"
+#line 1196 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_UNARY_EXPRESSION);
 			(yyval.n)->u.unary_expression.type = UNARY_STRING;
@@ -3604,7 +3612,7 @@ yyreduce:
 
   case 52:
 /* Line 1787 of yacc.c  */
-#line 1197 "ctf-parser.y"
+#line 1205 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_UNARY_EXPRESSION);
 			(yyval.n)->u.unary_expression.type = UNARY_STRING;
@@ -3617,7 +3625,7 @@ yyreduce:
 
   case 53:
 /* Line 1787 of yacc.c  */
-#line 1206 "ctf-parser.y"
+#line 1214 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_UNARY_EXPRESSION);
 			(yyval.n)->u.unary_expression.type = UNARY_STRING;
@@ -3630,19 +3638,19 @@ yyreduce:
 
   case 54:
 /* Line 1787 of yacc.c  */
-#line 1218 "ctf-parser.y"
+#line 1226 "ctf-parser.y"
     {	(yyval.n) = (yyvsp[(1) - (1)].n);				}
     break;
 
   case 55:
 /* Line 1787 of yacc.c  */
-#line 1220 "ctf-parser.y"
+#line 1228 "ctf-parser.y"
     {	(yyval.n) = (yyvsp[(2) - (2)].n);				}
     break;
 
   case 56:
 /* Line 1787 of yacc.c  */
-#line 1222 "ctf-parser.y"
+#line 1230 "ctf-parser.y"
     {
 			(yyval.n) = (yyvsp[(2) - (2)].n);
 			if ((yyval.n)->u.unary_expression.type != UNARY_SIGNED_CONSTANT
@@ -3662,7 +3670,7 @@ yyreduce:
 
   case 57:
 /* Line 1787 of yacc.c  */
-#line 1241 "ctf-parser.y"
+#line 1249 "ctf-parser.y"
     {
 			(yyval.n) = (yyvsp[(1) - (3)].n);
 			_bt_list_splice_tail(&((yyvsp[(3) - (3)].n))->tmp_head, &((yyval.n))->tmp_head);
@@ -3672,55 +3680,55 @@ yyreduce:
 
   case 58:
 /* Line 1787 of yacc.c  */
-#line 1247 "ctf-parser.y"
+#line 1255 "ctf-parser.y"
     {	(yyval.n) = (yyvsp[(1) - (1)].n);		}
     break;
 
   case 59:
 /* Line 1787 of yacc.c  */
-#line 1254 "ctf-parser.y"
+#line 1262 "ctf-parser.y"
     {	(yyval.n) = (yyvsp[(1) - (2)].n);	}
     break;
 
   case 60:
 /* Line 1787 of yacc.c  */
-#line 1256 "ctf-parser.y"
+#line 1264 "ctf-parser.y"
     {	(yyval.n) = (yyvsp[(1) - (1)].n);	}
     break;
 
   case 61:
 /* Line 1787 of yacc.c  */
-#line 1258 "ctf-parser.y"
+#line 1266 "ctf-parser.y"
     {	(yyval.n) = (yyvsp[(1) - (1)].n);	}
     break;
 
   case 62:
 /* Line 1787 of yacc.c  */
-#line 1260 "ctf-parser.y"
+#line 1268 "ctf-parser.y"
     {	(yyval.n) = (yyvsp[(1) - (1)].n);	}
     break;
 
   case 63:
 /* Line 1787 of yacc.c  */
-#line 1262 "ctf-parser.y"
+#line 1270 "ctf-parser.y"
     {	(yyval.n) = (yyvsp[(1) - (1)].n);	}
     break;
 
   case 64:
 /* Line 1787 of yacc.c  */
-#line 1264 "ctf-parser.y"
+#line 1272 "ctf-parser.y"
     {	(yyval.n) = (yyvsp[(1) - (1)].n);	}
     break;
 
   case 65:
 /* Line 1787 of yacc.c  */
-#line 1266 "ctf-parser.y"
+#line 1274 "ctf-parser.y"
     {	(yyval.n) = (yyvsp[(1) - (1)].n);	}
     break;
 
   case 66:
 /* Line 1787 of yacc.c  */
-#line 1268 "ctf-parser.y"
+#line 1276 "ctf-parser.y"
     {
 			struct ctf_node *list;
 
@@ -3735,7 +3743,7 @@ yyreduce:
 
   case 67:
 /* Line 1787 of yacc.c  */
-#line 1279 "ctf-parser.y"
+#line 1287 "ctf-parser.y"
     {
 			struct ctf_node *list;
 
@@ -3749,7 +3757,7 @@ yyreduce:
 
   case 68:
 /* Line 1787 of yacc.c  */
-#line 1289 "ctf-parser.y"
+#line 1297 "ctf-parser.y"
     {
 			struct ctf_node *list;
 
@@ -3763,7 +3771,7 @@ yyreduce:
 
   case 69:
 /* Line 1787 of yacc.c  */
-#line 1299 "ctf-parser.y"
+#line 1307 "ctf-parser.y"
     {
 			struct ctf_node *list;
 
@@ -3785,7 +3793,7 @@ yyreduce:
 
   case 70:
 /* Line 1787 of yacc.c  */
-#line 1320 "ctf-parser.y"
+#line 1328 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_EVENT);
 		}
@@ -3793,7 +3801,7 @@ yyreduce:
 
   case 71:
 /* Line 1787 of yacc.c  */
-#line 1324 "ctf-parser.y"
+#line 1332 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_EVENT);
 			if (set_parent_node((yyvsp[(2) - (3)].n), (yyval.n)))
@@ -3803,19 +3811,19 @@ yyreduce:
 
   case 72:
 /* Line 1787 of yacc.c  */
-#line 1333 "ctf-parser.y"
+#line 1341 "ctf-parser.y"
     {	push_scope(scanner);	}
     break;
 
   case 73:
 /* Line 1787 of yacc.c  */
-#line 1338 "ctf-parser.y"
+#line 1346 "ctf-parser.y"
     {	pop_scope(scanner);	}
     break;
 
   case 74:
 /* Line 1787 of yacc.c  */
-#line 1344 "ctf-parser.y"
+#line 1352 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_STREAM);
 		}
@@ -3823,7 +3831,7 @@ yyreduce:
 
   case 75:
 /* Line 1787 of yacc.c  */
-#line 1348 "ctf-parser.y"
+#line 1356 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_STREAM);
 			if (set_parent_node((yyvsp[(2) - (3)].n), (yyval.n)))
@@ -3833,19 +3841,19 @@ yyreduce:
 
   case 76:
 /* Line 1787 of yacc.c  */
-#line 1357 "ctf-parser.y"
+#line 1365 "ctf-parser.y"
     {	push_scope(scanner);	}
     break;
 
   case 77:
 /* Line 1787 of yacc.c  */
-#line 1362 "ctf-parser.y"
+#line 1370 "ctf-parser.y"
     {	pop_scope(scanner);	}
     break;
 
   case 78:
 /* Line 1787 of yacc.c  */
-#line 1367 "ctf-parser.y"
+#line 1375 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENV);
 		}
@@ -3853,7 +3861,7 @@ yyreduce:
 
   case 79:
 /* Line 1787 of yacc.c  */
-#line 1371 "ctf-parser.y"
+#line 1379 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENV);
 			if (set_parent_node((yyvsp[(2) - (3)].n), (yyval.n)))
@@ -3863,19 +3871,19 @@ yyreduce:
 
   case 80:
 /* Line 1787 of yacc.c  */
-#line 1380 "ctf-parser.y"
+#line 1388 "ctf-parser.y"
     {	push_scope(scanner);	}
     break;
 
   case 81:
 /* Line 1787 of yacc.c  */
-#line 1385 "ctf-parser.y"
+#line 1393 "ctf-parser.y"
     {	pop_scope(scanner);	}
     break;
 
   case 82:
 /* Line 1787 of yacc.c  */
-#line 1390 "ctf-parser.y"
+#line 1398 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TRACE);
 		}
@@ -3883,7 +3891,7 @@ yyreduce:
 
   case 83:
 /* Line 1787 of yacc.c  */
-#line 1394 "ctf-parser.y"
+#line 1402 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TRACE);
 			if (set_parent_node((yyvsp[(2) - (3)].n), (yyval.n)))
@@ -3893,19 +3901,19 @@ yyreduce:
 
   case 84:
 /* Line 1787 of yacc.c  */
-#line 1403 "ctf-parser.y"
+#line 1411 "ctf-parser.y"
     {	push_scope(scanner);	}
     break;
 
   case 85:
 /* Line 1787 of yacc.c  */
-#line 1408 "ctf-parser.y"
+#line 1416 "ctf-parser.y"
     {	pop_scope(scanner);	}
     break;
 
   case 86:
 /* Line 1787 of yacc.c  */
-#line 1413 "ctf-parser.y"
+#line 1421 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_CLOCK);
 		}
@@ -3913,7 +3921,7 @@ yyreduce:
 
   case 87:
 /* Line 1787 of yacc.c  */
-#line 1417 "ctf-parser.y"
+#line 1425 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_CLOCK);
 			if (set_parent_node((yyvsp[(3) - (4)].n), (yyval.n)))
@@ -3923,19 +3931,19 @@ yyreduce:
 
   case 88:
 /* Line 1787 of yacc.c  */
-#line 1426 "ctf-parser.y"
+#line 1434 "ctf-parser.y"
     {	push_scope(scanner);	}
     break;
 
   case 89:
 /* Line 1787 of yacc.c  */
-#line 1431 "ctf-parser.y"
+#line 1439 "ctf-parser.y"
     {	pop_scope(scanner);	}
     break;
 
   case 90:
 /* Line 1787 of yacc.c  */
-#line 1436 "ctf-parser.y"
+#line 1444 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_CALLSITE);
 		}
@@ -3943,7 +3951,7 @@ yyreduce:
 
   case 91:
 /* Line 1787 of yacc.c  */
-#line 1440 "ctf-parser.y"
+#line 1448 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_CALLSITE);
 			if (set_parent_node((yyvsp[(3) - (4)].n), (yyval.n)))
@@ -3953,19 +3961,19 @@ yyreduce:
 
   case 92:
 /* Line 1787 of yacc.c  */
-#line 1449 "ctf-parser.y"
+#line 1457 "ctf-parser.y"
     {	push_scope(scanner);	}
     break;
 
   case 93:
 /* Line 1787 of yacc.c  */
-#line 1454 "ctf-parser.y"
+#line 1462 "ctf-parser.y"
     {	pop_scope(scanner);	}
     break;
 
   case 94:
 /* Line 1787 of yacc.c  */
-#line 1459 "ctf-parser.y"
+#line 1467 "ctf-parser.y"
     {
 			struct ctf_node *node;
 
@@ -3978,7 +3986,7 @@ yyreduce:
 
   case 95:
 /* Line 1787 of yacc.c  */
-#line 1468 "ctf-parser.y"
+#line 1476 "ctf-parser.y"
     {
 			struct ctf_node *node;
 
@@ -3990,7 +3998,7 @@ yyreduce:
 
   case 96:
 /* Line 1787 of yacc.c  */
-#line 1476 "ctf-parser.y"
+#line 1484 "ctf-parser.y"
     {
 			struct ctf_node *node;
 
@@ -4003,7 +4011,7 @@ yyreduce:
 
   case 97:
 /* Line 1787 of yacc.c  */
-#line 1485 "ctf-parser.y"
+#line 1493 "ctf-parser.y"
     {
 			(yyval.n) = (yyvsp[(1) - (2)].n);
 			bt_list_add_tail(&((yyvsp[(2) - (2)].n))->siblings, &((yyval.n))->u.type_specifier_list.head);
@@ -4012,7 +4020,7 @@ yyreduce:
 
   case 98:
 /* Line 1787 of yacc.c  */
-#line 1493 "ctf-parser.y"
+#line 1501 "ctf-parser.y"
     {
 			struct ctf_node *node;
 
@@ -4025,7 +4033,7 @@ yyreduce:
 
   case 99:
 /* Line 1787 of yacc.c  */
-#line 1502 "ctf-parser.y"
+#line 1510 "ctf-parser.y"
     {
 			struct ctf_node *node;
 
@@ -4037,7 +4045,7 @@ yyreduce:
 
   case 100:
 /* Line 1787 of yacc.c  */
-#line 1510 "ctf-parser.y"
+#line 1518 "ctf-parser.y"
     {
 			struct ctf_node *node;
 
@@ -4050,7 +4058,7 @@ yyreduce:
 
   case 101:
 /* Line 1787 of yacc.c  */
-#line 1519 "ctf-parser.y"
+#line 1527 "ctf-parser.y"
     {
 			(yyval.n) = (yyvsp[(1) - (2)].n);
 			bt_list_add_tail(&((yyvsp[(2) - (2)].n))->siblings, &((yyval.n))->u.type_specifier_list.head);
@@ -4059,13 +4067,13 @@ yyreduce:
 
   case 102:
 /* Line 1787 of yacc.c  */
-#line 1527 "ctf-parser.y"
+#line 1535 "ctf-parser.y"
     {	(yyval.n) = (yyvsp[(1) - (1)].n);	}
     break;
 
   case 103:
 /* Line 1787 of yacc.c  */
-#line 1529 "ctf-parser.y"
+#line 1537 "ctf-parser.y"
     {
 			(yyval.n) = (yyvsp[(1) - (3)].n);
 			bt_list_add_tail(&((yyvsp[(3) - (3)].n))->siblings, &((yyval.n))->tmp_head);
@@ -4074,7 +4082,7 @@ yyreduce:
 
   case 104:
 /* Line 1787 of yacc.c  */
-#line 1537 "ctf-parser.y"
+#line 1545 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_CHAR;
@@ -4083,7 +4091,7 @@ yyreduce:
 
   case 105:
 /* Line 1787 of yacc.c  */
-#line 1542 "ctf-parser.y"
+#line 1550 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_SHORT;
@@ -4092,7 +4100,7 @@ yyreduce:
 
   case 106:
 /* Line 1787 of yacc.c  */
-#line 1547 "ctf-parser.y"
+#line 1555 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_INT;
@@ -4101,7 +4109,7 @@ yyreduce:
 
   case 107:
 /* Line 1787 of yacc.c  */
-#line 1552 "ctf-parser.y"
+#line 1560 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_LONG;
@@ -4110,7 +4118,7 @@ yyreduce:
 
   case 108:
 /* Line 1787 of yacc.c  */
-#line 1557 "ctf-parser.y"
+#line 1565 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_SIGNED;
@@ -4119,7 +4127,7 @@ yyreduce:
 
   case 109:
 /* Line 1787 of yacc.c  */
-#line 1562 "ctf-parser.y"
+#line 1570 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_UNSIGNED;
@@ -4128,7 +4136,7 @@ yyreduce:
 
   case 110:
 /* Line 1787 of yacc.c  */
-#line 1567 "ctf-parser.y"
+#line 1575 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_BOOL;
@@ -4137,7 +4145,7 @@ yyreduce:
 
   case 111:
 /* Line 1787 of yacc.c  */
-#line 1572 "ctf-parser.y"
+#line 1580 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_ID_TYPE;
@@ -4147,7 +4155,7 @@ yyreduce:
 
   case 112:
 /* Line 1787 of yacc.c  */
-#line 1578 "ctf-parser.y"
+#line 1586 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_INTEGER;
@@ -4157,7 +4165,7 @@ yyreduce:
 
   case 113:
 /* Line 1787 of yacc.c  */
-#line 1584 "ctf-parser.y"
+#line 1592 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_INTEGER;
@@ -4169,7 +4177,7 @@ yyreduce:
 
   case 114:
 /* Line 1787 of yacc.c  */
-#line 1595 "ctf-parser.y"
+#line 1603 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_VOID;
@@ -4178,7 +4186,7 @@ yyreduce:
 
   case 115:
 /* Line 1787 of yacc.c  */
-#line 1600 "ctf-parser.y"
+#line 1608 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_CHAR;
@@ -4187,7 +4195,7 @@ yyreduce:
 
   case 116:
 /* Line 1787 of yacc.c  */
-#line 1605 "ctf-parser.y"
+#line 1613 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_SHORT;
@@ -4196,7 +4204,7 @@ yyreduce:
 
   case 117:
 /* Line 1787 of yacc.c  */
-#line 1610 "ctf-parser.y"
+#line 1618 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_INT;
@@ -4205,7 +4213,7 @@ yyreduce:
 
   case 118:
 /* Line 1787 of yacc.c  */
-#line 1615 "ctf-parser.y"
+#line 1623 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_LONG;
@@ -4214,7 +4222,7 @@ yyreduce:
 
   case 119:
 /* Line 1787 of yacc.c  */
-#line 1620 "ctf-parser.y"
+#line 1628 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_FLOAT;
@@ -4223,7 +4231,7 @@ yyreduce:
 
   case 120:
 /* Line 1787 of yacc.c  */
-#line 1625 "ctf-parser.y"
+#line 1633 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_DOUBLE;
@@ -4232,7 +4240,7 @@ yyreduce:
 
   case 121:
 /* Line 1787 of yacc.c  */
-#line 1630 "ctf-parser.y"
+#line 1638 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_SIGNED;
@@ -4241,7 +4249,7 @@ yyreduce:
 
   case 122:
 /* Line 1787 of yacc.c  */
-#line 1635 "ctf-parser.y"
+#line 1643 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_UNSIGNED;
@@ -4250,7 +4258,7 @@ yyreduce:
 
   case 123:
 /* Line 1787 of yacc.c  */
-#line 1640 "ctf-parser.y"
+#line 1648 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_BOOL;
@@ -4259,7 +4267,7 @@ yyreduce:
 
   case 124:
 /* Line 1787 of yacc.c  */
-#line 1645 "ctf-parser.y"
+#line 1653 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_COMPLEX;
@@ -4268,7 +4276,7 @@ yyreduce:
 
   case 125:
 /* Line 1787 of yacc.c  */
-#line 1650 "ctf-parser.y"
+#line 1658 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_IMAGINARY;
@@ -4277,7 +4285,7 @@ yyreduce:
 
   case 126:
 /* Line 1787 of yacc.c  */
-#line 1655 "ctf-parser.y"
+#line 1663 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_ID_TYPE;
@@ -4287,7 +4295,7 @@ yyreduce:
 
   case 127:
 /* Line 1787 of yacc.c  */
-#line 1661 "ctf-parser.y"
+#line 1669 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_FLOATING_POINT;
@@ -4297,7 +4305,7 @@ yyreduce:
 
   case 128:
 /* Line 1787 of yacc.c  */
-#line 1667 "ctf-parser.y"
+#line 1675 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_FLOATING_POINT;
@@ -4309,7 +4317,7 @@ yyreduce:
 
   case 129:
 /* Line 1787 of yacc.c  */
-#line 1675 "ctf-parser.y"
+#line 1683 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_INTEGER;
@@ -4319,7 +4327,7 @@ yyreduce:
 
   case 130:
 /* Line 1787 of yacc.c  */
-#line 1681 "ctf-parser.y"
+#line 1689 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_INTEGER;
@@ -4331,7 +4339,7 @@ yyreduce:
 
   case 131:
 /* Line 1787 of yacc.c  */
-#line 1689 "ctf-parser.y"
+#line 1697 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_STRING;
@@ -4341,7 +4349,7 @@ yyreduce:
 
   case 132:
 /* Line 1787 of yacc.c  */
-#line 1695 "ctf-parser.y"
+#line 1703 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_STRING;
@@ -4351,7 +4359,7 @@ yyreduce:
 
   case 133:
 /* Line 1787 of yacc.c  */
-#line 1701 "ctf-parser.y"
+#line 1709 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_STRING;
@@ -4363,7 +4371,7 @@ yyreduce:
 
   case 134:
 /* Line 1787 of yacc.c  */
-#line 1709 "ctf-parser.y"
+#line 1717 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_ENUM;
@@ -4373,7 +4381,7 @@ yyreduce:
 
   case 135:
 /* Line 1787 of yacc.c  */
-#line 1715 "ctf-parser.y"
+#line 1723 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_VARIANT;
@@ -4383,7 +4391,7 @@ yyreduce:
 
   case 136:
 /* Line 1787 of yacc.c  */
-#line 1721 "ctf-parser.y"
+#line 1729 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_SPECIFIER);
 			(yyval.n)->u.type_specifier.type = TYPESPEC_STRUCT;
@@ -4393,7 +4401,7 @@ yyreduce:
 
   case 137:
 /* Line 1787 of yacc.c  */
-#line 1730 "ctf-parser.y"
+#line 1738 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_STRUCT);
 			(yyval.n)->u._struct.has_body = 1;
@@ -4403,18 +4411,6 @@ yyreduce:
     break;
 
   case 138:
-/* Line 1787 of yacc.c  */
-#line 1737 "ctf-parser.y"
-    {
-			(yyval.n) = make_node(scanner, NODE_STRUCT);
-			(yyval.n)->u._struct.has_body = 1;
-			(yyval.n)->u._struct.name = (yyvsp[(1) - (4)].gs)->s;
-			if ((yyvsp[(3) - (4)].n) && set_parent_node((yyvsp[(3) - (4)].n), (yyval.n)))
-				reparent_error(scanner, "struct reparent error");
-		}
-    break;
-
-  case 139:
 /* Line 1787 of yacc.c  */
 #line 1745 "ctf-parser.y"
     {
@@ -4426,9 +4422,21 @@ yyreduce:
 		}
     break;
 
-  case 140:
+  case 139:
 /* Line 1787 of yacc.c  */
 #line 1753 "ctf-parser.y"
+    {
+			(yyval.n) = make_node(scanner, NODE_STRUCT);
+			(yyval.n)->u._struct.has_body = 1;
+			(yyval.n)->u._struct.name = (yyvsp[(1) - (4)].gs)->s;
+			if ((yyvsp[(3) - (4)].n) && set_parent_node((yyvsp[(3) - (4)].n), (yyval.n)))
+				reparent_error(scanner, "struct reparent error");
+		}
+    break;
+
+  case 140:
+/* Line 1787 of yacc.c  */
+#line 1761 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_STRUCT);
 			(yyval.n)->u._struct.has_body = 0;
@@ -4438,7 +4446,7 @@ yyreduce:
 
   case 141:
 /* Line 1787 of yacc.c  */
-#line 1759 "ctf-parser.y"
+#line 1767 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_STRUCT);
 			(yyval.n)->u._struct.has_body = 0;
@@ -4448,7 +4456,7 @@ yyreduce:
 
   case 142:
 /* Line 1787 of yacc.c  */
-#line 1765 "ctf-parser.y"
+#line 1773 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_STRUCT);
 			(yyval.n)->u._struct.has_body = 1;
@@ -4460,7 +4468,7 @@ yyreduce:
 
   case 143:
 /* Line 1787 of yacc.c  */
-#line 1773 "ctf-parser.y"
+#line 1781 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_STRUCT);
 			(yyval.n)->u._struct.has_body = 1;
@@ -4473,7 +4481,7 @@ yyreduce:
 
   case 144:
 /* Line 1787 of yacc.c  */
-#line 1782 "ctf-parser.y"
+#line 1790 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_STRUCT);
 			(yyval.n)->u._struct.has_body = 1;
@@ -4486,19 +4494,19 @@ yyreduce:
 
   case 145:
 /* Line 1787 of yacc.c  */
-#line 1794 "ctf-parser.y"
+#line 1802 "ctf-parser.y"
     {	push_scope(scanner);	}
     break;
 
   case 146:
 /* Line 1787 of yacc.c  */
-#line 1799 "ctf-parser.y"
+#line 1807 "ctf-parser.y"
     {	pop_scope(scanner);	}
     break;
 
   case 147:
 /* Line 1787 of yacc.c  */
-#line 1804 "ctf-parser.y"
+#line 1812 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_VARIANT);
 			(yyval.n)->u.variant.has_body = 1;
@@ -4508,18 +4516,6 @@ yyreduce:
     break;
 
   case 148:
-/* Line 1787 of yacc.c  */
-#line 1811 "ctf-parser.y"
-    {
-			(yyval.n) = make_node(scanner, NODE_VARIANT);
-			(yyval.n)->u.variant.has_body = 1;
-			(yyval.n)->u.variant.choice = (yyvsp[(2) - (6)].gs)->s;
-			if ((yyvsp[(5) - (6)].n) && set_parent_node((yyvsp[(5) - (6)].n), (yyval.n)))
-				reparent_error(scanner, "variant reparent error");
-		}
-    break;
-
-  case 149:
 /* Line 1787 of yacc.c  */
 #line 1819 "ctf-parser.y"
     {
@@ -4531,9 +4527,21 @@ yyreduce:
 		}
     break;
 
-  case 150:
+  case 149:
 /* Line 1787 of yacc.c  */
 #line 1827 "ctf-parser.y"
+    {
+			(yyval.n) = make_node(scanner, NODE_VARIANT);
+			(yyval.n)->u.variant.has_body = 1;
+			(yyval.n)->u.variant.choice = (yyvsp[(2) - (6)].gs)->s;
+			if ((yyvsp[(5) - (6)].n) && set_parent_node((yyvsp[(5) - (6)].n), (yyval.n)))
+				reparent_error(scanner, "variant reparent error");
+		}
+    break;
+
+  case 150:
+/* Line 1787 of yacc.c  */
+#line 1835 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_VARIANT);
 			(yyval.n)->u.variant.has_body = 1;
@@ -4545,7 +4553,7 @@ yyreduce:
 
   case 151:
 /* Line 1787 of yacc.c  */
-#line 1835 "ctf-parser.y"
+#line 1843 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_VARIANT);
 			(yyval.n)->u.variant.has_body = 1;
@@ -4558,7 +4566,7 @@ yyreduce:
 
   case 152:
 /* Line 1787 of yacc.c  */
-#line 1844 "ctf-parser.y"
+#line 1852 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_VARIANT);
 			(yyval.n)->u.variant.has_body = 0;
@@ -4569,7 +4577,7 @@ yyreduce:
 
   case 153:
 /* Line 1787 of yacc.c  */
-#line 1851 "ctf-parser.y"
+#line 1859 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_VARIANT);
 			(yyval.n)->u.variant.has_body = 1;
@@ -4582,7 +4590,7 @@ yyreduce:
 
   case 154:
 /* Line 1787 of yacc.c  */
-#line 1860 "ctf-parser.y"
+#line 1868 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_VARIANT);
 			(yyval.n)->u.variant.has_body = 0;
@@ -4593,7 +4601,7 @@ yyreduce:
 
   case 155:
 /* Line 1787 of yacc.c  */
-#line 1867 "ctf-parser.y"
+#line 1875 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_VARIANT);
 			(yyval.n)->u.variant.has_body = 1;
@@ -4605,7 +4613,7 @@ yyreduce:
 
   case 156:
 /* Line 1787 of yacc.c  */
-#line 1875 "ctf-parser.y"
+#line 1883 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_VARIANT);
 			(yyval.n)->u.variant.has_body = 1;
@@ -4618,7 +4626,7 @@ yyreduce:
 
   case 157:
 /* Line 1787 of yacc.c  */
-#line 1884 "ctf-parser.y"
+#line 1892 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_VARIANT);
 			(yyval.n)->u.variant.has_body = 0;
@@ -4629,7 +4637,7 @@ yyreduce:
 
   case 158:
 /* Line 1787 of yacc.c  */
-#line 1891 "ctf-parser.y"
+#line 1899 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_VARIANT);
 			(yyval.n)->u.variant.has_body = 1;
@@ -4642,7 +4650,7 @@ yyreduce:
 
   case 159:
 /* Line 1787 of yacc.c  */
-#line 1900 "ctf-parser.y"
+#line 1908 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_VARIANT);
 			(yyval.n)->u.variant.has_body = 0;
@@ -4653,19 +4661,19 @@ yyreduce:
 
   case 160:
 /* Line 1787 of yacc.c  */
-#line 1910 "ctf-parser.y"
+#line 1918 "ctf-parser.y"
     {	push_scope(scanner);	}
     break;
 
   case 161:
 /* Line 1787 of yacc.c  */
-#line 1915 "ctf-parser.y"
+#line 1923 "ctf-parser.y"
     {	pop_scope(scanner);	}
     break;
 
   case 162:
 /* Line 1787 of yacc.c  */
-#line 1920 "ctf-parser.y"
+#line 1928 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUM);
 			(yyval.n)->u._enum.has_body = 1;
@@ -4675,7 +4683,7 @@ yyreduce:
 
   case 163:
 /* Line 1787 of yacc.c  */
-#line 1926 "ctf-parser.y"
+#line 1934 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUM);
 			(yyval.n)->u._enum.has_body = 1;
@@ -4686,7 +4694,7 @@ yyreduce:
 
   case 164:
 /* Line 1787 of yacc.c  */
-#line 1933 "ctf-parser.y"
+#line 1941 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUM);
 			(yyval.n)->u._enum.has_body = 1;
@@ -4697,7 +4705,7 @@ yyreduce:
 
   case 165:
 /* Line 1787 of yacc.c  */
-#line 1940 "ctf-parser.y"
+#line 1948 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUM);
 			(yyval.n)->u._enum.has_body = 1;
@@ -4709,7 +4717,7 @@ yyreduce:
 
   case 166:
 /* Line 1787 of yacc.c  */
-#line 1948 "ctf-parser.y"
+#line 1956 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUM);
 			(yyval.n)->u._enum.has_body = 1;
@@ -4720,7 +4728,7 @@ yyreduce:
 
   case 167:
 /* Line 1787 of yacc.c  */
-#line 1955 "ctf-parser.y"
+#line 1963 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUM);
 			(yyval.n)->u._enum.has_body = 1;
@@ -4732,7 +4740,7 @@ yyreduce:
 
   case 168:
 /* Line 1787 of yacc.c  */
-#line 1963 "ctf-parser.y"
+#line 1971 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUM);
 			(yyval.n)->u._enum.has_body = 1;
@@ -4742,7 +4750,7 @@ yyreduce:
 
   case 169:
 /* Line 1787 of yacc.c  */
-#line 1969 "ctf-parser.y"
+#line 1977 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUM);
 			(yyval.n)->u._enum.has_body = 1;
@@ -4753,7 +4761,7 @@ yyreduce:
 
   case 170:
 /* Line 1787 of yacc.c  */
-#line 1976 "ctf-parser.y"
+#line 1984 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUM);
 			(yyval.n)->u._enum.has_body = 1;
@@ -4764,7 +4772,7 @@ yyreduce:
 
   case 171:
 /* Line 1787 of yacc.c  */
-#line 1983 "ctf-parser.y"
+#line 1991 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUM);
 			(yyval.n)->u._enum.has_body = 1;
@@ -4776,7 +4784,7 @@ yyreduce:
 
   case 172:
 /* Line 1787 of yacc.c  */
-#line 1991 "ctf-parser.y"
+#line 1999 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUM);
 			(yyval.n)->u._enum.has_body = 0;
@@ -4786,7 +4794,7 @@ yyreduce:
 
   case 173:
 /* Line 1787 of yacc.c  */
-#line 1997 "ctf-parser.y"
+#line 2005 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUM);
 			(yyval.n)->u._enum.has_body = 1;
@@ -4797,7 +4805,7 @@ yyreduce:
 
   case 174:
 /* Line 1787 of yacc.c  */
-#line 2004 "ctf-parser.y"
+#line 2012 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUM);
 			(yyval.n)->u._enum.has_body = 1;
@@ -4809,7 +4817,7 @@ yyreduce:
 
   case 175:
 /* Line 1787 of yacc.c  */
-#line 2012 "ctf-parser.y"
+#line 2020 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUM);
 			(yyval.n)->u._enum.has_body = 0;
@@ -4819,13 +4827,13 @@ yyreduce:
 
   case 176:
 /* Line 1787 of yacc.c  */
-#line 2021 "ctf-parser.y"
+#line 2029 "ctf-parser.y"
     {	(yyval.n) = NULL;	}
     break;
 
   case 177:
 /* Line 1787 of yacc.c  */
-#line 2023 "ctf-parser.y"
+#line 2031 "ctf-parser.y"
     {
 			if ((yyvsp[(1) - (2)].n)) {
 				(yyval.n) = (yyvsp[(1) - (2)].n);
@@ -4839,7 +4847,7 @@ yyreduce:
 
   case 178:
 /* Line 1787 of yacc.c  */
-#line 2036 "ctf-parser.y"
+#line 2044 "ctf-parser.y"
     {
 			struct ctf_node *list;
 
@@ -4853,7 +4861,7 @@ yyreduce:
 
   case 179:
 /* Line 1787 of yacc.c  */
-#line 2046 "ctf-parser.y"
+#line 2054 "ctf-parser.y"
     {
 			struct ctf_node *list;
 
@@ -4868,7 +4876,7 @@ yyreduce:
 
   case 180:
 /* Line 1787 of yacc.c  */
-#line 2057 "ctf-parser.y"
+#line 2065 "ctf-parser.y"
     {
 			struct ctf_node *list;
 
@@ -4882,7 +4890,7 @@ yyreduce:
 
   case 181:
 /* Line 1787 of yacc.c  */
-#line 2067 "ctf-parser.y"
+#line 2075 "ctf-parser.y"
     {
 			struct ctf_node *list;
 
@@ -4896,7 +4904,7 @@ yyreduce:
 
   case 182:
 /* Line 1787 of yacc.c  */
-#line 2077 "ctf-parser.y"
+#line 2085 "ctf-parser.y"
     {
 			struct ctf_node *list;
 
@@ -4918,7 +4926,7 @@ yyreduce:
 
   case 183:
 /* Line 1787 of yacc.c  */
-#line 2098 "ctf-parser.y"
+#line 2106 "ctf-parser.y"
     {
 			struct ctf_node *node;
 
@@ -4931,7 +4939,7 @@ yyreduce:
 
   case 184:
 /* Line 1787 of yacc.c  */
-#line 2107 "ctf-parser.y"
+#line 2115 "ctf-parser.y"
     {
 			struct ctf_node *node;
 
@@ -4943,7 +4951,7 @@ yyreduce:
 
   case 185:
 /* Line 1787 of yacc.c  */
-#line 2115 "ctf-parser.y"
+#line 2123 "ctf-parser.y"
     {
 			struct ctf_node *node;
 
@@ -4958,7 +4966,7 @@ yyreduce:
 
   case 186:
 /* Line 1787 of yacc.c  */
-#line 2126 "ctf-parser.y"
+#line 2134 "ctf-parser.y"
     {
 			struct ctf_node *node;
 
@@ -4971,7 +4979,7 @@ yyreduce:
 
   case 187:
 /* Line 1787 of yacc.c  */
-#line 2135 "ctf-parser.y"
+#line 2143 "ctf-parser.y"
     {
 			(yyval.n) = (yyvsp[(1) - (2)].n);
 			bt_list_add_tail(&((yyvsp[(2) - (2)].n))->siblings, &((yyval.n))->u.type_specifier_list.head);
@@ -4980,7 +4988,7 @@ yyreduce:
 
   case 188:
 /* Line 1787 of yacc.c  */
-#line 2140 "ctf-parser.y"
+#line 2148 "ctf-parser.y"
     {
 			struct ctf_node *node;
 
@@ -4995,13 +5003,13 @@ yyreduce:
 
   case 189:
 /* Line 1787 of yacc.c  */
-#line 2154 "ctf-parser.y"
+#line 2162 "ctf-parser.y"
     {	(yyval.n) = (yyvsp[(1) - (1)].n);	}
     break;
 
   case 190:
 /* Line 1787 of yacc.c  */
-#line 2156 "ctf-parser.y"
+#line 2164 "ctf-parser.y"
     {
 			(yyval.n) = (yyvsp[(1) - (3)].n);
 			bt_list_add_tail(&((yyvsp[(3) - (3)].n))->siblings, &((yyval.n))->tmp_head);
@@ -5010,19 +5018,19 @@ yyreduce:
 
   case 191:
 /* Line 1787 of yacc.c  */
-#line 2164 "ctf-parser.y"
+#line 2172 "ctf-parser.y"
     {	(yyval.n) = (yyvsp[(1) - (1)].n);	}
     break;
 
   case 192:
 /* Line 1787 of yacc.c  */
-#line 2166 "ctf-parser.y"
+#line 2174 "ctf-parser.y"
     {	(yyval.n) = (yyvsp[(2) - (2)].n);	}
     break;
 
   case 193:
 /* Line 1787 of yacc.c  */
-#line 2168 "ctf-parser.y"
+#line 2176 "ctf-parser.y"
     {
 			(yyval.n) = (yyvsp[(1) - (3)].n);
 			if (set_parent_node((yyvsp[(3) - (3)].n), (yyvsp[(1) - (3)].n)))
@@ -5032,13 +5040,13 @@ yyreduce:
 
   case 194:
 /* Line 1787 of yacc.c  */
-#line 2177 "ctf-parser.y"
+#line 2185 "ctf-parser.y"
     {	(yyval.n) = (yyvsp[(1) - (1)].n);	}
     break;
 
   case 195:
 /* Line 1787 of yacc.c  */
-#line 2179 "ctf-parser.y"
+#line 2187 "ctf-parser.y"
     {
 			(yyval.n) = (yyvsp[(1) - (3)].n);
 			bt_list_add_tail(&((yyvsp[(3) - (3)].n))->siblings, &((yyval.n))->tmp_head);
@@ -5047,7 +5055,7 @@ yyreduce:
 
   case 196:
 /* Line 1787 of yacc.c  */
-#line 2187 "ctf-parser.y"
+#line 2195 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUMERATOR);
 			(yyval.n)->u.enumerator.id = (yyvsp[(1) - (1)].gs)->s;
@@ -5056,7 +5064,7 @@ yyreduce:
 
   case 197:
 /* Line 1787 of yacc.c  */
-#line 2192 "ctf-parser.y"
+#line 2200 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUMERATOR);
 			(yyval.n)->u.enumerator.id = (yyvsp[(1) - (1)].gs)->s;
@@ -5065,7 +5073,7 @@ yyreduce:
 
   case 198:
 /* Line 1787 of yacc.c  */
-#line 2197 "ctf-parser.y"
+#line 2205 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUMERATOR);
 			(yyval.n)->u.enumerator.id = (yyvsp[(1) - (1)].gs)->s;
@@ -5074,7 +5082,7 @@ yyreduce:
 
   case 199:
 /* Line 1787 of yacc.c  */
-#line 2202 "ctf-parser.y"
+#line 2210 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUMERATOR);
 			(yyval.n)->u.enumerator.id = "";
@@ -5083,7 +5091,7 @@ yyreduce:
 
   case 200:
 /* Line 1787 of yacc.c  */
-#line 2207 "ctf-parser.y"
+#line 2215 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUMERATOR);
 			(yyval.n)->u.enumerator.id = (yyvsp[(2) - (3)].gs)->s;
@@ -5092,7 +5100,7 @@ yyreduce:
 
   case 201:
 /* Line 1787 of yacc.c  */
-#line 2212 "ctf-parser.y"
+#line 2220 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUMERATOR);
 			(yyval.n)->u.enumerator.id = (yyvsp[(1) - (3)].gs)->s;
@@ -5102,7 +5110,7 @@ yyreduce:
 
   case 202:
 /* Line 1787 of yacc.c  */
-#line 2218 "ctf-parser.y"
+#line 2226 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUMERATOR);
 			(yyval.n)->u.enumerator.id = (yyvsp[(1) - (3)].gs)->s;
@@ -5112,7 +5120,7 @@ yyreduce:
 
   case 203:
 /* Line 1787 of yacc.c  */
-#line 2224 "ctf-parser.y"
+#line 2232 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUMERATOR);
 			(yyval.n)->u.enumerator.id = (yyvsp[(1) - (3)].gs)->s;
@@ -5122,7 +5130,7 @@ yyreduce:
 
   case 204:
 /* Line 1787 of yacc.c  */
-#line 2230 "ctf-parser.y"
+#line 2238 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUMERATOR);
 			(yyval.n)->u.enumerator.id = "";
@@ -5132,7 +5140,7 @@ yyreduce:
 
   case 205:
 /* Line 1787 of yacc.c  */
-#line 2236 "ctf-parser.y"
+#line 2244 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_ENUMERATOR);
 			(yyval.n)->u.enumerator.id = (yyvsp[(2) - (5)].gs)->s;
@@ -5142,13 +5150,13 @@ yyreduce:
 
   case 206:
 /* Line 1787 of yacc.c  */
-#line 2245 "ctf-parser.y"
+#line 2253 "ctf-parser.y"
     {	(yyval.n) = (yyvsp[(1) - (1)].n);	}
     break;
 
   case 207:
 /* Line 1787 of yacc.c  */
-#line 2247 "ctf-parser.y"
+#line 2255 "ctf-parser.y"
     {
 			(yyval.n) = (yyvsp[(1) - (3)].n);
 			bt_list_add_tail(&((yyvsp[(3) - (3)].n))->siblings, &((yyval.n))->tmp_head);
@@ -5157,13 +5165,13 @@ yyreduce:
 
   case 208:
 /* Line 1787 of yacc.c  */
-#line 2255 "ctf-parser.y"
+#line 2263 "ctf-parser.y"
     {	(yyval.n) = (yyvsp[(1) - (1)].n);	}
     break;
 
   case 209:
 /* Line 1787 of yacc.c  */
-#line 2257 "ctf-parser.y"
+#line 2265 "ctf-parser.y"
     {
 			(yyval.n) = (yyvsp[(2) - (2)].n);
 			bt_list_splice(&((yyvsp[(1) - (2)].n))->tmp_head, &((yyval.n))->u.type_declarator.pointers);
@@ -5172,7 +5180,7 @@ yyreduce:
 
   case 210:
 /* Line 1787 of yacc.c  */
-#line 2265 "ctf-parser.y"
+#line 2273 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_DECLARATOR);
                         (yyval.n)->u.type_declarator.type = TYPEDEC_ID;
@@ -5182,7 +5190,7 @@ yyreduce:
 
   case 211:
 /* Line 1787 of yacc.c  */
-#line 2271 "ctf-parser.y"
+#line 2279 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_DECLARATOR);
 			(yyval.n)->u.type_declarator.type = TYPEDEC_ID;
@@ -5192,7 +5200,7 @@ yyreduce:
 
   case 212:
 /* Line 1787 of yacc.c  */
-#line 2277 "ctf-parser.y"
+#line 2285 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_DECLARATOR);
 			(yyval.n)->u.type_declarator.type = TYPEDEC_NESTED;
@@ -5202,7 +5210,7 @@ yyreduce:
 
   case 213:
 /* Line 1787 of yacc.c  */
-#line 2283 "ctf-parser.y"
+#line 2291 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_DECLARATOR);
 			(yyval.n)->u.type_declarator.type = TYPEDEC_NESTED;
@@ -5214,7 +5222,7 @@ yyreduce:
 
   case 214:
 /* Line 1787 of yacc.c  */
-#line 2291 "ctf-parser.y"
+#line 2299 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_DECLARATOR);
 			(yyval.n)->u.type_declarator.type = TYPEDEC_NESTED;
@@ -5225,13 +5233,13 @@ yyreduce:
 
   case 215:
 /* Line 1787 of yacc.c  */
-#line 2301 "ctf-parser.y"
+#line 2309 "ctf-parser.y"
     {	(yyval.n) = (yyvsp[(1) - (1)].n);	}
     break;
 
   case 216:
 /* Line 1787 of yacc.c  */
-#line 2303 "ctf-parser.y"
+#line 2311 "ctf-parser.y"
     {
 			(yyval.n) = (yyvsp[(1) - (3)].n);
 			bt_list_add_tail(&((yyvsp[(3) - (3)].n))->siblings, &((yyval.n))->tmp_head);
@@ -5240,13 +5248,13 @@ yyreduce:
 
   case 217:
 /* Line 1787 of yacc.c  */
-#line 2311 "ctf-parser.y"
+#line 2319 "ctf-parser.y"
     {	(yyval.n) = (yyvsp[(1) - (1)].n);	}
     break;
 
   case 218:
 /* Line 1787 of yacc.c  */
-#line 2313 "ctf-parser.y"
+#line 2321 "ctf-parser.y"
     {
 			(yyval.n) = (yyvsp[(2) - (2)].n);
 			bt_list_splice(&((yyvsp[(1) - (2)].n))->tmp_head, &((yyval.n))->u.type_declarator.pointers);
@@ -5255,7 +5263,7 @@ yyreduce:
 
   case 219:
 /* Line 1787 of yacc.c  */
-#line 2321 "ctf-parser.y"
+#line 2329 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_DECLARATOR);
                         (yyval.n)->u.type_declarator.type = TYPEDEC_ID;
@@ -5265,7 +5273,7 @@ yyreduce:
 
   case 220:
 /* Line 1787 of yacc.c  */
-#line 2327 "ctf-parser.y"
+#line 2335 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_DECLARATOR);
 			(yyval.n)->u.type_declarator.type = TYPEDEC_NESTED;
@@ -5275,7 +5283,7 @@ yyreduce:
 
   case 221:
 /* Line 1787 of yacc.c  */
-#line 2333 "ctf-parser.y"
+#line 2341 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_DECLARATOR);
 			(yyval.n)->u.type_declarator.type = TYPEDEC_NESTED;
@@ -5287,7 +5295,7 @@ yyreduce:
 
   case 222:
 /* Line 1787 of yacc.c  */
-#line 2341 "ctf-parser.y"
+#line 2349 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_DECLARATOR);
 			(yyval.n)->u.type_declarator.type = TYPEDEC_NESTED;
@@ -5298,13 +5306,13 @@ yyreduce:
 
   case 223:
 /* Line 1787 of yacc.c  */
-#line 2351 "ctf-parser.y"
+#line 2359 "ctf-parser.y"
     {	(yyval.n) = (yyvsp[(1) - (1)].n);	}
     break;
 
   case 224:
 /* Line 1787 of yacc.c  */
-#line 2353 "ctf-parser.y"
+#line 2361 "ctf-parser.y"
     {
 			(yyval.n) = (yyvsp[(2) - (2)].n);
 			bt_list_splice(&((yyvsp[(1) - (2)].n))->tmp_head, &((yyval.n))->u.type_declarator.pointers);
@@ -5313,7 +5321,7 @@ yyreduce:
 
   case 225:
 /* Line 1787 of yacc.c  */
-#line 2361 "ctf-parser.y"
+#line 2369 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_DECLARATOR);
 			(yyval.n)->u.type_declarator.type = TYPEDEC_ID;
@@ -5323,7 +5331,7 @@ yyreduce:
 
   case 226:
 /* Line 1787 of yacc.c  */
-#line 2367 "ctf-parser.y"
+#line 2375 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_DECLARATOR);
 			(yyval.n)->u.type_declarator.type = TYPEDEC_NESTED;
@@ -5333,7 +5341,7 @@ yyreduce:
 
   case 227:
 /* Line 1787 of yacc.c  */
-#line 2373 "ctf-parser.y"
+#line 2381 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_DECLARATOR);
 			(yyval.n)->u.type_declarator.type = TYPEDEC_NESTED;
@@ -5345,13 +5353,13 @@ yyreduce:
 
   case 228:
 /* Line 1787 of yacc.c  */
-#line 2384 "ctf-parser.y"
+#line 2392 "ctf-parser.y"
     {	(yyval.n) = (yyvsp[(1) - (1)].n);	}
     break;
 
   case 229:
 /* Line 1787 of yacc.c  */
-#line 2386 "ctf-parser.y"
+#line 2394 "ctf-parser.y"
     {
 			(yyval.n) = (yyvsp[(2) - (2)].n);
 			bt_list_splice(&((yyvsp[(1) - (2)].n))->tmp_head, &((yyval.n))->u.type_declarator.pointers);
@@ -5360,7 +5368,7 @@ yyreduce:
 
   case 230:
 /* Line 1787 of yacc.c  */
-#line 2394 "ctf-parser.y"
+#line 2402 "ctf-parser.y"
     {
 			add_type(scanner, (yyvsp[(1) - (1)].gs));
 			(yyval.n) = make_node(scanner, NODE_TYPE_DECLARATOR);
@@ -5371,7 +5379,7 @@ yyreduce:
 
   case 231:
 /* Line 1787 of yacc.c  */
-#line 2401 "ctf-parser.y"
+#line 2409 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_DECLARATOR);
 			(yyval.n)->u.type_declarator.type = TYPEDEC_NESTED;
@@ -5381,7 +5389,7 @@ yyreduce:
 
   case 232:
 /* Line 1787 of yacc.c  */
-#line 2407 "ctf-parser.y"
+#line 2415 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_TYPE_DECLARATOR);
 			(yyval.n)->u.type_declarator.type = TYPEDEC_NESTED;
@@ -5393,7 +5401,7 @@ yyreduce:
 
   case 233:
 /* Line 1787 of yacc.c  */
-#line 2418 "ctf-parser.y"
+#line 2426 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_POINTER);
 		}
@@ -5401,7 +5409,7 @@ yyreduce:
 
   case 234:
 /* Line 1787 of yacc.c  */
-#line 2422 "ctf-parser.y"
+#line 2430 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_POINTER);
 			bt_list_splice(&((yyvsp[(2) - (2)].n))->tmp_head, &((yyval.n))->tmp_head);
@@ -5410,7 +5418,7 @@ yyreduce:
 
   case 235:
 /* Line 1787 of yacc.c  */
-#line 2427 "ctf-parser.y"
+#line 2435 "ctf-parser.y"
     {
 			(yyval.n) = make_node(scanner, NODE_POINTER);
 			(yyval.n)->u.pointer.const_qualifier = 1;
@@ -5420,13 +5428,13 @@ yyreduce:
 
   case 238:
 /* Line 1787 of yacc.c  */
-#line 2444 "ctf-parser.y"
+#line 2452 "ctf-parser.y"
     {	(yyval.n) = (yyvsp[(1) - (2)].n);	}
     break;
 
   case 239:
 /* Line 1787 of yacc.c  */
-#line 2446 "ctf-parser.y"
+#line 2454 "ctf-parser.y"
     {
 			(yyval.n) = (yyvsp[(1) - (3)].n);
 			bt_list_add_tail(&((yyvsp[(2) - (3)].n))->siblings, &((yyval.n))->tmp_head);
@@ -5435,7 +5443,7 @@ yyreduce:
 
   case 240:
 /* Line 1787 of yacc.c  */
-#line 2454 "ctf-parser.y"
+#line 2462 "ctf-parser.y"
     {
 			/*
 			 * Because we have left and right, cannot use
@@ -5451,7 +5459,7 @@ yyreduce:
 
   case 241:
 /* Line 1787 of yacc.c  */
-#line 2466 "ctf-parser.y"
+#line 2474 "ctf-parser.y"
     {
 			/*
 			 * Because we have left and right, cannot use
@@ -5467,7 +5475,7 @@ yyreduce:
 
   case 242:
 /* Line 1787 of yacc.c  */
-#line 2478 "ctf-parser.y"
+#line 2486 "ctf-parser.y"
     {
 			struct ctf_node *list;
 
@@ -5482,7 +5490,7 @@ yyreduce:
 
   case 243:
 /* Line 1787 of yacc.c  */
-#line 2489 "ctf-parser.y"
+#line 2497 "ctf-parser.y"
     {
 			struct ctf_node *list;
 
@@ -5496,7 +5504,7 @@ yyreduce:
 
   case 244:
 /* Line 1787 of yacc.c  */
-#line 2499 "ctf-parser.y"
+#line 2507 "ctf-parser.y"
     {
 			struct ctf_node *list;
 
@@ -5510,7 +5518,7 @@ yyreduce:
 
   case 245:
 /* Line 1787 of yacc.c  */
-#line 2509 "ctf-parser.y"
+#line 2517 "ctf-parser.y"
     {
 			struct ctf_node *list;
 
@@ -5532,7 +5540,7 @@ yyreduce:
 
 
 /* Line 1787 of yacc.c  */
-#line 5536 "ctf-parser.c"
+#line 5544 "ctf-parser.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires

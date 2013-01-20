@@ -17,6 +17,14 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
 #include <babeltrace/babeltrace.h>
@@ -82,16 +90,16 @@ int bt_context_add_trace(struct bt_context *ctx, const char *path,
 	if (path) {
 		td = fmt->open_trace(path, O_RDONLY, packet_seek, NULL);
 		if (!td) {
-			fprintf(stderr, "[warning] [Context] Cannot open_trace of the format %s .\n\n",
-					path);
+			fprintf(stderr, "[warning] [Context] Cannot open_trace of format %s at path %s.\n\n",
+					format_name, path);
 			ret = -1;
 			goto end;
 		}
 	} else {
 		td = fmt->open_mmap_trace(stream_list, packet_seek, metadata);
 		if (!td) {
-			fprintf(stderr, "[error] [Context] Cannot open_trace of the format %s .\n\n",
-					path);
+			fprintf(stderr, "[error] [Context] Cannot open_mmap_trace of format %s.\n\n",
+					format_name);
 			ret = -1;
 			goto end;
 		}

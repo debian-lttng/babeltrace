@@ -704,6 +704,14 @@ static yyconst flex_int32_t yy_rule_can_match_eol[71] =
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
 #include <stdio.h>
@@ -721,7 +729,7 @@ static int input (yyscan_t yyscanner) __attribute__((unused));
 
 
 /* bison-locations */
-#line 725 "ctf-lexer.c"
+#line 733 "ctf-lexer.c"
 
 #define INITIAL 0
 #define comment_ml 1
@@ -965,7 +973,7 @@ YY_DECL
 	register int yy_act;
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
-#line 49 "ctf-lexer.l"
+#line 57 "ctf-lexer.l"
 
 
 				/*
@@ -973,7 +981,7 @@ YY_DECL
 				 * and strings.
 				 */ 
 
-#line 977 "ctf-lexer.c"
+#line 985 "ctf-lexer.c"
 
     yylval = yylval_param;
 
@@ -1072,362 +1080,362 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 56 "ctf-lexer.l"
+#line 64 "ctf-lexer.l"
 BEGIN(comment_ml);
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 57 "ctf-lexer.l"
+#line 65 "ctf-lexer.l"
 /* eat anything that's not a '*' */
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 58 "ctf-lexer.l"
+#line 66 "ctf-lexer.l"
 /* eat up '*'s not followed by '/'s */
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 59 "ctf-lexer.l"
+#line 67 "ctf-lexer.l"
 ++yylineno;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 60 "ctf-lexer.l"
+#line 68 "ctf-lexer.l"
 BEGIN(INITIAL);
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 62 "ctf-lexer.l"
+#line 70 "ctf-lexer.l"
 BEGIN(comment_sl);
 	YY_BREAK
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 63 "ctf-lexer.l"
+#line 71 "ctf-lexer.l"
 ++yylineno; BEGIN(INITIAL);
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 65 "ctf-lexer.l"
+#line 73 "ctf-lexer.l"
 BEGIN(char_const); return CHARACTER_CONSTANT_START;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 66 "ctf-lexer.l"
+#line 74 "ctf-lexer.l"
 BEGIN(char_const); return CHARACTER_CONSTANT_START;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 67 "ctf-lexer.l"
+#line 75 "ctf-lexer.l"
 BEGIN(INITIAL); return SQUOTE;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 69 "ctf-lexer.l"
+#line 77 "ctf-lexer.l"
 BEGIN(string_lit); return STRING_LITERAL_START;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 70 "ctf-lexer.l"
+#line 78 "ctf-lexer.l"
 BEGIN(string_lit); return STRING_LITERAL_START;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 71 "ctf-lexer.l"
+#line 79 "ctf-lexer.l"
 BEGIN(INITIAL); return DQUOTE;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 73 "ctf-lexer.l"
+#line 81 "ctf-lexer.l"
 return ESCSEQ;
 	YY_BREAK
 case 15:
 /* rule 15 can match eol */
 YY_RULE_SETUP
-#line 74 "ctf-lexer.l"
+#line 82 "ctf-lexer.l"
 ; /* ignore */
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 75 "ctf-lexer.l"
+#line 83 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return CHAR_STRING_TOKEN;
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 77 "ctf-lexer.l"
+#line 85 "ctf-lexer.l"
 return LSBRAC;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 78 "ctf-lexer.l"
+#line 86 "ctf-lexer.l"
 return RSBRAC;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 79 "ctf-lexer.l"
+#line 87 "ctf-lexer.l"
 return LPAREN;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 80 "ctf-lexer.l"
+#line 88 "ctf-lexer.l"
 return RPAREN;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 81 "ctf-lexer.l"
+#line 89 "ctf-lexer.l"
 return LBRAC;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 82 "ctf-lexer.l"
+#line 90 "ctf-lexer.l"
 return RBRAC;
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 83 "ctf-lexer.l"
+#line 91 "ctf-lexer.l"
 return RARROW;
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 84 "ctf-lexer.l"
+#line 92 "ctf-lexer.l"
 return STAR;
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 85 "ctf-lexer.l"
+#line 93 "ctf-lexer.l"
 return PLUS;
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 86 "ctf-lexer.l"
+#line 94 "ctf-lexer.l"
 return MINUS;
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 87 "ctf-lexer.l"
+#line 95 "ctf-lexer.l"
 return LT;
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 88 "ctf-lexer.l"
+#line 96 "ctf-lexer.l"
 return GT;
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 89 "ctf-lexer.l"
+#line 97 "ctf-lexer.l"
 return TYPEASSIGN;
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 90 "ctf-lexer.l"
+#line 98 "ctf-lexer.l"
 return COLON;
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 91 "ctf-lexer.l"
+#line 99 "ctf-lexer.l"
 return SEMICOLON;
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 92 "ctf-lexer.l"
+#line 100 "ctf-lexer.l"
 return DOTDOTDOT;
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 93 "ctf-lexer.l"
+#line 101 "ctf-lexer.l"
 return DOT;
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 94 "ctf-lexer.l"
+#line 102 "ctf-lexer.l"
 return EQUAL;
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 95 "ctf-lexer.l"
+#line 103 "ctf-lexer.l"
 return COMMA;
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 96 "ctf-lexer.l"
+#line 104 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return TOK_ALIGN;
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 97 "ctf-lexer.l"
+#line 105 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return CONST;
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 98 "ctf-lexer.l"
+#line 106 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return CHAR;
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 99 "ctf-lexer.l"
+#line 107 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return CLOCK;
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 100 "ctf-lexer.l"
+#line 108 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return DOUBLE;
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 101 "ctf-lexer.l"
+#line 109 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return ENUM;
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 102 "ctf-lexer.l"
+#line 110 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return ENV;
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 103 "ctf-lexer.l"
+#line 111 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return EVENT;
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 104 "ctf-lexer.l"
+#line 112 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return FLOATING_POINT;
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 105 "ctf-lexer.l"
+#line 113 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return FLOAT;
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 106 "ctf-lexer.l"
+#line 114 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return INTEGER;
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 107 "ctf-lexer.l"
+#line 115 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return INT;
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 108 "ctf-lexer.l"
+#line 116 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return LONG;
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 109 "ctf-lexer.l"
+#line 117 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return SHORT;
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 110 "ctf-lexer.l"
+#line 118 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return SIGNED;
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 111 "ctf-lexer.l"
+#line 119 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return STREAM;
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 112 "ctf-lexer.l"
+#line 120 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return STRING;
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 113 "ctf-lexer.l"
+#line 121 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return STRUCT;
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 114 "ctf-lexer.l"
+#line 122 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return TRACE;
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 115 "ctf-lexer.l"
+#line 123 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return CALLSITE;
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 116 "ctf-lexer.l"
+#line 124 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return TYPEALIAS;
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 117 "ctf-lexer.l"
+#line 125 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return TYPEDEF;
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 118 "ctf-lexer.l"
+#line 126 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return UNSIGNED;
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 119 "ctf-lexer.l"
+#line 127 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return VARIANT;
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 120 "ctf-lexer.l"
+#line 128 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return VOID;
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 121 "ctf-lexer.l"
+#line 129 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return _BOOL;
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 122 "ctf-lexer.l"
+#line 130 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return _COMPLEX;
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 123 "ctf-lexer.l"
+#line 131 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return _IMAGINARY;
 	YY_BREAK
 case 64:
 /* rule 64 can match eol */
 YY_RULE_SETUP
-#line 124 "ctf-lexer.l"
+#line 132 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return DECIMAL_CONSTANT;
 	YY_BREAK
 case 65:
 /* rule 65 can match eol */
 YY_RULE_SETUP
-#line 125 "ctf-lexer.l"
+#line 133 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return OCTAL_CONSTANT;
 	YY_BREAK
 case 66:
 /* rule 66 can match eol */
 YY_RULE_SETUP
-#line 126 "ctf-lexer.l"
+#line 134 "ctf-lexer.l"
 setstring(yyextra, yylval, yytext); return HEXADECIMAL_CONSTANT;
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 127 "ctf-lexer.l"
+#line 135 "ctf-lexer.l"
 printf_debug("<IDENTIFIER %s>\n", yytext); setstring(yyextra, yylval, yytext); if (is_type(yyextra, yytext)) return ID_TYPE; else return IDENTIFIER;
 	YY_BREAK
 case 68:
 /* rule 68 can match eol */
 YY_RULE_SETUP
-#line 128 "ctf-lexer.l"
+#line 136 "ctf-lexer.l"
 ; /* ignore */
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 129 "ctf-lexer.l"
+#line 137 "ctf-lexer.l"
 return ERROR;
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 130 "ctf-lexer.l"
+#line 138 "ctf-lexer.l"
 ECHO;
 	YY_BREAK
-#line 1431 "ctf-lexer.c"
+#line 1439 "ctf-lexer.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(comment_ml):
 case YY_STATE_EOF(comment_sl):
@@ -2609,7 +2617,7 @@ void yyfree (void * ptr , yyscan_t yyscanner)
 
 #define YYTABLES_NAME "yytables"
 
-#line 130 "ctf-lexer.l"
+#line 138 "ctf-lexer.l"
 
 
 

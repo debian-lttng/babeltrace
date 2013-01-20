@@ -174,7 +174,7 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 2049 of yacc.c  */
-#line 947 "ctf-parser.y"
+#line 955 "ctf-parser.y"
 
 	long long ll;
 	char c;

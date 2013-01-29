@@ -267,7 +267,7 @@ test_seeks_LDADD = libtestcommon.a \
 	$(top_builddir)/formats/ctf/libbabeltrace-ctf.la
 
 test_seeks_SOURCES = test-seeks.c
-EXTRA_DIST = README.tap
+EXTRA_DIST = README.tap runall.sh
 all: all-am
 
 .SUFFIXES:

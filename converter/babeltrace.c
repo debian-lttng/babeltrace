@@ -68,7 +68,7 @@ static char *opt_input_format, *opt_output_format;
 static GPtrArray *opt_input_paths;
 static char *opt_output_path;
 
-static struct format *fmt_read;
+static struct bt_format *fmt_read;
 
 static
 void strlower(char *str)
@@ -109,7 +109,7 @@ enum {
  */
 static struct poptOption long_options[] = {
 	/* longName, shortName, argInfo, argPtr, value, descrip, argDesc */
-	{ "output", 'w', POPT_ARG_STRING, NULL, OPT_NONE, NULL, NULL },
+	{ "output", 'w', POPT_ARG_STRING, NULL, OPT_OUTPUT_PATH, NULL, NULL },
 	{ "input-format", 'i', POPT_ARG_STRING, NULL, OPT_INPUT_FORMAT, NULL, NULL },
 	{ "output-format", 'o', POPT_ARG_STRING, NULL, OPT_OUTPUT_FORMAT, NULL, NULL },
 	{ "help", 'h', POPT_ARG_NONE, NULL, OPT_HELP, NULL, NULL },
@@ -204,7 +204,6 @@ static int get_names_args(poptContext *pc)
 			opt_payload_field_names = 0;
 		} else {
 			fprintf(stderr, "[error] unknown field name type %s\n", str);
-			free(strlist);
 			ret = -EINVAL;
 			goto end;
 		}
@@ -461,7 +460,7 @@ static int traverse_trace_dir(const char *fpath, const struct stat *sb,
  */
 int bt_context_add_traces_recursive(struct bt_context *ctx, const char *path,
 		const char *format_str,
-		void (*packet_seek)(struct stream_pos *pos,
+		void (*packet_seek)(struct bt_stream_pos *pos,
 			size_t offset, int whence))
 {
 
@@ -516,7 +515,7 @@ int bt_context_add_traces_recursive(struct bt_context *ctx, const char *path,
 	return ret;
 }
 
-int convert_trace(struct trace_descriptor *td_write,
+int convert_trace(struct bt_trace_descriptor *td_write,
 		  struct bt_context *ctx)
 {
 	struct bt_ctf_iter *iter;
@@ -555,8 +554,8 @@ error_iter:
 int main(int argc, char **argv)
 {
 	int ret, partial_error = 0, open_success = 0;
-	struct format *fmt_write;
-	struct trace_descriptor *td_write;
+	struct bt_format *fmt_write;
+	struct bt_trace_descriptor *td_write;
 	struct bt_context *ctx;
 	int i;
 
@@ -587,7 +586,7 @@ int main(int argc, char **argv)
 	}
 	printf_verbose("Converting from format: %s\n",
 		opt_input_format ? : "ctf <default>");
-	printf_verbose("Converting to directory: %s\n",
+	printf_verbose("Converting to target: %s\n",
 		opt_output_path ? : "<stdout>");
 	printf_verbose("Converting to format: %s\n",
 		opt_output_format ? : "text <default>");
@@ -607,7 +606,7 @@ int main(int argc, char **argv)
 		}
 	}
 	fmt_read = bt_lookup_format(g_quark_from_static_string(opt_input_format));
-	if (!fmt_read) {
+	if (!fmt_read || fmt_read->name != g_quark_from_static_string("ctf")) {
 		fprintf(stderr, "[error] Format \"%s\" is not supported.\n\n",
 			opt_input_format);
 		partial_error = 1;

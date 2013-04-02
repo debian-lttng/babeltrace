@@ -45,9 +45,14 @@ extern int babeltrace_verbose, babeltrace_debug;
 #define likely(x)	__builtin_expect(!!(x), 1)
 #define unlikely(x)	__builtin_expect(!!(x), 0)
 
-struct trace_descriptor;
+/*
+ * BT_HIDDEN: set the hidden attribute for internal functions
+ */
+#define BT_HIDDEN __attribute__((visibility("hidden")))
+
+struct bt_trace_descriptor;
 struct trace_collection {
-	GPtrArray *array;	/* struct trace_descriptor */
+	GPtrArray *array;	/* struct bt_trace_descriptor */
 	GHashTable *clocks;	/* struct ctf_clock */
 
 	uint64_t single_clock_offset_avg;

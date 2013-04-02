@@ -66,6 +66,7 @@ struct ctf_stream_definition {
 	uint64_t prev_real_timestamp_end;	/* End-of-last-packet timestamp in ns */
 	uint64_t prev_cycles_timestamp;		/* Start-of-last-packet timestamp in cycles */
 	uint64_t prev_cycles_timestamp_end;	/* End-of-last-packet timestamp in cycles */
+	char path[PATH_MAX];			/* Path to stream. '\0' for mmap traces */
 };
 
 struct ctf_event_definition {
@@ -174,7 +175,7 @@ struct ctf_tracer_env {
 };
 
 struct ctf_trace {
-	struct trace_descriptor parent;
+	struct bt_trace_descriptor parent;
 	/* root scope */
 	struct declaration_scope *root_declaration_scope;
 
@@ -210,7 +211,7 @@ struct ctf_trace {
 	int dirfd;
 	int flags;		/* open flags */
 
-	/* Heap of streams, ordered to always get the lowest timestam */
+	/* Heap of streams, ordered to always get the lowest timestamp */
 	struct ptr_heap *stream_heap;
 	char path[PATH_MAX];
 
@@ -234,7 +235,7 @@ struct ctf_trace {
 
 struct ctf_stream_declaration {
 	struct ctf_trace *trace;
-	/* parent is lexical scope conaining the stream scope */
+	/* parent is lexical scope containing the stream scope */
 	struct declaration_scope *declaration_scope;
 	/* innermost definition scope. to be used as parent of event. */
 	struct definition_scope *definition_scope;
@@ -271,7 +272,7 @@ struct ctf_stream_declaration {
 struct ctf_event_declaration {
 	/* stream mapped by stream_id */
 	struct ctf_stream_declaration *stream;
-	/* parent is lexical scope conaining the event scope */
+	/* parent is lexical scope containing the event scope */
 	struct declaration_scope *declaration_scope;
 
 	struct declaration_struct *context_decl;

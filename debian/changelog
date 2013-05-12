@@ -1,3 +1,11 @@
+babeltrace (1.1.0-2) unstable; urgency=low
+
+  * [d02363c] Include upstream fix for FTBFS on GNU/FreeBSD.
+    Thanks to Petr Salinger (Closes: #705827)
+  * [0887037] Add symbols files for libbabeltrace0 and libbabeltrace-ctf0
+
+ -- Jon Bernard <jbernard@debian.org>  Sat, 11 May 2013 22:18:14 -0400
+
 babeltrace (1.1.0-1) unstable; urgency=low
 
   * [a457ed8] New upstream version 1.1.0

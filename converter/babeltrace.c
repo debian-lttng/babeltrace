@@ -31,6 +31,7 @@
 #include <babeltrace/babeltrace.h>
 #include <babeltrace/format.h>
 #include <babeltrace/context.h>
+#include <babeltrace/context-internal.h>
 #include <babeltrace/ctf/types.h>
 #include <babeltrace/ctf/events.h>
 /* TODO: fix object model for format-agnostic callbacks */
@@ -92,6 +93,7 @@ enum {
 	OPT_FIELDS,
 	OPT_NO_DELTA,
 	OPT_CLOCK_OFFSET,
+	OPT_CLOCK_OFFSET_NS,
 	OPT_CLOCK_CYCLES,
 	OPT_CLOCK_SECONDS,
 	OPT_CLOCK_DATE,
@@ -120,6 +122,7 @@ static struct poptOption long_options[] = {
 	{ "fields", 'f', POPT_ARG_STRING, NULL, OPT_FIELDS, NULL, NULL },
 	{ "no-delta", 0, POPT_ARG_NONE, NULL, OPT_NO_DELTA, NULL, NULL },
 	{ "clock-offset", 0, POPT_ARG_STRING, NULL, OPT_CLOCK_OFFSET, NULL, NULL },
+	{ "clock-offset-ns", 0, POPT_ARG_STRING, NULL, OPT_CLOCK_OFFSET_NS, NULL, NULL },
 	{ "clock-cycles", 0, POPT_ARG_NONE, NULL, OPT_CLOCK_CYCLES, NULL, NULL },
 	{ "clock-seconds", 0, POPT_ARG_NONE, NULL, OPT_CLOCK_SECONDS, NULL, NULL },
 	{ "clock-date", 0, POPT_ARG_NONE, NULL, OPT_CLOCK_DATE, NULL, NULL },
@@ -163,6 +166,7 @@ static void usage(FILE *fp)
 	fprintf(fp, "                                     (default: trace:hostname,trace:procname,trace:vpid)\n");
 	fprintf(fp, "      --clock-cycles             Timestamp in cycles\n");
 	fprintf(fp, "      --clock-offset seconds     Clock offset in seconds\n");
+	fprintf(fp, "      --clock-offset-ns ns       Clock offset in nanoseconds\n");
 	fprintf(fp, "      --clock-seconds            Print the timestamps as [sec.ns]\n");
 	fprintf(fp, "                                 (default is: [hh:mm:ss.ns])\n");
 	fprintf(fp, "      --clock-date               Print clock date\n");
@@ -356,6 +360,29 @@ static int parse_options(int argc, char **argv)
 		case OPT_CLOCK_SECONDS:
 			opt_clock_seconds = 1;
 			break;
+		case OPT_CLOCK_OFFSET_NS:
+		{
+			char *str;
+			char *endptr;
+
+			str = (char *) poptGetOptArg(pc);
+			if (!str) {
+				fprintf(stderr, "[error] Missing --clock-offset-ns argument\n");
+				ret = -EINVAL;
+				goto end;
+			}
+			errno = 0;
+			opt_clock_offset_ns = strtoull(str, &endptr, 0);
+			if (*endptr != '\0' || str == endptr || errno != 0) {
+				fprintf(stderr, "[error] Incorrect --clock-offset-ns argument: %s\n", str);
+				ret = -EINVAL;
+				free(str);
+				goto end;
+			}
+			free(str);
+			break;
+		}
+
 		case OPT_CLOCK_DATE:
 			opt_clock_date = 1;
 			break;
@@ -424,15 +451,20 @@ static int traverse_trace_dir(const char *fpath, const struct stat *sb,
 		/* No meta data, just return */
 		return 0;
 	} else {
+		int err_close = 0;
+
 		closeret = close(metafd);
 		if (closeret < 0) {
 			perror("close");
-			return -1;	/* failure */
+			err_close = 1;
 		}
 		closeret = close(dirfd);
 		if (closeret < 0) {
 			perror("close");
-			return -1;	/* failure */
+			err_close = 1;
+		}
+		if (err_close) {
+			return -1;
 		}
 
 		/* Add path to the global list */
@@ -463,15 +495,11 @@ int bt_context_add_traces_recursive(struct bt_context *ctx, const char *path,
 		void (*packet_seek)(struct bt_stream_pos *pos,
 			size_t offset, int whence))
 {
-
-	GArray *trace_ids;
-	int ret = 0;
+	int ret = 0, trace_ids = 0;
 
 	/* Should lock traversed_paths mutex here if used in multithread */
 
 	traversed_paths = g_ptr_array_new();
-	trace_ids = g_array_new(FALSE, TRUE, sizeof(int));
-
 	ret = nftw(path, traverse_trace_dir, 10, 0);
 
 	/* Process the array if ntfw did not return a fatal error */
@@ -493,7 +521,7 @@ int bt_context_add_traces_recursive(struct bt_context *ctx, const char *path,
 				/* Allow to skip erroneous traces. */
 				ret = 1;	/* partial error */
 			} else {
-				g_array_append_val(trace_ids, trace_id);
+				trace_ids++;
 			}
 			g_string_free(trace_path, TRUE);
 		}
@@ -507,14 +535,74 @@ int bt_context_add_traces_recursive(struct bt_context *ctx, const char *path,
 	/*
 	 * Return an error if no trace can be opened.
 	 */
-	if (trace_ids->len == 0) {
+	if (trace_ids == 0) {
 		fprintf(stderr, "[error] Cannot open any trace for reading.\n\n");
 		ret = -ENOENT;		/* failure */
 	}
-	g_array_free(trace_ids, TRUE);
 	return ret;
 }
 
+static
+int trace_pre_handler(struct bt_trace_descriptor *td_write,
+		  struct bt_context *ctx)
+{
+	struct ctf_text_stream_pos *sout;
+	struct trace_collection *tc;
+	int ret, i;
+
+	sout = container_of(td_write, struct ctf_text_stream_pos,
+			trace_descriptor);
+
+	if (!sout->parent.pre_trace_cb)
+		return 0;
+
+	tc = ctx->tc;
+	for (i = 0; i < tc->array->len; i++) {
+		struct bt_trace_descriptor *td =
+			g_ptr_array_index(tc->array, i);
+
+		ret = sout->parent.pre_trace_cb(&sout->parent, td);
+		if (ret) {
+			fprintf(stderr, "[error] Writing to trace pre handler failed.\n");
+			goto end;
+		}
+	}
+	ret = 0;
+end:
+	return ret;
+}
+
+static
+int trace_post_handler(struct bt_trace_descriptor *td_write,
+		  struct bt_context *ctx)
+{
+	struct ctf_text_stream_pos *sout;
+	struct trace_collection *tc;
+	int ret, i;
+
+	sout = container_of(td_write, struct ctf_text_stream_pos,
+			trace_descriptor);
+
+	if (!sout->parent.post_trace_cb)
+		return 0;
+
+	tc = ctx->tc;
+	for (i = 0; i < tc->array->len; i++) {
+		struct bt_trace_descriptor *td =
+			g_ptr_array_index(tc->array, i);
+
+		ret = sout->parent.post_trace_cb(&sout->parent, td);
+		if (ret) {
+			fprintf(stderr, "[error] Writing to trace post handler failed.\n");
+			goto end;
+		}
+	}
+	ret = 0;
+end:
+	return ret;
+}
+
+static
 int convert_trace(struct bt_trace_descriptor *td_write,
 		  struct bt_context *ctx)
 {
@@ -526,6 +614,9 @@ int convert_trace(struct bt_trace_descriptor *td_write,
 
 	sout = container_of(td_write, struct ctf_text_stream_pos,
 			trace_descriptor);
+
+	if (!sout->parent.event_cb)
+		return 0;
 
 	begin_pos.type = BT_SEEK_BEGIN;
 	iter = bt_ctf_iter_create(ctx, &begin_pos, NULL);
@@ -660,9 +751,21 @@ int main(int argc, char **argv)
 	if (partial_error)
 		sleep(PARTIAL_ERROR_SLEEP);
 
+	ret = trace_pre_handler(td_write, ctx);
+	if (ret) {
+		fprintf(stderr, "Error in trace pre handle.\n\n");
+		goto error_copy_trace;
+	}
+
 	ret = convert_trace(td_write, ctx);
 	if (ret) {
 		fprintf(stderr, "Error printing trace.\n\n");
+		goto error_copy_trace;
+	}
+
+	ret = trace_post_handler(td_write, ctx);
+	if (ret) {
+		fprintf(stderr, "Error in trace post handle.\n\n");
 		goto error_copy_trace;
 	}
 

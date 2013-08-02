@@ -61,7 +61,10 @@ subdir = formats/ctf/metadata
 DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in ctf-lexer.c ctf-parser.c ctf-parser.h
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -81,7 +84,7 @@ am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 libctf_parser_la_LIBADD =
 am_libctf_parser_la_OBJECTS = libctf_parser_la-ctf-lexer.lo \
-	libctf_parser_la-ctf-parser.lo
+	libctf_parser_la-ctf-parser.lo libctf_parser_la-objstack.lo
 libctf_parser_la_OBJECTS = $(am_libctf_parser_la_OBJECTS)
 libctf_parser_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
@@ -288,9 +291,10 @@ noinst_LTLIBRARIES = libctf-parser.la libctf-ast.la
 noinst_HEADERS = \
 	ctf-scanner.h \
 	ctf-ast.h \
-	ctf-scanner-symbols.h
+	ctf-scanner-symbols.h \
+	objstack.h
 
-libctf_parser_la_SOURCES = ctf-lexer.l ctf-parser.y
+libctf_parser_la_SOURCES = ctf-lexer.l ctf-parser.y objstack.c
 libctf_parser_la_CFLAGS = $(AM_CFLAGS) -include ctf-scanner-symbols.h
 libctf_ast_la_SOURCES = ctf-visitor-xml.c \
 		ctf-visitor-parent-links.c \
@@ -381,6 +385,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ctf-visitor-xml.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libctf_parser_la-ctf-lexer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libctf_parser_la-ctf-parser.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libctf_parser_la-objstack.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -416,6 +421,13 @@ libctf_parser_la-ctf-parser.lo: ctf-parser.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='ctf-parser.c' object='libctf_parser_la-ctf-parser.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libctf_parser_la_CFLAGS) $(CFLAGS) -c -o libctf_parser_la-ctf-parser.lo `test -f 'ctf-parser.c' || echo '$(srcdir)/'`ctf-parser.c
+
+libctf_parser_la-objstack.lo: objstack.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libctf_parser_la_CFLAGS) $(CFLAGS) -MT libctf_parser_la-objstack.lo -MD -MP -MF $(DEPDIR)/libctf_parser_la-objstack.Tpo -c -o libctf_parser_la-objstack.lo `test -f 'objstack.c' || echo '$(srcdir)/'`objstack.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libctf_parser_la-objstack.Tpo $(DEPDIR)/libctf_parser_la-objstack.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='objstack.c' object='libctf_parser_la-objstack.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libctf_parser_la_CFLAGS) $(CFLAGS) -c -o libctf_parser_la-objstack.lo `test -f 'objstack.c' || echo '$(srcdir)/'`objstack.c
 
 .l.c:
 	$(AM_V_LEX)$(am__skiplex) $(SHELL) $(YLWRAP) $< $(LEX_OUTPUT_ROOT).c $@ -- $(LEXCOMPILE)

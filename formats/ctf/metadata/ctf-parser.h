@@ -1,4 +1,4 @@
-/* A Bison parser, made by GNU Bison 2.6.2.  */
+/*  A Bison parser, made by GNU Bison 2.6.2.  */
 
 /* Bison interface for Yacc-like parsers in C
    
@@ -46,127 +46,115 @@ extern int yydebug;
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     CHARACTER_CONSTANT_START = 258,
-     SQUOTE = 259,
-     STRING_LITERAL_START = 260,
-     DQUOTE = 261,
-     ESCSEQ = 262,
-     CHAR_STRING_TOKEN = 263,
-     LSBRAC = 264,
-     RSBRAC = 265,
-     LPAREN = 266,
-     RPAREN = 267,
-     LBRAC = 268,
-     RBRAC = 269,
-     RARROW = 270,
-     STAR = 271,
-     PLUS = 272,
-     MINUS = 273,
-     LT = 274,
-     GT = 275,
-     TYPEASSIGN = 276,
-     COLON = 277,
-     SEMICOLON = 278,
-     DOTDOTDOT = 279,
-     DOT = 280,
-     EQUAL = 281,
-     COMMA = 282,
-     CONST = 283,
-     CHAR = 284,
-     DOUBLE = 285,
-     ENUM = 286,
-     ENV = 287,
-     EVENT = 288,
-     FLOATING_POINT = 289,
-     FLOAT = 290,
-     INTEGER = 291,
-     INT = 292,
-     LONG = 293,
-     SHORT = 294,
-     SIGNED = 295,
-     STREAM = 296,
-     STRING = 297,
-     STRUCT = 298,
-     TRACE = 299,
-     CALLSITE = 300,
-     CLOCK = 301,
-     TYPEALIAS = 302,
-     TYPEDEF = 303,
-     UNSIGNED = 304,
-     VARIANT = 305,
-     VOID = 306,
-     _BOOL = 307,
-     _COMPLEX = 308,
-     _IMAGINARY = 309,
-     DECIMAL_CONSTANT = 310,
-     OCTAL_CONSTANT = 311,
-     HEXADECIMAL_CONSTANT = 312,
-     TOK_ALIGN = 313,
-     IDENTIFIER = 314,
-     ID_TYPE = 315,
-     ERROR = 316
+     INTEGER_LITERAL = 258,
+     STRING_LITERAL = 259,
+     CHARACTER_LITERAL = 260,
+     LSBRAC = 261,
+     RSBRAC = 262,
+     LPAREN = 263,
+     RPAREN = 264,
+     LBRAC = 265,
+     RBRAC = 266,
+     RARROW = 267,
+     STAR = 268,
+     PLUS = 269,
+     MINUS = 270,
+     LT = 271,
+     GT = 272,
+     TYPEASSIGN = 273,
+     COLON = 274,
+     SEMICOLON = 275,
+     DOTDOTDOT = 276,
+     DOT = 277,
+     EQUAL = 278,
+     COMMA = 279,
+     CONST = 280,
+     CHAR = 281,
+     DOUBLE = 282,
+     ENUM = 283,
+     ENV = 284,
+     EVENT = 285,
+     FLOATING_POINT = 286,
+     FLOAT = 287,
+     INTEGER = 288,
+     INT = 289,
+     LONG = 290,
+     SHORT = 291,
+     SIGNED = 292,
+     STREAM = 293,
+     STRING = 294,
+     STRUCT = 295,
+     TRACE = 296,
+     CALLSITE = 297,
+     CLOCK = 298,
+     TYPEALIAS = 299,
+     TYPEDEF = 300,
+     UNSIGNED = 301,
+     VARIANT = 302,
+     VOID = 303,
+     _BOOL = 304,
+     _COMPLEX = 305,
+     _IMAGINARY = 306,
+     TOK_ALIGN = 307,
+     IDENTIFIER = 308,
+     ID_TYPE = 309,
+     ERROR = 310
    };
 #endif
 /* Tokens.  */
-#define CHARACTER_CONSTANT_START 258
-#define SQUOTE 259
-#define STRING_LITERAL_START 260
-#define DQUOTE 261
-#define ESCSEQ 262
-#define CHAR_STRING_TOKEN 263
-#define LSBRAC 264
-#define RSBRAC 265
-#define LPAREN 266
-#define RPAREN 267
-#define LBRAC 268
-#define RBRAC 269
-#define RARROW 270
-#define STAR 271
-#define PLUS 272
-#define MINUS 273
-#define LT 274
-#define GT 275
-#define TYPEASSIGN 276
-#define COLON 277
-#define SEMICOLON 278
-#define DOTDOTDOT 279
-#define DOT 280
-#define EQUAL 281
-#define COMMA 282
-#define CONST 283
-#define CHAR 284
-#define DOUBLE 285
-#define ENUM 286
-#define ENV 287
-#define EVENT 288
-#define FLOATING_POINT 289
-#define FLOAT 290
-#define INTEGER 291
-#define INT 292
-#define LONG 293
-#define SHORT 294
-#define SIGNED 295
-#define STREAM 296
-#define STRING 297
-#define STRUCT 298
-#define TRACE 299
-#define CALLSITE 300
-#define CLOCK 301
-#define TYPEALIAS 302
-#define TYPEDEF 303
-#define UNSIGNED 304
-#define VARIANT 305
-#define VOID 306
-#define _BOOL 307
-#define _COMPLEX 308
-#define _IMAGINARY 309
-#define DECIMAL_CONSTANT 310
-#define OCTAL_CONSTANT 311
-#define HEXADECIMAL_CONSTANT 312
-#define TOK_ALIGN 313
-#define IDENTIFIER 314
-#define ID_TYPE 315
-#define ERROR 316
+#define INTEGER_LITERAL 258
+#define STRING_LITERAL 259
+#define CHARACTER_LITERAL 260
+#define LSBRAC 261
+#define RSBRAC 262
+#define LPAREN 263
+#define RPAREN 264
+#define LBRAC 265
+#define RBRAC 266
+#define RARROW 267
+#define STAR 268
+#define PLUS 269
+#define MINUS 270
+#define LT 271
+#define GT 272
+#define TYPEASSIGN 273
+#define COLON 274
+#define SEMICOLON 275
+#define DOTDOTDOT 276
+#define DOT 277
+#define EQUAL 278
+#define COMMA 279
+#define CONST 280
+#define CHAR 281
+#define DOUBLE 282
+#define ENUM 283
+#define ENV 284
+#define EVENT 285
+#define FLOATING_POINT 286
+#define FLOAT 287
+#define INTEGER 288
+#define INT 289
+#define LONG 290
+#define SHORT 291
+#define SIGNED 292
+#define STREAM 293
+#define STRING 294
+#define STRUCT 295
+#define TRACE 296
+#define CALLSITE 297
+#define CLOCK 298
+#define TYPEALIAS 299
+#define TYPEDEF 300
+#define UNSIGNED 301
+#define VARIANT 302
+#define VOID 303
+#define _BOOL 304
+#define _COMPLEX 305
+#define _IMAGINARY 306
+#define TOK_ALIGN 307
+#define IDENTIFIER 308
+#define ID_TYPE 309
+#define ERROR 310
 
 
 
@@ -174,16 +162,17 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 2049 of yacc.c  */
-#line 955 "ctf-parser.y"
+#line 1060 "ctf-parser.y"
 
 	long long ll;
+	unsigned long long ull;
 	char c;
-	struct gc_string *gs;
+	char *s;
 	struct ctf_node *n;
 
 
 /* Line 2049 of yacc.c  */
-#line 187 "ctf-parser.h"
+#line 176 "ctf-parser.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

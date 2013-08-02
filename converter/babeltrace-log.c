@@ -45,7 +45,7 @@
 
 #include <babeltrace/babeltrace-internal.h>
 #include <babeltrace/ctf/types.h>
-#include <babeltrace/uuid.h>
+#include <babeltrace/compat/uuid.h>
 #include <babeltrace/endian.h>
 
 #define USEC_PER_SEC 1000000UL
@@ -191,6 +191,11 @@ void write_event_header(struct ctf_stream_pos *pos, char *line,
 			}
 			*tlen = len + line - *tline;
 			*ts = (uint64_t) sec * USEC_PER_SEC + (uint64_t) usec;
+			/*
+			 * Default CTF clock has 1GHz frequency. Convert
+			 * from usec to nsec.
+			 */
+			*ts *= 1000;
 		}
 	}
 	/* timestamp */
@@ -247,7 +252,7 @@ void trace_text(FILE *input, int output)
 	int ret;
 
 	memset(&pos, 0, sizeof(pos));
-	ret = ctf_init_pos(&pos, output, O_RDWR);
+	ret = ctf_init_pos(&pos, NULL, output, O_RDWR);
 	if (ret) {
 		fprintf(stderr, "Error in ctf_init_pos\n");
 		return;
@@ -353,7 +358,7 @@ int main(int argc, char **argv)
 
 	metadata_fd = openat(dir_fd, "metadata", O_RDWR|O_CREAT,
 			     S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP);
-	if (fd < 0) {
+	if (metadata_fd < 0) {
 		perror("openat");
 		goto error_closedatastream;
 	}

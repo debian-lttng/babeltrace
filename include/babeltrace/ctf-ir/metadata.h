@@ -29,10 +29,11 @@
 
 #include <babeltrace/types.h>
 #include <babeltrace/format.h>
+#include <babeltrace/format-internal.h>
 #include <babeltrace/ctf/types.h>
 #include <sys/types.h>
 #include <dirent.h>
-#include <babeltrace/uuid.h>
+#include <babeltrace/compat/uuid.h>
 #include <assert.h>
 #include <glib.h>
 
@@ -176,6 +177,7 @@ struct ctf_tracer_env {
 
 struct ctf_trace {
 	struct bt_trace_descriptor parent;
+
 	/* root scope */
 	struct declaration_scope *root_declaration_scope;
 
@@ -184,10 +186,9 @@ struct ctf_trace {
 	struct definition_scope *definition_scope;
 	GPtrArray *streams;			/* Array of struct ctf_stream_declaration pointers */
 	struct ctf_stream_definition *metadata;
-	GHashTable *clocks;
+	char *metadata_string;
+	int metadata_packetized;
 	GHashTable *callsites;
-	struct ctf_clock *single_clock;		/* currently supports only one clock */
-	struct trace_collection *collection;	/* Container of this trace */
 	GPtrArray *event_declarations;		/* Array of all the struct bt_ctf_event_decl */
 
 	struct declaration_struct *packet_header_decl;
@@ -210,13 +211,6 @@ struct ctf_trace {
 	DIR *dir;
 	int dirfd;
 	int flags;		/* open flags */
-
-	/* Heap of streams, ordered to always get the lowest timestamp */
-	struct ptr_heap *stream_heap;
-	char path[PATH_MAX];
-
-	struct bt_context *ctx;
-	struct bt_trace_handle *handle;
 };
 
 #define CTF_STREAM_SET_FIELD(ctf_stream, field)				\

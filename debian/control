@@ -4,7 +4,7 @@ Priority: extra
 Maintainer: Jon Bernard <jbernard@debian.org>
 Build-Depends: debhelper (>= 9~), libglib2.0-dev (>= 2.16), uuid-dev,
  libpopt-dev
-Standards-Version: 3.9.3
+Standards-Version: 3.9.4
 Vcs-Git: git://git.debian.org/git/collab-maint/babeltrace.git
 Vcs-Browser: http://git.debian.org/?p=collab-maint/babeltrace.git;a=summary
 Homepage: http://www.efficios.com/babeltrace

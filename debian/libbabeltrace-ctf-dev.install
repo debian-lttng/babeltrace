@@ -3,3 +3,5 @@ usr/lib/*/libbabeltrace-ctf.a
 usr/lib/*/libbabeltrace-ctf.so
 usr/lib/*/libbabeltrace-ctf-text.a
 usr/lib/*/libbabeltrace-ctf-text.so
+usr/lib/*/libbabeltrace-ctf-metadata.a
+usr/lib/*/libbabeltrace-ctf-metadata.so

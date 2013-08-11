@@ -1,3 +1,5 @@
+libbabeltrace-ctf-metadata.so.0 libbabeltrace-ctf0 #MINVER#
+* Build-Depends-Package: libbabeltrace-ctf-dev
 libbabeltrace-ctf-text.so.0 libbabeltrace-ctf0 #MINVER#
 * Build-Depends-Package: libbabeltrace-ctf-dev
  opt_all_field_names@Base 1.1.0
@@ -71,10 +73,10 @@ libbabeltrace-ctf.so.0 libbabeltrace-ctf0 #MINVER#
  bt_yyget_extra@Base 1.1.0
  bt_yyget_in@Base 1.1.0
  bt_yyget_leng@Base 1.1.0
- bt_yyget_lineno@Base 1.1.0
+#MISSING: 1.1.1# bt_yyget_lineno@Base 1.1.0
  bt_yyget_lval@Base 1.1.0
  bt_yyget_out@Base 1.1.0
- bt_yyget_text@Base 1.1.0
+#MISSING: 1.1.1# bt_yyget_text@Base 1.1.0
  bt_yylex_init@Base 1.1.0
  bt_yypop_buffer_state@Base 1.1.0
  bt_yypush_buffer_state@Base 1.1.0
@@ -99,4 +101,5 @@ libbabeltrace-ctf.so.0 libbabeltrace-ctf0 #MINVER#
  opt_clock_force_correlate@Base 1.1.0
  opt_clock_gmt@Base 1.1.0
  opt_clock_offset@Base 1.1.0
+ opt_clock_offset_ns@Base 1.1.1
  opt_clock_seconds@Base 1.1.0

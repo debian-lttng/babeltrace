@@ -1,7 +1,12 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([babeltrace],[1.1.1],[mathieu dot desnoyers at efficios dot com])
+AC_INIT([babeltrace],[1.2.1],[mathieu dot desnoyers at efficios dot com])
+
+# Following the numbering scheme proposed by libtool for the library version
+# http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
+AC_SUBST([BABELTRACE_LIBRARY_VERSION], [1:0:0])
+
 AC_CONFIG_AUX_DIR([config])
 AC_CANONICAL_TARGET
 AC_CANONICAL_HOST
@@ -23,7 +28,20 @@ LT_INIT
 AC_PROG_YACC
 AC_PROG_LEX
 
-AC_DEFUN([AC_PROG_BISON], [AC_CHECK_PROGS(BISON, bison, bison)]) 
+if test ! -f "$srcdir/formats/ctf/metadata/ctf-parser.h"; then
+        if test x"$YACC" != "xbison -y"; then
+                AC_MSG_ERROR([[bison not found and is required when building from git.
+                Please install bison]])
+        fi
+fi
+
+if test ! -f "$srcdir/formats/ctf/metadata/ctf-lexer.c"; then
+        if test x"$LEX" != "xflex"; then
+                AC_MSG_ERROR([[flex not found and is required when building from git.
+                Please install flex]])
+        fi
+fi
+
 
 AM_PATH_GLIB_2_0(2.22.0, ,AC_MSG_ERROR([glib is required in order to compile BabelTrace - download it from ftp://ftp.gtk.org/pub/gtk]) , gmodule)
 
@@ -36,6 +54,15 @@ AC_TYPE_SIZE_T
 AC_FUNC_MALLOC
 AC_FUNC_MMAP
 AC_CHECK_FUNCS([bzero gettimeofday munmap strtoul])
+
+# Check for MinGW32.
+MINGW32=no
+case $host in
+  *-*-mingw*)
+	MINGW32=yes;;
+esac
+
+AM_CONDITIONAL([BABELTRACE_BUILD_WITH_MINGW], [test "x$MINGW32" = "xyes"])
 
 # Check for libuuid
 AC_CHECK_LIB([uuid], [uuid_generate],
@@ -51,7 +78,10 @@ AC_CHECK_LIB([uuid], [uuid_generate],
 		have_libc_uuid=yes
 	],
 	[
-		AC_MSG_ERROR([Cannot find libuuid uuid_generate nor libc uuid_create. Use [LDFLAGS]=-Ldir to specify their location.])
+		# for MinGW32 we have our own internal implemenation of uuid using Windows functions.
+		if test "x$MINGW32" = xno; then
+			AC_MSG_ERROR([Cannot find libuuid uuid_generate nor libc uuid_create. Use [LDFLAGS]=-Ldir to specify their location.])
+		fi
 	])
 ]
 )
@@ -76,6 +106,43 @@ AC_CHECK_LIB([popt], [poptGetContext], [],
         [AC_MSG_ERROR([Cannot find popt.])]
 )
 
+
+# For Python
+# SWIG version needed or newer:
+swig_version=2.0.0
+
+AC_ARG_ENABLE([python-bindings],
+              [AC_HELP_STRING([--enable-python-bindings],
+                              [generate Python bindings])],
+              [enable_python=yes], [enable_python=no])
+
+AM_CONDITIONAL([USE_PYTHON], [test "x${enable_python:-yes}" = xyes])
+
+if test "x${enable_python:-yes}" = xyes; then
+  AX_PKG_SWIG($swig_version, [], [ AC_MSG_ERROR([SWIG $swig_version or newer is needed]) ])
+  AM_PATH_PYTHON
+
+  AC_ARG_VAR([PYTHON_INCLUDE], [Include flags for python, bypassing python-config])
+  AC_ARG_VAR([PYTHON_CONFIG], [Path to python-config])
+  AS_IF([test -z "$PYTHON_INCLUDE"], [
+    AS_IF([test -z "$PYTHON_CONFIG"], [
+      AC_PATH_PROGS([PYTHON_CONFIG],
+                    [python$PYTHON_VERSION-config python-config],
+                    [no],
+                    [`dirname $PYTHON`])
+      AS_IF([test "$PYTHON_CONFIG" = no], [AC_MSG_ERROR([cannot find python-config for $PYTHON. Do you have python-dev installed?])])
+    ])
+    AC_MSG_CHECKING([python include flags])
+    PYTHON_INCLUDE=`$PYTHON_CONFIG --includes`
+    AC_MSG_RESULT([$PYTHON_INCLUDE])
+  ])
+
+else
+    AC_MSG_NOTICE([You may configure with --enable-python-bindings ]dnl
+[if you want Python bindings.])
+
+fi
+
 pkg_modules="gmodule-2.0 >= 2.0.0"
 PKG_CHECK_MODULES(GMODULE, [$pkg_modules])
 AC_SUBST(PACKAGE_LIBS)
@@ -90,9 +157,13 @@ AC_SUBST(babeltraceincludedir)
 babeltracectfincludedir="${includedir}/babeltrace/ctf"
 AC_SUBST(babeltracectfincludedir)
 
+babeltracectfwriterincludedir="${includedir}/babeltrace/ctf-writer"
+AC_SUBST(babeltracectfwriterincludedir)
+
 AC_CONFIG_FILES([
 	Makefile
 	types/Makefile
+	compat/Makefile
 	formats/Makefile
 	formats/ctf/Makefile
 	formats/ctf/types/Makefile
@@ -100,16 +171,24 @@ AC_CONFIG_FILES([
 	formats/ctf-text/types/Makefile
 	formats/ctf-metadata/Makefile
 	formats/bt-dummy/Makefile
+	formats/lttng-live/Makefile
 	formats/ctf/metadata/Makefile
+	formats/ctf/writer/Makefile
 	converter/Makefile
 	doc/Makefile
 	lib/Makefile
 	lib/prio_heap/Makefile
 	include/Makefile
+	bindings/Makefile
+	bindings/python/Makefile
 	tests/Makefile
+	tests/bin/Makefile
 	tests/lib/Makefile
+	tests/utils/Makefile
+	tests/utils/tap/Makefile
 	extras/Makefile
 	extras/valgrind/Makefile
 	babeltrace.pc
+	babeltrace-ctf.pc
 ])
 AC_OUTPUT

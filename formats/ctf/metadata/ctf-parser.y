@@ -58,15 +58,15 @@ _bt_list_splice_tail (struct bt_list_head *add, struct bt_list_head *head)
 }
 
 BT_HIDDEN
-int yyparse(struct ctf_scanner *scanner);
+int yyparse(struct ctf_scanner *scanner, yyscan_t yyscanner);
 BT_HIDDEN
-int yylex(union YYSTYPE *yyval, struct ctf_scanner *scanner);
+int yylex(union YYSTYPE *yyval, yyscan_t yyscanner);
 BT_HIDDEN
 int yylex_init_extra(struct ctf_scanner *scanner, yyscan_t * ptr_yy_globals);
 BT_HIDDEN
 int yylex_destroy(yyscan_t yyscanner);
 BT_HIDDEN
-void yyrestart(FILE * in_str, yyscan_t scanner);
+void yyrestart(FILE * in_str, yyscan_t yyscanner);
 BT_HIDDEN
 int yyget_lineno(yyscan_t yyscanner);
 BT_HIDDEN
@@ -934,7 +934,7 @@ static int set_parent_node(struct ctf_node *node,
 }
 
 BT_HIDDEN
-void yyerror(struct ctf_scanner *scanner, const char *str)
+void yyerror(struct ctf_scanner *scanner, yyscan_t yyscanner, const char *str)
 {
 	printfl_error(yyget_lineno(scanner->scanner),
 		"token \"%s\": %s\n",
@@ -949,7 +949,7 @@ int yywrap(void)
 
 #define reparent_error(scanner, str)				\
 do {								\
-	yyerror(scanner, YY_("reparent_error: " str));	\
+	yyerror(scanner, scanner->scanner, YY_("reparent_error: " str)); \
 	YYERROR;						\
 } while (0)
 
@@ -972,12 +972,18 @@ static struct ctf_ast *ctf_ast_alloc(struct ctf_scanner *scanner)
 	return ast;
 }
 
-int ctf_scanner_append_ast(struct ctf_scanner *scanner)
+int ctf_scanner_append_ast(struct ctf_scanner *scanner, FILE *input)
 {
-	return yyparse(scanner);
+	/* Start processing new stream */
+	yyrestart(input, scanner->scanner);
+	if (yydebug)
+		fprintf(stdout, "Scanner input is a%s.\n",
+			isatty(fileno(input)) ? "n interactive tty" :
+						" noninteractive file");
+	return yyparse(scanner, scanner->scanner);
 }
 
-struct ctf_scanner *ctf_scanner_alloc(FILE *input)
+struct ctf_scanner *ctf_scanner_alloc(void)
 {
 	struct ctf_scanner *scanner;
 	int ret;
@@ -988,15 +994,11 @@ struct ctf_scanner *ctf_scanner_alloc(FILE *input)
 	if (!scanner)
 		return NULL;
 	memset(scanner, 0, sizeof(*scanner));
-
 	ret = yylex_init_extra(scanner, &scanner->scanner);
 	if (ret) {
 		printf_fatal("yylex_init error");
 		goto cleanup_scanner;
 	}
-	/* Start processing new stream */
-	yyrestart(input, scanner->scanner);
-
 	scanner->objstack = objstack_create();
 	if (!scanner->objstack)
 		goto cleanup_lexer;
@@ -1005,11 +1007,6 @@ struct ctf_scanner *ctf_scanner_alloc(FILE *input)
 		goto cleanup_objstack;
 	init_scope(&scanner->root_scope, NULL);
 	scanner->cs = &scanner->root_scope;
-
-	if (yydebug)
-		fprintf(stdout, "Scanner input is a%s.\n",
-			isatty(fileno(input)) ? "n interactive tty" :
-						" noninteractive file");
 
 	return scanner;
 
@@ -1028,6 +1025,8 @@ void ctf_scanner_free(struct ctf_scanner *scanner)
 {
 	int ret;
 
+	if (!scanner)
+		return;
 	finalize_scope(&scanner->root_scope);
 	objstack_destroy(scanner->objstack);
 	ret = yylex_destroy(scanner->scanner);
@@ -1042,7 +1041,8 @@ void ctf_scanner_free(struct ctf_scanner *scanner)
 	/* %locations */
 %error-verbose
 %parse-param {struct ctf_scanner *scanner}
-%lex-param {struct ctf_scanner *scanner}
+%parse-param {yyscan_t yyscanner}
+%lex-param {yyscan_t yyscanner}
 /*
  * Expect two shift-reduce conflicts. Caused by enum name-opt : type {}
  * vs struct { int :value; } (unnamed bit-field). The default is to

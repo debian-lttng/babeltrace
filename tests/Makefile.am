@@ -1,8 +1,24 @@
-AM_CFLAGS = $(PACKAGE_CFLAGS) -I$(top_srcdir)/include
+SUBDIRS = utils bin lib
 
-SUBDIRS = lib
+EXTRA_DIST = ctf-traces/** tests
 
-EXTRA_DIST = runall.sh ctf-traces/**
+SCRIPT_LIST = run.sh
+
+dist_noinst_SCRIPTS = $(SCRIPT_LIST)
+
+all-local:
+	@if [ x"$(srcdir)" != x"$(builddir)" ]; then \
+		for script in $(SCRIPT_LIST); do \
+			cp -f $(srcdir)/$$script $(builddir); \
+		done; \
+	fi
+
+clean-local:
+	@if [ x"$(srcdir)" != x"$(builddir)" ]; then \
+		for script in $(SCRIPT_LIST); do \
+			rm -f $(builddir)/$$script; \
+		done; \
+	fi
 
 check-am:
-	./runall.sh
+	./run.sh tests

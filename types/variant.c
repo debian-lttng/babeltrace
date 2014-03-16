@@ -46,6 +46,9 @@ int bt_variant_rw(struct bt_stream_pos *ppos, struct bt_definition *definition)
 	struct bt_definition *field;
 
 	field = bt_variant_get_current_field(variant_definition);
+	if (!field) {
+		return -EINVAL;
+	}
 	return generic_rw(ppos, field);
 }
 
@@ -124,53 +127,6 @@ struct declaration_variant *
 	return variant_declaration;
 }
 
-/*
- * tag_instance is assumed to be an enumeration.
- * Returns 0 if OK, < 0 if error.
- */
-static
-int check_enum_tag(struct definition_variant *variant,
-		   struct bt_definition *enum_tag)
-{
-	struct definition_enum *_enum =
-		container_of(enum_tag, struct definition_enum, p);
-	struct declaration_enum *enum_declaration = _enum->declaration;
-	int missing_field = 0;
-	unsigned long i;
-
-	/*
-	 * Strictly speaking, each enumerator must map to a field of the
-	 * variant. However, we are even stricter here by requiring that each
-	 * variant choice map to an enumerator too. We then validate that the
-	 * number of enumerators equals the number of variant choices.
-	 */
-	if (variant->declaration->untagged_variant->fields->len != bt_enum_get_nr_enumerators(enum_declaration))
-		return -EPERM;
-
-	for (i = 0; i < variant->declaration->untagged_variant->fields->len; i++) {
-		struct declaration_field *field_declaration =
-			&g_array_index(variant->declaration->untagged_variant->fields,
-				       struct declaration_field, i);
-		if (!bt_enum_quark_to_range_set(enum_declaration, field_declaration->name)) {
-			missing_field = 1;
-			break;
-		}
-	}
-	if (missing_field)
-		return -EPERM;
-
-	/*
-	 * Check the enumeration: it must map each value to one and only one
-	 * enumerator tag.
-	 * TODO: we should also check that each range map to one and only one
-	 * tag. For the moment, we will simply check this dynamically in
-	 * variant_declaration_get_current_field().
-	 */
-	return 0;
-}
-
-
-
 static
 struct bt_definition *
 	_variant_definition_new(struct bt_declaration *declaration,
@@ -206,8 +162,7 @@ struct bt_definition *
 						   variant_declaration->tag_name,
 						   parent_scope);
 					      
-	if (!variant->enum_tag
-	    || check_enum_tag(variant, variant->enum_tag) < 0)
+	if (!variant->enum_tag)
 		goto error;
 	bt_definition_ref(variant->enum_tag);
 	variant->fields = g_ptr_array_sized_new(variant_declaration->untagged_variant->fields->len);
@@ -309,16 +264,30 @@ struct bt_definition *bt_variant_get_current_field(struct definition_variant *va
 	unsigned long index;
 	GArray *tag_array;
 	GQuark tag;
+	gpointer orig_key, value;
 
 	tag_array = _enum->value;
+	if (!tag_array) {
+		/* Enumeration has unknown tag. */
+		fprintf(stderr, "[error] Enumeration used for variant has unknown tag.\n");
+		return NULL;
+	}
 	/*
 	 * The 1 to 1 mapping from enumeration to value should have been already
 	 * checked. (see TODO above)
 	 */
 	assert(tag_array->len == 1);
 	tag = g_array_index(tag_array, GQuark, 0);
-	index = (unsigned long) g_hash_table_lookup(variant_declaration->untagged_variant->fields_by_tag,
-						    (gconstpointer) (unsigned long) tag);
+	if (!g_hash_table_lookup_extended(variant_declaration->untagged_variant->fields_by_tag,
+			(gconstpointer) (unsigned long) tag,
+			&orig_key,
+			&value)) {
+		/* Cannot find matching field. */
+		fprintf(stderr, "[error] Cannot find matching field for enum field \"%s\" in variant.\n",
+			g_quark_to_string(tag));
+		return NULL;
+	}
+	index = (unsigned long) value;
 	variant->current_field = g_ptr_array_index(variant->fields, index);
 	return variant->current_field;
 }

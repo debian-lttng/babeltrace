@@ -608,6 +608,75 @@ char *bt_ctf_get_string(const struct bt_definition *field)
 	return ret;
 }
 
+double bt_ctf_get_float(const struct bt_definition *field)
+{
+	double ret = 0.0;
+
+	if (field && bt_ctf_field_type(bt_ctf_get_decl_from_def(field)) == CTF_TYPE_FLOAT) {
+		ret = bt_get_float(field);
+	} else {
+		bt_ctf_field_set_error(-EINVAL);
+	}
+
+	return ret;
+}
+
+const struct bt_definition *bt_ctf_get_variant(const struct bt_definition *field)
+{
+	const struct bt_definition *ret = NULL;
+
+	if (field && bt_ctf_field_type(
+		bt_ctf_get_decl_from_def(field)) == CTF_TYPE_VARIANT) {
+		struct definition_variant *variant = container_of(field,
+			struct definition_variant, p);
+
+		ret = bt_variant_get_current_field(variant);
+	} else {
+		bt_ctf_field_set_error(-EINVAL);
+	}
+
+	return ret;
+}
+
+uint64_t bt_ctf_get_struct_field_count(const struct bt_definition *field)
+{
+	uint64_t ret = -1;
+	const struct bt_declaration *declaration =
+		bt_ctf_get_decl_from_def(field);
+
+	if (field && bt_ctf_field_type(declaration) == CTF_TYPE_STRUCT) {
+		const struct declaration_struct *struct_declaration =
+			container_of(declaration, struct declaration_struct, p);
+
+		ret = bt_struct_declaration_len(struct_declaration);
+	} else {
+		bt_ctf_field_set_error(-EINVAL);
+	}
+
+	return ret;
+}
+
+const struct bt_definition *bt_ctf_get_struct_field_index(
+		const struct bt_definition *field, uint64_t i)
+{
+	const struct bt_definition *ret = NULL;
+
+	if (field && bt_ctf_field_type(
+		bt_ctf_get_decl_from_def(field)) == CTF_TYPE_STRUCT &&
+		i < bt_ctf_get_struct_field_count(field)) {
+		const struct definition_struct *structure = container_of(
+			field, struct definition_struct, p);
+
+		ret = bt_struct_definition_get_field_from_index(structure, i);
+	}
+
+	if (!ret) {
+		bt_ctf_field_set_error(-EINVAL);
+	}
+
+	return ret;
+}
+
 int bt_ctf_get_event_decl_list(int handle_id, struct bt_context *ctx,
 		struct bt_ctf_event_decl * const **list,
 		unsigned int *count)

@@ -65,6 +65,9 @@ static int stream_read_event(struct ctf_file_stream *sin)
 	ret = sin->pos.parent.event_cb(&sin->pos.parent, &sin->parent);
 	if (ret == EOF)
 		return EOF;
+	else if (ret == EAGAIN)
+		/* Stream is inactive for now (live reading). */
+		return EAGAIN;
 	else if (ret) {
 		fprintf(stderr, "[error] Reading event failed.\n");
 		return ret;
@@ -132,10 +135,10 @@ static int seek_file_stream_by_timestamp(struct ctf_file_stream *cfs,
 	int i, ret;
 
 	stream_pos = &cfs->pos;
-	for (i = 0; i < stream_pos->packet_real_index->len; i++) {
-		index = &g_array_index(stream_pos->packet_real_index,
+	for (i = 0; i < stream_pos->packet_index->len; i++) {
+		index = &g_array_index(stream_pos->packet_index,
 				struct packet_index, i);
-		if (index->timestamp_end < timestamp)
+		if (index->ts_real.timestamp_end < timestamp)
 			continue;
 
 		stream_pos->packet_seek(&stream_pos->parent, i, SEEK_SET);
@@ -226,7 +229,7 @@ static int find_max_timestamp_ctf_file_stream(struct ctf_file_stream *cfs,
 	 * either find at least one event, or we reach the first packet
 	 * (some packets can be empty).
 	 */
-	for (i = stream_pos->packet_real_index->len - 1; i >= 0; i--) {
+	for (i = stream_pos->packet_index->len - 1; i >= 0; i--) {
 		stream_pos->packet_seek(&stream_pos->parent, i, SEEK_SET);
 		count = 0;
 		/* read each event until we reach the end of the stream */
@@ -396,10 +399,15 @@ int bt_iter_set_pos(struct bt_iter *iter, const struct bt_iter_pos *iter_pos)
 			stream_pos->offset = saved_pos->offset;
 			stream_pos->last_offset = LAST_OFFSET_POISON;
 
-			stream->prev_real_timestamp = 0;
-			stream->prev_real_timestamp_end = 0;
-			stream->prev_cycles_timestamp = 0;
-			stream->prev_cycles_timestamp_end = 0;
+			stream->current.real.begin = 0;
+			stream->current.real.end = 0;
+			stream->current.cycles.begin = 0;
+			stream->current.cycles.end = 0;
+
+			stream->prev.real.begin = 0;
+			stream->prev.real.end = 0;
+			stream->prev.cycles.begin = 0;
+			stream->prev.cycles.end = 0;
 
 			printf_debug("restored to cur_index = %" PRId64 " and "
 				"offset = %" PRId64 ", timestamp = %" PRIu64 "\n",
@@ -656,12 +664,60 @@ static int babeltrace_filestream_seek(struct ctf_file_stream *file_stream,
 	return ret;
 }
 
+int bt_iter_add_trace(struct bt_iter *iter,
+		struct bt_trace_descriptor *td_read)
+{
+	struct ctf_trace *tin;
+	int stream_id, ret = 0;
+
+	tin = container_of(td_read, struct ctf_trace, parent);
+
+	/* Populate heap with each stream */
+	for (stream_id = 0; stream_id < tin->streams->len;
+			stream_id++) {
+		struct ctf_stream_declaration *stream;
+		int filenr;
+
+		stream = g_ptr_array_index(tin->streams, stream_id);
+		if (!stream)
+			continue;
+		for (filenr = 0; filenr < stream->streams->len;
+				filenr++) {
+			struct ctf_file_stream *file_stream;
+			struct bt_iter_pos pos;
+
+			file_stream = g_ptr_array_index(stream->streams,
+					filenr);
+			if (!file_stream)
+				continue;
+
+			pos.type = BT_SEEK_BEGIN;
+			ret = babeltrace_filestream_seek(file_stream,
+					&pos, stream_id);
+
+			if (ret == EOF) {
+				ret = 0;
+				continue;
+			} else if (ret != 0 && ret != EAGAIN) {
+				goto error;
+			}
+			/* Add to heap */
+			ret = bt_heap_insert(iter->stream_heap, file_stream);
+			if (ret)
+				goto error;
+		}
+	}
+
+error:
+	return ret;
+}
+
 int bt_iter_init(struct bt_iter *iter,
 		struct bt_context *ctx,
 		const struct bt_iter_pos *begin_pos,
 		const struct bt_iter_pos *end_pos)
 {
-	int i, stream_id;
+	int i;
 	int ret = 0;
 
 	if (!iter || !ctx)
@@ -682,59 +738,22 @@ int bt_iter_init(struct bt_iter *iter,
 		goto error_heap_init;
 
 	for (i = 0; i < ctx->tc->array->len; i++) {
-		struct ctf_trace *tin;
 		struct bt_trace_descriptor *td_read;
 
 		td_read = g_ptr_array_index(ctx->tc->array, i);
 		if (!td_read)
 			continue;
-		tin = container_of(td_read, struct ctf_trace, parent);
-
-		/* Populate heap with each stream */
-		for (stream_id = 0; stream_id < tin->streams->len;
-				stream_id++) {
-			struct ctf_stream_declaration *stream;
-			int filenr;
-
-			stream = g_ptr_array_index(tin->streams, stream_id);
-			if (!stream)
-				continue;
-			for (filenr = 0; filenr < stream->streams->len;
-					filenr++) {
-				struct ctf_file_stream *file_stream;
-
-				file_stream = g_ptr_array_index(stream->streams,
-						filenr);
-				if (!file_stream)
-					continue;
-				if (begin_pos) {
-					ret = babeltrace_filestream_seek(
-							file_stream,
-							begin_pos,
-							stream_id);
-				} else {
-					struct bt_iter_pos pos;
-					pos.type = BT_SEEK_BEGIN;
-					ret = babeltrace_filestream_seek(
-							file_stream, &pos,
-							stream_id);
-				}
-				if (ret == EOF) {
-					ret = 0;
-					continue;
-				} else if (ret) {
-					goto error;
-				}
-				/* Add to heap */
-				ret = bt_heap_insert(iter->stream_heap, file_stream);
-				if (ret)
-					goto error;
-			}
-		}
+		ret = bt_iter_add_trace(iter, td_read);
+		if (ret < 0)
+			goto error;
 	}
 
 	ctx->current_iterator = iter;
-	return 0;
+	if (begin_pos && begin_pos->type != BT_SEEK_BEGIN) {
+		ret = bt_iter_set_pos(iter, begin_pos);
+	}
+
+	return ret;
 
 error:
 	bt_heap_free(iter->stream_heap);
@@ -803,13 +822,29 @@ int bt_iter_next(struct bt_iter *iter)
 		assert(removed == file_stream);
 		ret = 0;
 		goto end;
+	} else if (ret == EAGAIN) {
+		/*
+		 * Live streaming: the stream is inactive for now, we
+		 * just updated the timestamp_end to skip over this
+		 * stream up to a certain point in time.
+		 *
+		 * Since we can't guarantee that a stream will ever have
+		 * any activity, we can't rely on the fact that
+		 * bt_iter_next will be called for each stream and deal
+		 * with inactive streams. So instead, we return 0 here
+		 * to the caller and let the read API handle the
+		 * retry case.
+		 */
+		ret = 0;
+		goto reinsert;
 	} else if (ret) {
 		goto end;
 	}
+
+reinsert:
 	/* Reinsert the file stream into the heap, and rebalance. */
 	removed = bt_heap_replace_max(iter->stream_heap, file_stream);
 	assert(removed == file_stream);
-
 end:
 	return ret;
 }

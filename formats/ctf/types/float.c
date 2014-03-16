@@ -200,8 +200,11 @@ int ctf_float_read(struct bt_stream_pos *ppos, struct bt_definition *definition)
 	ctf_init_pos(&destp, NULL, -1, O_RDWR);
 	mmap_align_set_addr(&mma, (char *) u.bits);
 	destp.base_mma = &mma;
-	destp.packet_size = sizeof(u) * CHAR_BIT;
-	ctf_align_pos(pos, float_declaration->p.alignment);
+	destp.content_size = destp.packet_size = sizeof(u) * CHAR_BIT;
+	if (!ctf_align_pos(pos, float_declaration->p.alignment)) {
+		ret = -EFAULT;
+		goto end_unref;
+	}
 	ret = _ctf_float_copy(&destp.parent, tmpfloat, ppos, float_definition);
 	switch (float_declaration->mantissa->len + 1) {
 	case FLT_MANT_DIG:
@@ -232,7 +235,7 @@ int ctf_float_write(struct bt_stream_pos *ppos, struct bt_definition *definition
 	union doubleIEEE754 u;
 	struct bt_definition *tmpdef;
 	struct definition_float *tmpfloat;
-	struct ctf_stream_pos srcp;
+	struct ctf_stream_pos srcp = { { 0 } };
 	struct mmap_align mma;
 	int ret;
 
@@ -256,7 +259,7 @@ int ctf_float_write(struct bt_stream_pos *ppos, struct bt_definition *definition
 	ctf_init_pos(&srcp, NULL, -1, O_RDONLY);
 	mmap_align_set_addr(&mma, (char *) u.bits);
 	srcp.base_mma = &mma;
-	srcp.packet_size = sizeof(u) * CHAR_BIT;
+	srcp.content_size = srcp.packet_size = sizeof(u) * CHAR_BIT;
 	switch (float_declaration->mantissa->len + 1) {
 	case FLT_MANT_DIG:
 		u.vf = float_definition->value;
@@ -268,7 +271,10 @@ int ctf_float_write(struct bt_stream_pos *ppos, struct bt_definition *definition
 		ret = -EINVAL;
 		goto end_unref;
 	}
-	ctf_align_pos(pos, float_declaration->p.alignment);
+	if (!ctf_align_pos(pos, float_declaration->p.alignment)) {
+		ret = -EFAULT;
+		goto end_unref;
+	}
 	ret = _ctf_float_copy(ppos, float_definition, &srcp.parent, tmpfloat);
 
 end_unref:
@@ -276,6 +282,14 @@ end_unref:
 end:
 	float_unlock();
 	return ret;
+}
+
+double bt_get_float(const struct bt_definition *field)
+{
+	struct definition_float *definition =
+		container_of(field, struct definition_float, p);
+
+	return definition->value;
 }
 
 static

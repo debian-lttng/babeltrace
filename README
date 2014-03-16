@@ -1,6 +1,4 @@
 BabelTrace - Trace Format Babel Tower
-Mathieu Desnoyers, EfficiOS Inc.
-September 2010
 
 This project provides trace read and write libraries, as well as a trace
 converter. A plugin can be created for any trace format to allow its conversion
@@ -14,6 +12,13 @@ Format (CTF). The latest version of the CTF specification can be found at:
 
 The CE Workgroup of the Linux Foundation, Ericsson, and EfficiOS have
 sponsored this work.
+
+The current maintainers are:
+  Jérémie Galarneau <jeremie.galarneau@efficios.com>
+  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+
+Questions should be addressed to this mailing list:
+  lttng-dev@lists.lttng.org
 
 
 BUILDING
@@ -44,6 +49,19 @@ To compile Babeltrace, you will need:
 	libpopt >= 1.13 development libraries
 	  (Debian : libpopt-dev)
 	  (Fedora : popt)
+	python headers (optional)
+	  (Debian/Ubuntu : python3-dev)
+	swig >= 2.0 (optional)
+	  (Debian/Ubuntu : swig2.0)
+	python 3.0 or better (optional)
+	  (Debian/Ubuntu : python3)
+
+  If you want Python bindings, run ./configure --enable-python-bindings.
+  Please note that some distributions will need the following
+  environment variables set before running configure:
+
+    export PYTHON="python3"
+    export PYTHON_CONFIG="/usr/bin/python3-config"
 
 For developers using the git tree:
 

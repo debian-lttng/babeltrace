@@ -1,3 +1,15 @@
+babeltrace (1.2.1-1) unstable; urgency=low
+
+  * [17c6f0c] New upstream version 1.2.1
+  * [1e549f1] Bump soname for libbabeltrace and libbabeltrace-ctf
+  * [e4d154f] Include pkgconfig files in dev packages
+  * [8eb9045] Include new files in libbabeltrace-dev
+  * [71c9647] Include additional documentation in babeltrace package
+  * [dd5efa4] Bump standards version, no changes necessary
+  * [e460f96] Update VCS fields to make lintian happy
+
+ -- Jon Bernard <jbernard@debian.org>  Sun, 16 Mar 2014 11:15:03 -0400
+
 babeltrace (1.1.1-1) unstable; urgency=low
 
   * [e2b91f6] New upstream version 1.1.1

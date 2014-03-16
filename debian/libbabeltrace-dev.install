@@ -9,3 +9,4 @@ usr/lib/*/libbabeltrace.a
 usr/lib/*/libbabeltrace.so
 usr/lib/*/libbabeltrace-dummy.a
 usr/lib/*/libbabeltrace-dummy.so
+usr/lib/*/pkgconfig/babeltrace.pc

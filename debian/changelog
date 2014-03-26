@@ -1,3 +1,9 @@
+babeltrace (1.2.1-2) unstable; urgency=low
+
+  * [8d1ee8f] Update copyright to include LGPL for list.h (Closes: #742680)
+
+ -- Jon Bernard <jbernard@debian.org>  Wed, 26 Mar 2014 09:29:26 -0400
+
 babeltrace (1.2.1-1) unstable; urgency=low
 
   * [17c6f0c] New upstream version 1.2.1

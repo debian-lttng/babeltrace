@@ -4,7 +4,10 @@
 export DEB_BUILD_MAINT_OPTIONS := hardening=+all
 
 %:
-	dh $@  --with autoreconf
+	dh $@  --with autoreconf --with python3
+
+override_dh_auto_configure:
+	PYTHON=python3 PYTHON_CONFIG=/usr/bin/python3-config dh_auto_configure -- --enable-python-bindings
 
 override_dh_auto_build:
 	dh_auto_build -- V=1

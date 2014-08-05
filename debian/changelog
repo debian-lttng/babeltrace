@@ -1,3 +1,11 @@
+babeltrace (1.2.2-1) unstable; urgency=medium
+
+  * [5a68ab5] New upstream version 1.2.2
+  * [937cdae] Include upstream patch to remove unaligned access
+    (Closes: #751336)
+
+ -- Jon Bernard <jbernard@debian.org>  Tue, 05 Aug 2014 16:52:47 -0400
+
 babeltrace (1.2.1-2) unstable; urgency=low
 
   * [8d1ee8f] Update copyright to include LGPL for list.h (Closes: #742680)

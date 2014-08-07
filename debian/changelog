@@ -1,3 +1,10 @@
+babeltrace (1.2.2-2) unstable; urgency=medium
+
+  * [7eab87a] Remove sparc from supported architectures
+  * [33445ff] Add patch to fix FreeBSD build failures (Closes: #751337)
+
+ -- Jon Bernard <jbernard@debian.org>  Thu, 07 Aug 2014 12:31:09 -0400
+
 babeltrace (1.2.2-1) unstable; urgency=medium
 
   * [5a68ab5] New upstream version 1.2.2

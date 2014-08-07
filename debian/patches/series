@@ -1,1 +1,2 @@
 0001-Fix-don-t-perform-unaligned-integer-read-writes.patch
+0001-Handle-missing-HOST_NAME_MAX.patch

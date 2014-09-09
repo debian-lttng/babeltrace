@@ -1,3 +1,10 @@
+babeltrace (1.2.2-3) unstable; urgency=medium
+
+  * [c12a8ae] Revert "Remove sparc from supported architectures"
+    (Closes: #760828)
+
+ -- Jon Bernard <jbernard@debian.org>  Tue, 09 Sep 2014 10:51:43 -0400
+
 babeltrace (1.2.2-2) unstable; urgency=medium
 
   * [7eab87a] Remove sparc from supported architectures

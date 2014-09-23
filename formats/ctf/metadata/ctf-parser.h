@@ -1,19 +1,19 @@
-/* A Bison parser, made by GNU Bison 2.5.  */
+/* A Bison parser, made by GNU Bison 3.0.2.  */
 
 /* Bison interface for Yacc-like parsers in C
-   
-      Copyright (C) 1984, 1989-1990, 2000-2011 Free Software Foundation, Inc.
-   
+
+   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
+
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
-   
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-   
+
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
@@ -26,71 +26,79 @@
    special exception, which will cause the skeleton and the resulting
    Bison output files to be licensed under the GNU General Public
    License without this special exception.
-   
+
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
+#ifndef YY_YY_CTF_PARSER_H_INCLUDED
+# define YY_YY_CTF_PARSER_H_INCLUDED
+/* Debug traces.  */
+#ifndef YYDEBUG
+# define YYDEBUG 1
+#endif
+#if YYDEBUG
+extern int yydebug;
+#endif
 
-/* Tokens.  */
+/* Token type.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
-   /* Put the tokens into the symbol table, so that GDB and other debuggers
-      know about them.  */
-   enum yytokentype {
-     INTEGER_LITERAL = 258,
-     STRING_LITERAL = 259,
-     CHARACTER_LITERAL = 260,
-     LSBRAC = 261,
-     RSBRAC = 262,
-     LPAREN = 263,
-     RPAREN = 264,
-     LBRAC = 265,
-     RBRAC = 266,
-     RARROW = 267,
-     STAR = 268,
-     PLUS = 269,
-     MINUS = 270,
-     LT = 271,
-     GT = 272,
-     TYPEASSIGN = 273,
-     COLON = 274,
-     SEMICOLON = 275,
-     DOTDOTDOT = 276,
-     DOT = 277,
-     EQUAL = 278,
-     COMMA = 279,
-     CONST = 280,
-     CHAR = 281,
-     DOUBLE = 282,
-     ENUM = 283,
-     ENV = 284,
-     EVENT = 285,
-     FLOATING_POINT = 286,
-     FLOAT = 287,
-     INTEGER = 288,
-     INT = 289,
-     LONG = 290,
-     SHORT = 291,
-     SIGNED = 292,
-     STREAM = 293,
-     STRING = 294,
-     STRUCT = 295,
-     TRACE = 296,
-     CALLSITE = 297,
-     CLOCK = 298,
-     TYPEALIAS = 299,
-     TYPEDEF = 300,
-     UNSIGNED = 301,
-     VARIANT = 302,
-     VOID = 303,
-     _BOOL = 304,
-     _COMPLEX = 305,
-     _IMAGINARY = 306,
-     TOK_ALIGN = 307,
-     IDENTIFIER = 308,
-     ID_TYPE = 309,
-     ERROR = 310
-   };
+  enum yytokentype
+  {
+    INTEGER_LITERAL = 258,
+    STRING_LITERAL = 259,
+    CHARACTER_LITERAL = 260,
+    LSBRAC = 261,
+    RSBRAC = 262,
+    LPAREN = 263,
+    RPAREN = 264,
+    LBRAC = 265,
+    RBRAC = 266,
+    RARROW = 267,
+    STAR = 268,
+    PLUS = 269,
+    MINUS = 270,
+    LT = 271,
+    GT = 272,
+    TYPEASSIGN = 273,
+    COLON = 274,
+    SEMICOLON = 275,
+    DOTDOTDOT = 276,
+    DOT = 277,
+    EQUAL = 278,
+    COMMA = 279,
+    CONST = 280,
+    CHAR = 281,
+    DOUBLE = 282,
+    ENUM = 283,
+    ENV = 284,
+    EVENT = 285,
+    FLOATING_POINT = 286,
+    FLOAT = 287,
+    INTEGER = 288,
+    INT = 289,
+    LONG = 290,
+    SHORT = 291,
+    SIGNED = 292,
+    STREAM = 293,
+    STRING = 294,
+    STRUCT = 295,
+    TRACE = 296,
+    CALLSITE = 297,
+    CLOCK = 298,
+    TYPEALIAS = 299,
+    TYPEDEF = 300,
+    UNSIGNED = 301,
+    VARIANT = 302,
+    VOID = 303,
+    _BOOL = 304,
+    _COMPLEX = 305,
+    _IMAGINARY = 306,
+    TOK_ALIGN = 307,
+    IDENTIFIER = 308,
+    ID_TYPE = 309,
+    ERROR = 310
+  };
 #endif
 /* Tokens.  */
 #define INTEGER_LITERAL 258
@@ -147,15 +155,12 @@
 #define ID_TYPE 309
 #define ERROR 310
 
-
-
-
+/* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE
+typedef union YYSTYPE YYSTYPE;
+union YYSTYPE
 {
-
-/* Line 2068 of yacc.c  */
-#line 1060 "ctf-parser.y"
+#line 1060 "ctf-parser.y" /* yacc.c:1909  */
 
 	long long ll;
 	unsigned long long ull;
@@ -163,16 +168,14 @@ typedef union YYSTYPE
 	char *s;
 	struct ctf_node *n;
 
-
-
-/* Line 2068 of yacc.c  */
-#line 170 "ctf-parser.h"
-} YYSTYPE;
+#line 172 "ctf-parser.h" /* yacc.c:1909  */
+};
 # define YYSTYPE_IS_TRIVIAL 1
-# define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 #endif
 
 
 
+int yyparse (struct ctf_scanner *scanner, yyscan_t yyscanner);
 
+#endif /* !YY_YY_CTF_PARSER_H_INCLUDED  */

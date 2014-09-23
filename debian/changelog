@@ -1,3 +1,10 @@
+babeltrace (1.2.3-1) unstable; urgency=medium
+
+  * [9ddff44] New upstream version 1.2.3 (Closes: #757722)
+  * [9be6ac3] Remove debian-specific patches, included upstream
+
+ -- Jon Bernard <jbernard@debian.org>  Tue, 23 Sep 2014 15:25:24 -0400
+
 babeltrace (1.2.2-3) unstable; urgency=medium
 
   * [c12a8ae] Revert "Remove sparc from supported architectures"

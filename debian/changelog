@@ -1,3 +1,15 @@
+babeltrace (1.2.3-2) unstable; urgency=medium
+
+  [ Sebastian Andrzej Siewior ]
+  * [e475ba5] Enable build of the python3 bindings (Closes: #749478)
+
+  [ Jon Bernard ]
+  * [0dbc585] Remove unnecessary fields from python3-babeltrace
+  * [3dd4ec1] Fix typo in python3-babeltrace description
+  * [d3671a8] Fine tune python3-babeltrace file inclusion
+
+ -- Jon Bernard <jbernard@debian.org>  Thu, 02 Oct 2014 16:41:15 -0400
+
 babeltrace (1.2.3-1) unstable; urgency=medium
 
   * [9ddff44] New upstream version 1.2.3 (Closes: #757722)

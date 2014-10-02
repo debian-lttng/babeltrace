@@ -85,4 +85,4 @@ Description: Babeltrace conversion libraries
  converter. Plugins can be created for any trace format to allow its conversion
  to/from any other supported format.
  .
- This package provides the python bindings for babeltrace.
+ This package provides Python 3 bindings for babeltrace.

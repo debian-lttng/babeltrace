@@ -1,2 +1,2 @@
-usr/lib/python3.4/site-packages/babeltrace.py
-usr/lib/python3.4/site-packages/_babeltrace.so*
+usr/lib/python3*/site-packages/babeltrace.py
+usr/lib/python3*/site-packages/_babeltrace.so*

@@ -1,3 +1,12 @@
+babeltrace (1.2.4-2) unstable; urgency=medium
+
+  [ Michael Jeanson ]
+  * [b4ce903] Build on multiple python3 versions
+  * [c4a68e6] Bump standards version, no changes necessary
+  * [35aa7e9] Fix lintian license issues
+
+ -- Jon Bernard <jbernard@debian.org>  Thu, 24 Sep 2015 19:55:06 +0000
+
 babeltrace (1.2.4-1) unstable; urgency=medium
 
   * [0af8a10] New upstream version 1.2.4

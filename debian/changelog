@@ -1,3 +1,10 @@
+babeltrace (1.2.4-3) unstable; urgency=medium
+
+  [ Michael Jeanson ]
+  * [3d869d3] Fix python install dir (Closes: #800122)
+
+ -- Jon Bernard <jbernard@debian.org>  Tue, 29 Sep 2015 19:15:31 +0000
+
 babeltrace (1.2.4-2) unstable; urgency=medium
 
   [ Michael Jeanson ]

@@ -53,6 +53,7 @@
 #include "metadata/ctf-ast.h"
 #include "events-private.h"
 #include <babeltrace/compat/memstream.h>
+#include <babeltrace/compat/fcntl.h>
 
 #define LOG2_CHAR_BIT	3
 
@@ -862,7 +863,6 @@ void ctf_packet_seek(struct bt_stream_pos *stream_pos, size_t index, int whence)
 	struct ctf_file_stream *file_stream =
 		container_of(pos, struct ctf_file_stream, pos);
 	int ret;
-	off_t off;
 	struct packet_index *packet_index, *prev_index;
 
 	switch (whence) {
@@ -906,9 +906,11 @@ void ctf_packet_seek(struct bt_stream_pos *stream_pos, size_t index, int whence)
 		}
 		pos->content_size = -1U;	/* Unknown at this point */
 		pos->packet_size = WRITE_PACKET_LEN;
-		off = posix_fallocate(pos->fd, pos->mmap_offset,
-				      pos->packet_size / CHAR_BIT);
-		assert(off >= 0);
+		do {
+			ret = bt_posix_fallocate(pos->fd, pos->mmap_offset,
+					      pos->packet_size / CHAR_BIT);
+		} while (ret == EINTR);
+		assert(ret == 0);
 		pos->offset = 0;
 	} else {
 	read_next_packet:
@@ -1109,7 +1111,7 @@ int ctf_trace_metadata_packet_read(struct ctf_trace *td, FILE *in,
 		memcpy(td->uuid, header.uuid, sizeof(header.uuid));
 		CTF_TRACE_SET_FIELD(td, uuid);
 	} else {
-		if (babeltrace_uuid_compare(header.uuid, td->uuid))
+		if (bt_uuid_compare(header.uuid, td->uuid))
 			return -EINVAL;
 	}
 
@@ -1595,7 +1597,7 @@ begin:
 				elem = bt_array_index(defarray, i);
 				uuidval[i] = bt_get_unsigned_int(elem);
 			}
-			ret = babeltrace_uuid_compare(td->uuid, uuidval);
+			ret = bt_uuid_compare(td->uuid, uuidval);
 			if (ret) {
 				fprintf(stderr, "[error] Unique Universal Identifiers do not match.\n");
 				return -EINVAL;
@@ -1855,10 +1857,10 @@ int import_stream_packet_index(struct ctf_trace *td,
 		goto error;
 	}
 	if (be32toh(index_hdr.index_major) != CTF_INDEX_MAJOR) {
-		fprintf(stderr, "[error] Incompatible index file %" PRIu64
-				".%" PRIu64 ", supported %d.%d\n",
-				be64toh(index_hdr.index_major),
-				be64toh(index_hdr.index_minor), CTF_INDEX_MAJOR,
+		fprintf(stderr, "[error] Incompatible index file %" PRIu32
+				".%" PRIu32 ", supported %d.%d\n",
+				be32toh(index_hdr.index_major),
+				be32toh(index_hdr.index_minor), CTF_INDEX_MAJOR,
 				CTF_INDEX_MINOR);
 		ret = -1;
 		goto error;
@@ -1964,6 +1966,11 @@ int ctf_open_file_stream_read(struct ctf_trace *td, const char *path, int flags,
 		ret = 0;
 		goto fd_is_dir_ok;
 	}
+	if (!statbuf.st_size) {
+		/** Skip empty files. */
+		ret = 0;
+		goto fd_is_empty_file;
+	}
 
 	file_stream = g_new0(struct ctf_file_stream, 1);
 	file_stream->pos.last_offset = LAST_OFFSET_POISON;
@@ -1998,12 +2005,13 @@ int ctf_open_file_stream_read(struct ctf_trace *td, const char *path, int flags,
 	index_name = malloc((strlen(path) + sizeof(INDEX_PATH)) * sizeof(char));
 	if (!index_name) {
 		fprintf(stderr, "[error] Cannot allocate index filename\n");
+		ret = -ENOMEM;
 		goto error_def;
 	}
 	snprintf(index_name, strlen(path) + sizeof(INDEX_PATH),
 			INDEX_PATH, path);
 
-	if (faccessat(td->dirfd, index_name, O_RDONLY, flags) < 0) {
+	if (bt_faccessat(td->dirfd, td->parent.path, index_name, O_RDONLY, 0) < 0) {
 		ret = create_stream_packet_index(td, file_stream);
 		if (ret) {
 			fprintf(stderr, "[error] Stream index creation error.\n");
@@ -2056,6 +2064,7 @@ error_def:
 		fprintf(stderr, "Error on ctf_fini_pos\n");
 	}
 	g_free(file_stream);
+fd_is_empty_file:
 fd_is_dir_ok:
 fstat_error:
 	closeret = close(fd);

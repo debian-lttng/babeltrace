@@ -30,6 +30,7 @@
 #include <babeltrace/ctf-writer/event-fields-internal.h>
 #include <babeltrace/ctf-writer/event-types-internal.h>
 #include <babeltrace/compiler.h>
+#include <babeltrace/compat/fcntl.h>
 
 #define PACKET_LEN_INCREMENT	(getpagesize() * 8 * CHAR_BIT)
 
@@ -445,7 +446,7 @@ struct bt_ctf_field *bt_ctf_field_variant_get_field(struct bt_ctf_field *field,
 	tag_enum_integer = container_of(tag_enum, struct bt_ctf_field_integer,
 		parent);
 
-	if (!bt_ctf_field_validate(variant->tag)) {
+	if (bt_ctf_field_validate(tag_field) < 0) {
 		goto end;
 	}
 
@@ -1241,9 +1242,13 @@ int increase_packet_size(struct ctf_stream_pos *pos)
 	}
 
 	pos->packet_size += PACKET_LEN_INCREMENT;
-	ret = posix_fallocate(pos->fd, pos->mmap_offset,
-		pos->packet_size / CHAR_BIT);
+	do {
+		ret = bt_posix_fallocate(pos->fd, pos->mmap_offset,
+			pos->packet_size / CHAR_BIT);
+	} while (ret == EINTR);
 	if (ret) {
+		errno = EINTR;
+		ret = -1;
 		goto end;
 	}
 

@@ -1,38 +1,73 @@
-#                                               -*- Autoconf -*-
-# Process this file with autoconf to produce a configure script.
-
-AC_INIT([babeltrace],[1.2.4],[mathieu dot desnoyers at efficios dot com])
+AC_PREREQ([2.50])
+AC_INIT([babeltrace],[1.3.0],[jeremie.galarneau@efficios.com],[],[https://diamon.org/babeltrace])
 
 # Following the numbering scheme proposed by libtool for the library version
 # http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
 AC_SUBST([BABELTRACE_LIBRARY_VERSION], [1:0:0])
 
+AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([config])
-AC_CANONICAL_TARGET
-AC_CANONICAL_HOST
-AM_INIT_AUTOMAKE([foreign dist-bzip2 no-dist-gzip])
-m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
-
 AC_CONFIG_MACRO_DIR([m4])
 
-AC_PROG_MKDIR_P
+AC_CANONICAL_TARGET
+AC_CANONICAL_HOST
 
-AC_CONFIG_HEADERS([config.h])
+AM_INIT_AUTOMAKE([foreign dist-bzip2 no-dist-gzip])
+AM_MAINTAINER_MODE([enable])
 
+# Enable silent rules if available (Introduced in AM 1.11)
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
+
+# Checks for C compiler
+AC_USE_SYSTEM_EXTENSIONS
 AC_SYS_LARGEFILE
+AC_PROG_CC
+AC_PROG_CC_STDC
 
 # Checks for programs.
-AC_PROG_CC_STDC
 AC_PROG_MAKE_SET
 LT_INIT
 AC_PROG_YACC
 AC_PROG_LEX
+AC_PROG_MKDIR_P
+AC_PROG_LN_S
+
+AX_C___ATTRIBUTE__
+AS_IF([test "x$ax_cv___attribute__" = "xyes"],
+	[:],
+	[AC_MSG_ERROR([The compiler does not support __attribute__ extensions])])
+
+AX_PTHREAD(,[AC_MSG_ERROR([Could not configure pthreads support])])
+LIBS="$PTHREAD_LIBS $LIBS"
+CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
+CC="$PTHREAD_CC"
+
+# Check linker option
+AX_APPEND_LINK_FLAGS([-Wl,--no-as-needed], [LD_NO_AS_NEEDED])
+AC_SUBST([LD_NO_AS_NEEDED])
+
+AC_HEADER_STDBOOL
+AC_CHECK_HEADERS([ \
+	fcntl.h \
+	float.h \
+	libintl.h \
+	limits.h \
+	malloc.h \
+	netdb.h \
+	netinet/in.h \
+	stddef.h \
+	sys/socket.h \
+])
 
 if test ! -f "$srcdir/formats/ctf/metadata/ctf-parser.h"; then
         if test x"$YACC" != "xbison -y"; then
                 AC_MSG_ERROR([[bison not found and is required when building from git.
                 Please install bison]])
         fi
+        AC_PATH_PROG([BISON],[bison])
+        AX_PROG_BISON_VERSION([2.4], [],[
+                AC_MSG_ERROR([[Bison >= 2.4 is required when building from git]])
+        ])
 fi
 
 if test ! -f "$srcdir/formats/ctf/metadata/ctf-lexer.c"; then
@@ -40,10 +75,16 @@ if test ! -f "$srcdir/formats/ctf/metadata/ctf-lexer.c"; then
                 AC_MSG_ERROR([[flex not found and is required when building from git.
                 Please install flex]])
         fi
+        AC_PATH_PROG([FLEX],[flex])
+        AX_PROG_FLEX_VERSION([2.5.35], [],[
+                AC_MSG_ERROR([[Flex >= 2.5.35 is required when building from git]])
+        ])
 fi
 
-
 AM_PATH_GLIB_2_0(2.22.0, ,AC_MSG_ERROR([glib is required in order to compile BabelTrace - download it from ftp://ftp.gtk.org/pub/gtk]) , gmodule)
+
+# Check what libraries are required on this platform to link sockets programs.
+AX_LIB_SOCKET_NSL
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_INLINE
@@ -51,9 +92,41 @@ AC_TYPE_PID_T
 AC_TYPE_SIZE_T
 
 # Checks for library functions.
+AC_FUNC_ALLOCA
+AC_FUNC_FORK
 AC_FUNC_MALLOC
+AC_FUNC_MKTIME
 AC_FUNC_MMAP
-AC_CHECK_FUNCS([bzero gettimeofday munmap strtoul])
+AC_FUNC_REALLOC
+AC_FUNC_STRERROR_R
+AC_CHECK_FUNCS([ \
+	atexit \
+	dirfd \
+	dup2 \
+	ftruncate \
+	gethostbyname \
+	gethostname \
+	gettimeofday \
+	localtime_r \
+	memchr \
+	memset \
+	mkdir \
+	mkdtemp \
+	munmap \
+	rmdir \
+	setenv \
+	socket \
+	strchr \
+	strdup \
+	strerror \
+	strndup \
+	strnlen \
+	strrchr \
+	strtoul \
+	strtoull \
+	tzset \
+	uname \
+])
 
 # Check for MinGW32.
 MINGW32=no
@@ -102,10 +175,23 @@ AC_CHECK_LIB([c], [open_memstream],
 ]
 )
 
+# Check for posix_fallocate
+AC_CHECK_LIB([c], [posix_fallocate],
+[
+	AC_DEFINE_UNQUOTED([BABELTRACE_HAVE_POSIX_FALLOCATE], 1, [Has posix_fallocate support.])
+]
+)
+
+# Check for faccessat
+AC_CHECK_LIB([c], [faccessat],
+[
+	AC_DEFINE_UNQUOTED([BABELTRACE_HAVE_FACCESSAT], 1, [Has faccessat support.])
+]
+)
+
 AC_CHECK_LIB([popt], [poptGetContext], [],
         [AC_MSG_ERROR([Cannot find popt.])]
 )
-
 
 # For Python
 # SWIG version needed or newer:
@@ -122,6 +208,11 @@ if test "x${enable_python:-yes}" = xyes; then
   AX_PKG_SWIG($swig_version, [], [ AC_MSG_ERROR([SWIG $swig_version or newer is needed]) ])
   AM_PATH_PYTHON
 
+  AM_PATH_PYTHON_MODULES([PYTHON])
+  # pythondir is the path where extra modules are to be installed
+  pythondir=$PYTHON_PREFIX/$PYTHON_MODULES_PATH
+  # pyexecdir is the path that contains shared objects used by the extra modules
+  pyexecdir=$PYTHON_EXEC_PREFIX/$PYTHON_MODULES_PATH
   AC_ARG_VAR([PYTHON_INCLUDE], [Include flags for python, bypassing python-config])
   AC_ARG_VAR([PYTHON_CONFIG], [Path to python-config])
   AS_IF([test -z "$PYTHON_INCLUDE"], [
@@ -148,8 +239,11 @@ PKG_CHECK_MODULES(GMODULE, [$pkg_modules])
 AC_SUBST(PACKAGE_LIBS)
 
 LIBS="$LIBS $GMODULE_LIBS"
-PACKAGE_CFLAGS="$GMODULE_CFLAGS -Wall -Wformat -include config.h"
+PACKAGE_CFLAGS="$GMODULE_CFLAGS -Wall -Wformat"
 AC_SUBST(PACKAGE_CFLAGS)
+
+DEFAULT_INCLUDES="-I\$(top_srcdir) -I\$(top_builddir) -I\$(top_builddir)/include -include config.h"
+AC_SUBST(DEFAULT_INCLUDES)
 
 babeltraceincludedir="${includedir}/babeltrace"
 AC_SUBST(babeltraceincludedir)

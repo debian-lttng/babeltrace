@@ -19,7 +19,6 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#define _GNU_SOURCE
 #include <babeltrace/ctf-writer/writer.h>
 #include <babeltrace/ctf-writer/clock.h>
 #include <babeltrace/ctf-writer/stream.h>
@@ -28,17 +27,19 @@
 #include <babeltrace/ctf-writer/event-fields.h>
 #include <babeltrace/ctf/events.h>
 #include <unistd.h>
-#include <stdlib.h>
+#include <babeltrace/compat/stdlib.h>
 #include <stdio.h>
 #include <sys/utsname.h>
 #include <babeltrace/compat/limits.h>
+#include <babeltrace/compat/stdio.h>
 #include <string.h>
 #include <assert.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <fcntl.h>
-#include <dirent.h>
+#include <babeltrace/compat/dirent.h>
 #include "tap/tap.h"
+#include <sys/stat.h>
 
 #define METADATA_LINE_SIZE 512
 #define SEQUENCE_TEST_LENGTH 10
@@ -93,7 +94,7 @@ void validate_metadata(char *parser_path, char *metadata_path)
 			goto result;
 		}
 
-		execl(parser_path, "ctf-parser-test", NULL);
+		execl(parser_path, "ctf-parser-test", (char *) NULL);
 		perror("# Could not launch the ctf metadata parser process");
 		exit(-1);
 	}
@@ -127,12 +128,12 @@ result:
 		rewind(metadata_fp);
 
 		/* Output the metadata and parser output as diagnostic */
-		while (getline(&line, &len, metadata_fp) > 0) {
+		while (bt_getline(&line, &len, metadata_fp) > 0) {
 			diag("%s", line);
 		}
 
 		rewind(parser_output_fp);
-		while (getline(&line, &len, parser_output_fp) > 0) {
+		while (bt_getline(&line, &len, parser_output_fp) > 0) {
 			diag("%s", line);
 		}
 
@@ -200,7 +201,7 @@ void validate_trace(char *parser_path, char *trace_path)
 			goto result;
 		}
 
-		execl(parser_path, "babeltrace", trace_path, NULL);
+		execl(parser_path, "babeltrace", trace_path, (char *) NULL);
 		perror("# Could not launch the babeltrace process");
 		exit(-1);
 	}
@@ -224,7 +225,7 @@ result:
 			diag("malloc error");
 		}
 		rewind(babeltrace_output_fp);
-		while (getline(&line, &len, babeltrace_output_fp) > 0) {
+		while (bt_getline(&line, &len, babeltrace_output_fp) > 0) {
 			diag("%s", line);
 		}
 
@@ -728,7 +729,7 @@ int main(int argc, char **argv)
 
 	plan_no_plan();
 
-	if (!mkdtemp(trace_path)) {
+	if (!bt_mkdtemp(trace_path)) {
 		perror("# perror");
 	}
 
@@ -756,7 +757,8 @@ int main(int argc, char **argv)
 		NULL),
 		"bt_ctf_writer_add_environment_field error with NULL field value");
 
-	if (uname(&name)) {
+	/* On Solaris, uname() can return any positive value on success */
+	if (uname(&name) < 0) {
 		perror("uname");
 		return -1;
 	}
@@ -845,8 +847,20 @@ int main(int argc, char **argv)
 
 	struct dirent *entry;
 	while ((entry = readdir(trace_dir))) {
-		if (entry->d_type == DT_REG) {
-			unlinkat(dirfd(trace_dir), entry->d_name, 0);
+		struct stat st;
+		char filename[PATH_MAX];
+
+		if (snprintf(filename, sizeof(filename), "%s/%s",
+					trace_path, entry->d_name) <= 0) {
+			continue;
+		}
+
+		if (stat(entry->d_name, &st)) {
+			continue;
+		}
+
+		if (S_ISREG(st.st_mode)) {
+			unlinkat(bt_dirfd(trace_dir), entry->d_name, 0);
 		}
 	}
 

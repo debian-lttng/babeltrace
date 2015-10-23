@@ -158,15 +158,7 @@ typedef void* yyscan_t;
 
 /* Size of default input buffer. */
 #ifndef YY_BUF_SIZE
-#ifdef __ia64__
-/* On IA-64, the buffer size is 16k, not 8k.
- * Moreover, YY_BUF_SIZE is 2*YY_READ_BUF_SIZE in the general case.
- * Ditto for the __ia64__ case accordingly.
- */
-#define YY_BUF_SIZE 32768
-#else
 #define YY_BUF_SIZE 16384
-#endif /* __ia64__ */
 #endif
 
 /* The state buf must be large enough to hold one state per character in the main buffer.
@@ -739,7 +731,7 @@ int import_string(struct ctf_scanner *scanner, YYSTYPE *lvalp, const char *src, 
 
 
 /* bison-locations */
-#line 743 "ctf-lexer.c"
+#line 735 "ctf-lexer.c"
 
 #define INITIAL 0
 #define comment_ml 1
@@ -874,12 +866,7 @@ static int input (yyscan_t yyscanner );
 
 /* Amount of stuff to slurp up with each read. */
 #ifndef YY_READ_BUF_SIZE
-#ifdef __ia64__
-/* On IA-64, the buffer size is 16k, not 8k */
-#define YY_READ_BUF_SIZE 16384
-#else
 #define YY_READ_BUF_SIZE 8192
-#endif /* __ia64__ */
 #endif
 
 /* Copy whatever the last rule matched to the standard output. */
@@ -1020,7 +1007,7 @@ YY_DECL
 				 * and strings.
 				 */ 
 
-#line 1024 "ctf-lexer.c"
+#line 1011 "ctf-lexer.c"
 
 	while ( 1 )		/* loops until end-of-file is reached */
 		{
@@ -1404,7 +1391,7 @@ YY_RULE_SETUP
 #line 142 "ctf-lexer.l"
 ECHO;
 	YY_BREAK
-#line 1408 "ctf-lexer.c"
+#line 1395 "ctf-lexer.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(comment_ml):
 case YY_STATE_EOF(comment_sl):
@@ -2584,7 +2571,7 @@ void yyfree (void * ptr , yyscan_t yyscanner)
 
 #define YYTABLES_NAME "yytables"
 
-#line 141 "ctf-lexer.l"
+#line 142 "ctf-lexer.l"
 
 
 

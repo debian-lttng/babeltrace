@@ -1,0 +1,30 @@
+From e6a63241ead18d0577b4f4cccfa1405c55a663df Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=A9r=C3=A9mie=20Galarneau?=
+ <jeremie.galarneau@efficios.com>
+Date: Sat, 17 Oct 2015 15:18:40 -0400
+Subject: [PATCH] Fix: include ctf-scanner-symbols.h to prefix yy_* symbols
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Jérémie Galarneau <jeremie.galarneau@efficios.com>
+---
+ formats/ctf/metadata/Makefile.am | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/formats/ctf/metadata/Makefile.am b/formats/ctf/metadata/Makefile.am
+index 1f8e76e..d54c12c 100644
+--- a/formats/ctf/metadata/Makefile.am
++++ b/formats/ctf/metadata/Makefile.am
+@@ -12,7 +12,10 @@ noinst_HEADERS = \
+ 	objstack.h
+ 
+ libctf_parser_la_SOURCES = ctf-lexer.l ctf-parser.y objstack.c
+-libctf_parser_la_CFLAGS = $(AM_CFLAGS)
++# ctf-scanner-symbols.h is included to prefix generated yy_* symbols
++# with bt_.
++libctf_parser_la_CFLAGS = $(AM_CFLAGS) -I$(srcdir) \
++		-include $(srcdir)/ctf-scanner-symbols.h
+ 
+ libctf_ast_la_CFLAGS = $(AM_CFLAGS) -I$(top_builddir)/formats/ctf/metadata
+ libctf_ast_la_SOURCES = ctf-visitor-xml.c \

@@ -364,7 +364,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = utils bin lib
-EXTRA_DIST = ctf-traces/** tests
+EXTRA_DIST = $(srcdir)/ctf-traces/** tests
 SCRIPT_LIST = run.sh
 dist_noinst_SCRIPTS = $(SCRIPT_LIST)
 all: all-recursive
@@ -695,7 +695,7 @@ clean-local:
 	fi
 
 check-am:
-	./run.sh tests
+	./run.sh $(srcdir)/tests
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

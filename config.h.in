@@ -26,6 +26,9 @@
 /* Define to 1 if using `alloca.c'. */
 #undef C_ALLOCA
 
+/* Define to 1 if you enable the 'debug info' feature */
+#undef ENABLE_DEBUG_INFO
+
 /* Define to 1 if you have the `alarm' function. */
 #undef HAVE_ALARM
 
@@ -78,6 +81,12 @@
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
+
+/* Define to 1 if you have the `dw' library (-ldw). */
+#undef HAVE_LIBDW
+
+/* Define to 1 if you have the `elf' library (-lelf). */
+#undef HAVE_LIBELF
 
 /* Define to 1 if you have the <libintl.h> header file. */
 #undef HAVE_LIBINTL_H
@@ -212,6 +221,9 @@
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
+
+/* Define to 1 if you have the `uuid_generate' function. */
+#undef HAVE_UUID_GENERATE
 
 /* Define to 1 if you have the `vfork' function. */
 #undef HAVE_VFORK

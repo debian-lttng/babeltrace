@@ -27,6 +27,7 @@
  */
 
 #include <babeltrace/format.h>
+#include <babeltrace/format-internal.h>
 #include <babeltrace/ctf/types.h>
 #include <babeltrace/ctf/metadata.h>
 #include <babeltrace/babeltrace-internal.h>
@@ -35,6 +36,7 @@
 #include <babeltrace/context-internal.h>
 #include <babeltrace/compat/uuid.h>
 #include <babeltrace/endian.h>
+#include <babeltrace/trace-debug-info.h>
 #include <babeltrace/ctf/ctf-index.h>
 #include <inttypes.h>
 #include <stdio.h>
@@ -67,10 +69,6 @@
  */
 #define WRITE_PACKET_LEN	(getpagesize() * 8 * CHAR_BIT)
 
-#ifndef min
-#define min(a, b)	(((a) < (b)) ? (a) : (b))
-#endif
-
 #define NSEC_PER_SEC 1000000000ULL
 
 #define INDEX_PATH "./index/%s.idx"
@@ -84,6 +82,8 @@ uint64_t opt_clock_offset;
 uint64_t opt_clock_offset_ns;
 
 extern int yydebug;
+char *opt_debug_info_dir;
+char *opt_debug_info_target_prefix;
 
 /*
  * TODO: babeltrace_ctf_console_output ensures that we only print
@@ -421,16 +421,26 @@ void print_uuid(FILE *fp, unsigned char *uuid)
  * Given we have discarded counters of those two types merged into the
  * events_discarded counter, we need to use the union of those ranges:
  *   [ prev_timestamp_end, timestamp_end ]
+ *
+ * Lost packets occur if the tracer overwrote some subbuffer(s) before the
+ * consumer had time to extract them. We keep track of those gaps with the
+ * packet sequence number in each packet.
  */
 static
-void ctf_print_discarded(FILE *fp, struct ctf_stream_definition *stream)
+void ctf_print_discarded_lost(FILE *fp, struct ctf_stream_definition *stream)
 {
-	if (!stream->events_discarded || !babeltrace_ctf_console_output) {
+	if ((!stream->events_discarded && !stream->packets_lost) ||
+			!babeltrace_ctf_console_output) {
 		return;
 	}
 	fflush(stdout);
-	fprintf(fp, "[warning] Tracer discarded %" PRIu64 " events between [",
-		stream->events_discarded);
+	if (stream->events_discarded) {
+		fprintf(fp, "[warning] Tracer discarded %" PRIu64 " events between [",
+				stream->events_discarded);
+	} else if (stream->packets_lost) {
+		fprintf(fp, "[warning] Tracer lost %" PRIu64 " trace packets between [",
+				stream->packets_lost);
+	}
 	if (opt_clock_cycles) {
 		ctf_print_timestamp(fp, stream,
 				stream->prev.cycles.end);
@@ -803,6 +813,7 @@ void ctf_update_current_packet_index(struct ctf_stream_definition *stream,
 		struct packet_index *cur_index)
 {
 	uint64_t events_discarded_diff;
+	uint64_t packets_lost_diff = 0;
 
 	/* Update packet index time information */
 
@@ -830,6 +841,11 @@ void ctf_update_current_packet_index(struct ctf_stream_definition *stream,
 			prev_index->ts_real.timestamp_end;
 
 		events_discarded_diff -= prev_index->events_discarded;
+		/* packet_seq_num stays at 0 if not produced by the tracer */
+		if (cur_index->packet_seq_num) {
+			packets_lost_diff = cur_index->packet_seq_num -
+				prev_index->packet_seq_num - 1;
+		}
 		/*
 		 * Deal with 32-bit wrap-around if the tracer provided a
 		 * 32-bit field.
@@ -850,6 +866,172 @@ void ctf_update_current_packet_index(struct ctf_stream_definition *stream,
 				stream->current.real.begin;
 	}
 	stream->events_discarded = events_discarded_diff;
+	stream->packets_lost = packets_lost_diff;
+}
+
+/*
+ * Find the timerange where all the streams in the trace are active
+ * simultaneously.
+ *
+ * Return 0 and update begin/end if necessary on success, return 1 for
+ * empty streams and return a negative value on error.
+ */
+static
+int ctf_find_stream_intersection(struct bt_trace_descriptor *td_read,
+		struct packet_index_time *_real,
+		struct packet_index_time *_cycles)
+{
+	int stream_id, ret = 0;
+	struct packet_index_time real = { 0, UINT64_MAX },
+			cycles = { 0, UINT64_MAX };
+	struct ctf_trace *tin = container_of(td_read, struct ctf_trace, parent);
+
+	/* At least one of the two return args must be provided. */
+	if (!_real && !_cycles) {
+		ret = -1;
+		goto end;
+	}
+
+	if (tin->streams->len == 0) {
+		ret = 1;
+		goto end;
+	}
+
+	for (stream_id = 0; stream_id < tin->streams->len;
+			stream_id++) {
+		int filenr;
+		struct ctf_stream_declaration *stream_class;
+
+		stream_class = g_ptr_array_index(tin->streams, stream_id);
+		if (!stream_class) {
+			continue;
+		}
+		for (filenr = 0; filenr < stream_class->streams->len; filenr++) {
+			struct ctf_file_stream *file_stream;
+			struct ctf_stream_pos *stream_pos;
+			struct packet_index *index;
+
+			file_stream = g_ptr_array_index(stream_class->streams,
+					filenr);
+			if (!file_stream) {
+				continue;
+			}
+			stream_pos = &file_stream->pos;
+			if (!stream_pos->packet_index ||
+					stream_pos->packet_index->len <= 0) {
+				ret = 1;
+				goto end;
+			}
+			index = &g_array_index(stream_pos->packet_index,
+					struct packet_index, 0);
+			real.timestamp_begin = max(real.timestamp_begin,
+					index->ts_real.timestamp_begin);
+			cycles.timestamp_begin = max(cycles.timestamp_begin,
+					index->ts_cycles.timestamp_begin);
+
+			index = &g_array_index(stream_pos->packet_index,
+					struct packet_index,
+					stream_pos->packet_index->len - 1);
+			real.timestamp_end = min(real.timestamp_end,
+					index->ts_real.timestamp_end);
+			cycles.timestamp_end = min(cycles.timestamp_end,
+					index->ts_cycles.timestamp_end);
+		}
+	}
+end:
+	if (ret == 0) {
+		if (_real) {
+			*_real = real;
+		}
+		if (_cycles) {
+			*_cycles = cycles;
+		}
+	}
+	return ret;
+}
+
+/*
+ * Find the union of all active regions in the trace collection's traces.
+ * Returns "real" timestamps.
+ *
+ * Return 0 on success.
+ * Return 1 if no intersections are found.
+ * Return a negative value on error.
+ */
+int ctf_find_tc_stream_packet_intersection_union(struct bt_context *ctx,
+		uint64_t *_ts_begin, uint64_t *_ts_end)
+{
+	int ret = 0, i;
+	uint64_t ts_begin = UINT64_MAX, ts_end = 0;
+
+	if (!ctx || !ctx->tc || !ctx->tc->array || !_ts_begin || !_ts_end) {
+		ret = -EINVAL;
+		goto end;
+	}
+
+	for (i = 0; i < ctx->tc->array->len; i++) {
+		struct bt_trace_descriptor *td_read;
+		struct packet_index_time intersection_real;
+
+		td_read = g_ptr_array_index(ctx->tc->array, i);
+		if (!td_read) {
+			continue;
+		}
+		ret = ctf_find_stream_intersection(td_read, &intersection_real,
+				NULL);
+		if (ret == 1) {
+			/* Empty trace or no stream intersection. */
+			continue;
+		} else if (ret < 0) {
+			goto end;
+		}
+
+		ts_begin = min(intersection_real.timestamp_begin, ts_begin);
+		ts_end = max(intersection_real.timestamp_end, ts_end);
+	}
+
+	if (ts_end < ts_begin) {
+		ret = 1;
+		goto end;
+	}
+	*_ts_begin = ts_begin;
+	*_ts_end = ts_end;
+end:
+	return ret;
+}
+
+int ctf_tc_set_stream_intersection_mode(struct bt_context *ctx)
+{
+	int ret = 0, i;
+
+	if (!ctx || !ctx->tc || !ctx->tc->array) {
+		ret = -EINVAL;
+		goto end;
+	}
+
+	for (i = 0; i < ctx->tc->array->len; i++) {
+		struct bt_trace_descriptor *td_read;
+		struct packet_index_time intersection_real;
+
+		td_read = g_ptr_array_index(ctx->tc->array, i);
+		if (!td_read) {
+			continue;
+		}
+
+		ret = ctf_find_stream_intersection(td_read, &intersection_real,
+				NULL);
+		if (ret == 1) {
+			/* Empty trace or no stream intersection. */
+			continue;
+		} else if (ret < 0) {
+			goto end;
+		}
+
+		td_read->interval_real = intersection_real;
+		td_read->interval_set = true;
+	}
+end:
+	return ret;
 }
 
 /*
@@ -960,7 +1142,7 @@ void ctf_packet_seek(struct bt_stream_pos *stream_pos, size_t index, int whence)
 		 * timestamps.
 		 */
 		if ((&file_stream->parent)->stream_class->trace->parent.collection) {
-			ctf_print_discarded(stderr, &file_stream->parent);
+			ctf_print_discarded_lost(stderr, &file_stream->parent);
 		}
 
 		packet_index = &g_array_index(pos->packet_index,
@@ -1512,6 +1694,7 @@ int create_stream_one_packet_index(struct ctf_stream_pos *pos,
 	int ret;
 
 begin:
+	memset(&packet_index, 0, sizeof(packet_index));
 	if (!pos->mmap_offset) {
 		first_packet = 1;
 	}
@@ -1543,14 +1726,6 @@ begin:
 	pos->offset = 0;	/* Position of the packet header */
 
 	packet_index.offset = pos->mmap_offset;
-	packet_index.content_size = 0;
-	packet_index.packet_size = 0;
-	packet_index.ts_real.timestamp_begin = 0;
-	packet_index.ts_real.timestamp_end = 0;
-	packet_index.ts_cycles.timestamp_begin = 0;
-	packet_index.ts_cycles.timestamp_end = 0;
-	packet_index.events_discarded = 0;
-	packet_index.events_discarded_len = 0;
 
 	/* read and check header, set stream id (and check) */
 	if (file_stream->parent.trace_packet_header) {
@@ -1697,6 +1872,19 @@ begin:
 			packet_index.events_discarded = bt_get_unsigned_int(field);
 			packet_index.events_discarded_len = bt_get_int_len(field);
 		}
+
+		/* read packet_seq_num from header */
+		len_index = bt_struct_declaration_lookup_field_index(
+				file_stream->parent.stream_packet_context->declaration,
+				g_quark_from_static_string("packet_seq_num"));
+		if (len_index >= 0) {
+			struct bt_definition *field;
+
+			field = bt_struct_definition_get_field_from_index(
+					file_stream->parent.stream_packet_context,
+					len_index);
+			packet_index.packet_seq_num = bt_get_unsigned_int(field);
+		}
 	} else {
 		/* Use file size for packet size */
 		packet_index.packet_size = filesize * CHAR_BIT;
@@ -1837,7 +2025,7 @@ int import_stream_packet_index(struct ctf_trace *td,
 	struct ctf_packet_index *ctf_index = NULL;
 	struct ctf_packet_index_file_hdr index_hdr;
 	struct packet_index index;
-	uint32_t packet_index_len;
+	uint32_t packet_index_len, index_minor;
 	int ret = 0;
 	int first_packet = 1;
 	size_t len;
@@ -1865,6 +2053,8 @@ int import_stream_packet_index(struct ctf_trace *td,
 		ret = -1;
 		goto error;
 	}
+	index_minor = be32toh(index_hdr.index_minor);
+
 	packet_index_len = be32toh(index_hdr.packet_index_len);
 	if (packet_index_len == 0) {
 		fprintf(stderr, "[error] Packet index length cannot be 0.\n");
@@ -1891,6 +2081,10 @@ int import_stream_packet_index(struct ctf_trace *td,
 		index.events_discarded_len = 64;
 		index.data_offset = -1;
 		stream_id = be64toh(ctf_index->stream_id);
+		if (index_minor >= 1) {
+			index.stream_instance_id = be64toh(ctf_index->stream_instance_id);
+			index.packet_seq_num = be64toh(ctf_index->packet_seq_num);
+		}
 
 		if (!first_packet) {
 			/* add index to packet array */
@@ -2207,6 +2401,10 @@ struct bt_trace_descriptor *ctf_open_trace(const char *path, int flags,
 		packet_seek = ctf_packet_seek;
 
 	td = g_new0(struct ctf_trace, 1);
+	if (!td) {
+		goto error;
+	}
+	init_trace_descriptor(&td->parent);
 
 	switch (flags & O_ACCMODE) {
 	case O_RDONLY:
@@ -2226,9 +2424,17 @@ struct bt_trace_descriptor *ctf_open_trace(const char *path, int flags,
 		goto error;
 	}
 
+	ret = trace_debug_info_create(td);
+	if (ret) {
+		goto error;
+	}
+
 	return &td->parent;
 error:
-	g_free(td);
+	if (td) {
+		trace_debug_info_destroy(td);
+		g_free(td);
+	}
 	return NULL;
 }
 
@@ -2396,6 +2602,11 @@ struct bt_trace_descriptor *ctf_open_mmap_trace(
 	if (ret)
 		goto error_free;
 
+	ret = trace_debug_info_create(td);
+	if (ret) {
+		goto error_free;
+	}
+
 	return &td->parent;
 
 error_free:
@@ -2547,6 +2758,7 @@ int ctf_close_trace(struct bt_trace_descriptor *tdp)
 		}
 	}
 	free(td->metadata_string);
+	trace_debug_info_destroy(td);
 	g_free(td);
 	return 0;
 }

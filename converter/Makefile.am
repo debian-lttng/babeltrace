@@ -19,6 +19,10 @@ babeltrace_LDADD = \
 	$(top_builddir)/formats/bt-dummy/libbabeltrace-dummy.la \
 	$(top_builddir)/formats/lttng-live/libbabeltrace-lttng-live.la
 
+if ENABLE_DEBUG_INFO
+babeltrace_LDADD += $(top_builddir)/lib/libdebug-info.la
+endif
+
 babeltrace_log_SOURCES = babeltrace-log.c
 
 babeltrace_log_LDADD = \

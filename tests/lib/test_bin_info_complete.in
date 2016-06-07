@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 #
-# Copyright (C) 2013 - Christian Babeux <christian.babeux@efficios.com>
+# Copyright (C) 2015 - Antoine Busque <abusque@efficios.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,6 +17,6 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 
-[ -z "$1" ] && echo "Error: No testlist. Please specify a testlist to run." && exit 1
+DEBUG_INFO_DATA="@abs_top_srcdir@/tests/debug-info-data"
 
-prove --merge --exec '' - < $1
+"@abs_top_builddir@/tests/lib/test_bin_info" "$DEBUG_INFO_DATA"

@@ -26,22 +26,23 @@ test_seek_SOURCES = test_seek.c
 test_bitfield_SOURCES = test_bitfield.c
 test_ctf_writer_SOURCES = test_ctf_writer.c
 
-SCRIPT_LIST = test_seek_big_trace \
-	test_seek_empty_packet \
-	test_ctf_writer_complete
+check_SCRIPTS = test_seek_big_trace \
+		test_seek_empty_packet \
+		test_ctf_writer_complete
 
-dist_noinst_SCRIPTS = $(SCRIPT_LIST)
+if ENABLE_DEBUG_INFO
+test_dwarf_LDFLAGS = -static
+test_dwarf_LDADD = $(LIBTAP) \
+	$(top_builddir)/lib/libbabeltrace.la \
+	$(top_builddir)/lib/libdebug-info.la
+test_dwarf_SOURCES = test_dwarf.c
 
-all-local:
-	@if [ x"$(srcdir)" != x"$(builddir)" ]; then \
-		for script in $(SCRIPT_LIST); do \
-			cp -f $(srcdir)/$$script $(builddir); \
-		done; \
-	fi
+test_bin_info_LDFLAGS = -static
+test_bin_info_LDADD = $(LIBTAP) \
+	$(top_builddir)/lib/libbabeltrace.la \
+	$(top_builddir)/lib/libdebug-info.la
+test_bin_info_SOURCES = test_bin_info.c
 
-clean-local:
-	@if [ x"$(srcdir)" != x"$(builddir)" ]; then \
-		for script in $(SCRIPT_LIST); do \
-			rm -f $(builddir)/$$script; \
-		done; \
-	fi
+noinst_PROGRAMS += test_dwarf test_bin_info
+check_SCRIPTS += test_dwarf_complete test_bin_info_complete
+endif

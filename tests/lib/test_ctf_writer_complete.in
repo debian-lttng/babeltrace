@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (C) 2013 - Christian Babeux <christian.babeux@efficios.com>
+# Copyright (C) 2013 - Jérémie Galarneau <jeremie.galarneau@efficios.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -16,8 +16,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
-CURDIR=$(dirname $0)/
-TESTDIR=$CURDIR/../
-CTF_TRACES=$TESTDIR/ctf-traces
 
-$CURDIR/test_seek $CTF_TRACES/succeed/lttng-modules-2.0-pre5/ 61334174524234 61336381998396
+CTFPARSERTEST="@abs_top_builddir@/formats/ctf/metadata/ctf-parser-test"
+BTBIN="@abs_top_builddir@/converter/babeltrace"
+
+"@abs_top_builddir@/tests/lib/test_ctf_writer" "$CTFPARSERTEST" "$BTBIN"

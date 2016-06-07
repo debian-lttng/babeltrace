@@ -31,7 +31,6 @@
 #include <errno.h>
 #include <inttypes.h>
 #include <fcntl.h>
-#include <sys/mman.h>
 #include <poll.h>
 
 #include <babeltrace/ctf/ctf-index.h>
@@ -53,6 +52,7 @@
 #include <babeltrace/compat/memstream.h>
 #include <babeltrace/compat/send.h>
 #include <babeltrace/compat/string.h>
+#include <babeltrace/compat/mman.h>
 
 #include "lttng-live.h"
 #include "lttng-viewer-abi.h"
@@ -166,8 +166,8 @@ int lttng_live_establish_connection(struct lttng_live_ctx *ctx)
 	}
 
 	cmd.cmd = htobe32(LTTNG_VIEWER_CONNECT);
-	cmd.data_size = sizeof(connect);
-	cmd.cmd_version = 0;
+	cmd.data_size = htobe64((uint64_t) sizeof(connect));
+	cmd.cmd_version = htobe32(0);
 
 	connect.viewer_session_id = -1ULL;	/* will be set on recv */
 	connect.major = htobe32(LTTNG_LIVE_MAJOR);
@@ -246,7 +246,7 @@ void print_session_list(GPtrArray *session_list, const char *path)
 
 	for (i = 0; i < session_list->len; i++) {
 		relay_session = g_ptr_array_index(session_list, i);
-		fprintf(stdout, "%s/host/%s/%s (timer = %u, "
+		fprintf(LTTNG_LIVE_OUTPUT_FP, "%s/host/%s/%s (timer = %u, "
 				"%u stream(s), %u client(s) connected)\n",
 				path, relay_session->hostname,
 				relay_session->name, relay_session->timer,
@@ -307,8 +307,8 @@ int lttng_live_list_sessions(struct lttng_live_ctx *ctx, const char *path)
 	}
 
 	cmd.cmd = htobe32(LTTNG_VIEWER_LIST_SESSIONS);
-	cmd.data_size = 0;
-	cmd.cmd_version = 0;
+	cmd.data_size = htobe64((uint64_t) 0);
+	cmd.cmd_version = htobe32(0);
 
 	ret_len = lttng_live_send(ctx->control_sock, &cmd, sizeof(cmd));
 	if (ret_len < 0) {
@@ -432,8 +432,8 @@ int lttng_live_attach_session(struct lttng_live_ctx *ctx, uint64_t id)
 	}
 
 	cmd.cmd = htobe32(LTTNG_VIEWER_ATTACH_SESSION);
-	cmd.data_size = sizeof(rq);
-	cmd.cmd_version = 0;
+	cmd.data_size = htobe64((uint64_t) sizeof(rq));
+	cmd.cmd_version = htobe32(0);
 
 	memset(&rq, 0, sizeof(rq));
 	rq.session_id = htobe64(id);
@@ -649,9 +649,21 @@ retry:
 		ret = -1;
 		goto end;
 	}
+
+	/*
+	 * Flush the output between attempts to grab a packet, thus
+	 * ensuring we flush at least at the periodical timer period.
+	 * This ensures the output remains reactive for interactive users and
+	 * that the output is flushed when redirected to a file by the shell.
+	 */
+	if (fflush(LTTNG_LIVE_OUTPUT_FP) < 0) {
+		perror("fflush");
+		goto error;
+	}
+
 	cmd.cmd = htobe32(LTTNG_VIEWER_GET_PACKET);
-	cmd.data_size = sizeof(rq);
-	cmd.cmd_version = 0;
+	cmd.data_size = htobe64((uint64_t) sizeof(rq));
+	cmd.cmd_version = htobe32(0);
 
 	memset(&rq, 0, sizeof(rq));
 	rq.stream_id = htobe64(stream->id);
@@ -802,8 +814,8 @@ int get_one_metadata_packet(struct lttng_live_ctx *ctx,
 
 	rq.stream_id = htobe64(metadata_stream->id);
 	cmd.cmd = htobe32(LTTNG_VIEWER_GET_METADATA);
-	cmd.data_size = sizeof(rq);
-	cmd.cmd_version = 0;
+	cmd.data_size = htobe64((uint64_t) sizeof(rq));
+	cmd.cmd_version = htobe32(0);
 
 	ret_len = lttng_live_send(ctx->control_sock, &cmd, sizeof(cmd));
 	if (ret_len < 0) {
@@ -977,8 +989,8 @@ int get_next_index(struct lttng_live_ctx *ctx,
 	struct lttng_viewer_index *rp = &viewer_stream->current_index;
 
 	cmd.cmd = htobe32(LTTNG_VIEWER_GET_NEXT_INDEX);
-	cmd.data_size = sizeof(rq);
-	cmd.cmd_version = 0;
+	cmd.data_size = htobe64((uint64_t) sizeof(rq));
+	cmd.cmd_version = htobe32(0);
 
 	memset(&rq, 0, sizeof(rq));
 	rq.stream_id = htobe64(viewer_stream->id);
@@ -1320,8 +1332,8 @@ int lttng_live_create_viewer_session(struct lttng_live_ctx *ctx)
 	}
 
 	cmd.cmd = htobe32(LTTNG_VIEWER_CREATE_SESSION);
-	cmd.data_size = 0;
-	cmd.cmd_version = 0;
+	cmd.data_size = htobe64((uint64_t) 0);
+	cmd.cmd_version = htobe32(0);
 
 	ret_len = lttng_live_send(ctx->control_sock, &cmd, sizeof(cmd));
 	if (ret_len < 0) {
@@ -1510,8 +1522,8 @@ int lttng_live_get_new_streams(struct lttng_live_ctx *ctx, uint64_t id)
 	}
 
 	cmd.cmd = htobe32(LTTNG_VIEWER_GET_NEW_STREAMS);
-	cmd.data_size = sizeof(rq);
-	cmd.cmd_version = 0;
+	cmd.data_size = htobe64((uint64_t) sizeof(rq));
+	cmd.cmd_version = htobe32(0);
 
 	memset(&rq, 0, sizeof(rq));
 	rq.session_id = htobe64(id);

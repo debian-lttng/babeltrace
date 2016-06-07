@@ -233,7 +233,7 @@ main ()
 ])
 
 dnl pkg.m4 - Macros to locate and utilise pkg-config.   -*- Autoconf -*-
-dnl serial 11 (pkg-config-0.29)
+dnl serial 11 (pkg-config-0.29.1)
 dnl
 dnl Copyright © 2004 Scott James Remnant <scott@netsplit.com>.
 dnl Copyright © 2012-2015 Dan Nicholson <dbn.lists@gmail.com>
@@ -275,7 +275,7 @@ dnl
 dnl See the "Since" comment for each macro you use to see what version
 dnl of the macros you require.
 m4_defun([PKG_PREREQ],
-[m4_define([PKG_MACROS_VERSION], [0.29])
+[m4_define([PKG_MACROS_VERSION], [0.29.1])
 m4_if(m4_version_compare(PKG_MACROS_VERSION, [$1]), -1,
     [m4_fatal([pkg.m4 version $1 or higher is required but ]PKG_MACROS_VERSION[ found])])
 ])dnl PKG_PREREQ
@@ -1914,6 +1914,7 @@ m4_include([m4/ax_append_link_flags.m4])
 m4_include([m4/ax_c___attribute__.m4])
 m4_include([m4/ax_check_link_flag.m4])
 m4_include([m4/ax_compare_version.m4])
+m4_include([m4/ax_lib_elfutils.m4])
 m4_include([m4/ax_lib_socket_nsl.m4])
 m4_include([m4/ax_pkg_swig.m4])
 m4_include([m4/ax_prog_bison_version.m4])
@@ -1925,4 +1926,5 @@ m4_include([m4/ltoptions.m4])
 m4_include([m4/ltsugar.m4])
 m4_include([m4/ltversion.m4])
 m4_include([m4/lt~obsolete.m4])
+m4_include([m4/pprint.m4])
 m4_include([m4/python_modules.m4])

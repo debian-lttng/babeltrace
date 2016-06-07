@@ -90,10 +90,11 @@ build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
 bin_PROGRAMS = babeltrace$(EXEEXT) babeltrace-log$(EXEEXT)
-@BABELTRACE_BUILD_WITH_LIBUUID_TRUE@am__append_1 = -luuid
-@BABELTRACE_BUILD_WITH_LIBC_UUID_TRUE@am__append_2 = -lc
-@BABELTRACE_BUILD_WITH_MINGW_TRUE@am__append_3 = -lrpcrt4 -lintl -liconv -lole32 -lpopt -lpthread
+@ENABLE_DEBUG_INFO_TRUE@am__append_1 = $(top_builddir)/lib/libdebug-info.la
+@BABELTRACE_BUILD_WITH_LIBUUID_TRUE@am__append_2 = -luuid
+@BABELTRACE_BUILD_WITH_LIBC_UUID_TRUE@am__append_3 = -lc
 @BABELTRACE_BUILD_WITH_MINGW_TRUE@am__append_4 = -lrpcrt4 -lintl -liconv -lole32 -lpopt -lpthread
+@BABELTRACE_BUILD_WITH_MINGW_TRUE@am__append_5 = -lrpcrt4 -lintl -liconv -lole32 -lpopt -lpthread
 subdir = converter
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_append_flag.m4 \
@@ -101,6 +102,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/ax_append_flag.m4 \
 	$(top_srcdir)/m4/ax_c___attribute__.m4 \
 	$(top_srcdir)/m4/ax_check_link_flag.m4 \
 	$(top_srcdir)/m4/ax_compare_version.m4 \
+	$(top_srcdir)/m4/ax_lib_elfutils.m4 \
 	$(top_srcdir)/m4/ax_lib_socket_nsl.m4 \
 	$(top_srcdir)/m4/ax_pkg_swig.m4 \
 	$(top_srcdir)/m4/ax_prog_bison_version.m4 \
@@ -109,7 +111,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/ax_append_flag.m4 \
 	$(top_srcdir)/m4/ax_require_defined.m4 \
 	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
 	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/pprint.m4 \
 	$(top_srcdir)/m4/python_modules.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
@@ -130,7 +132,7 @@ babeltrace_DEPENDENCIES = $(top_builddir)/lib/libbabeltrace.la \
 	$(top_builddir)/formats/ctf-metadata/libbabeltrace-ctf-metadata.la \
 	$(top_builddir)/formats/bt-dummy/libbabeltrace-dummy.la \
 	$(top_builddir)/formats/lttng-live/libbabeltrace-lttng-live.la \
-	$(am__DEPENDENCIES_1)
+	$(am__append_1) $(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -354,6 +356,7 @@ oldincludedir = @oldincludedir@
 pdfdir = @pdfdir@
 pkgpyexecdir = @pkgpyexecdir@
 pkgpythondir = @pkgpythondir@
+pprint_tput = @pprint_tput@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
 psdir = @psdir@
@@ -388,12 +391,12 @@ babeltrace_LDADD = $(top_builddir)/lib/libbabeltrace.la \
 	$(top_builddir)/formats/ctf-metadata/libbabeltrace-ctf-metadata.la \
 	$(top_builddir)/formats/bt-dummy/libbabeltrace-dummy.la \
 	$(top_builddir)/formats/lttng-live/libbabeltrace-lttng-live.la \
-	$(am__append_4)
+	$(am__append_1) $(am__append_5)
 babeltrace_log_SOURCES = babeltrace-log.c
 babeltrace_log_LDADD = $(top_builddir)/lib/libbabeltrace.la \
 	$(top_builddir)/formats/ctf/libbabeltrace-ctf.la \
-	$(top_builddir)/compat/libcompat.la $(am__append_1) \
-	$(am__append_2) $(am__append_3)
+	$(top_builddir)/compat/libcompat.la $(am__append_2) \
+	$(am__append_3) $(am__append_4)
 all: all-am
 
 .SUFFIXES:

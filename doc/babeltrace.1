@@ -57,7 +57,7 @@ Print field names: (payload OR args OR arg), none, all, scope, header,
 Print additional fields: all, trace, trace:hostname, trace:domain,
 trace:procname, trace:vpid, loglevel.
 .TP
-.BR "--clock-raw"
+.BR "--clock-cycles"
 Disregard internal clock offset (use raw value)
 .TP
 .BR "--clock-offset seconds"
@@ -71,6 +71,18 @@ Print clock date
 .TP
 .BR "--clock-gmt"
 Print clock in GMT time zone (default: local time zone)
+.TP
+.BR "--stream-intersection"
+Only print events when all streams are active
+.TP
+.BR "--debug-info-dir"
+Directory in which to look for debugging information files (default: /usr/lib/debug/)
+.TP
+.BR "--debug-info-target-prefix"
+Directory to use as a prefix for executable lookup
+.TP
+.BR "--debug-info-full-path"
+Show full debug info source and binary paths (if available)
 .TP
 
 .fi
@@ -97,7 +109,8 @@ babeltrace-log(1), lttng(1), lttng-ust(3), lttng-sessiond(8)
 .SH "BUGS"
 
 .PP
-No known bugs at this point.
+The lttng-live plugin does not honor the the "--output" command line
+option.
 
 If you encounter any issues or usability problem, please report it on
 our mailing list <lttng-dev@lists.lttng.org> to help improve this

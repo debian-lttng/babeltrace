@@ -1,24 +1,27 @@
 SUBDIRS = utils bin lib
 
-EXTRA_DIST = $(srcdir)/ctf-traces/** tests
+LOG_DRIVER_FLAGS='--merge'
+LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) \
+	$(top_srcdir)/config/tap-driver.sh
 
-SCRIPT_LIST = run.sh
+TESTS = bin/test_trace_read \
+	bin/test_trace_read \
+	bin/test_packet_seq_num \
+	bin/intersection/test_intersection \
+	lib/test_bitfield \
+	lib/test_seek_empty_packet \
+	lib/test_seek_big_trace \
+	lib/test_ctf_writer_complete
 
-dist_noinst_SCRIPTS = $(SCRIPT_LIST)
+EXTRA_DIST = $(srcdir)/ctf-traces/** \
+	     $(srcdir)/debug-info-data/** \
+	     $(srcdir)/debug-info-data/.build-id/cd/**
 
-all-local:
-	@if [ x"$(srcdir)" != x"$(builddir)" ]; then \
-		for script in $(SCRIPT_LIST); do \
-			cp -f $(srcdir)/$$script $(builddir); \
-		done; \
-	fi
+if ENABLE_DEBUG_INFO
+TESTS += lib/test_dwarf_complete \
+	lib/test_bin_info_complete
+endif
 
-clean-local:
-	@if [ x"$(srcdir)" != x"$(builddir)" ]; then \
-		for script in $(SCRIPT_LIST); do \
-			rm -f $(builddir)/$$script; \
-		done; \
-	fi
-
-check-am:
-	./run.sh $(srcdir)/tests
+if USE_PYTHON
+TESTS += bin/intersection/test_multi_trace_intersection.py
+endif

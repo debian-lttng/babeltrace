@@ -119,6 +119,10 @@ int parse_url(const char *path, struct lttng_live_ctx *ctx)
 	if (proto_offset > path_len) {
 		goto end;
 	}
+	if (proto == 6) {
+		fprintf(stderr, "[error] IPv6 is currently unsupported by lttng-live\n");
+		goto end;
+	}
 	/* TODO : parse for IPv6 as well */
 	/* Parse the hostname or IP */
 	ret = sscanf(&path[proto_offset], "%[a-zA-Z.0-9%-]%s",
@@ -292,6 +296,12 @@ struct bt_trace_descriptor *lttng_live_open_trace(const char *path, int flags,
 	pos->parent.rw_table = NULL;
 	pos->parent.event_cb = NULL;
 	pos->parent.trace = &pos->trace_descriptor;
+	/*
+	 * Since we do *everything* in this function, we are skipping
+	 * the output plugin handling that is part of Babeltrace 1.x.
+	 * Therefore, don't expect the --output cmd line option to work.
+	 * This limits the output of lttng-live to stderr and stdout.
+	 */
 	if (lttng_live_open_trace_read(path) < 0) {
 		goto error;
 	}
@@ -307,7 +317,7 @@ int lttng_live_close_trace(struct bt_trace_descriptor *td)
 	struct ctf_text_stream_pos *pos =
 		container_of(td, struct ctf_text_stream_pos,
 			trace_descriptor);
-	free(pos);
+	g_free(pos);
 	return 0;
 }
 

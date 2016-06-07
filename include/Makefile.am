@@ -32,6 +32,12 @@ noinst_HEADERS = \
 	babeltrace/trace-collection.h \
 	babeltrace/prio_heap.h \
 	babeltrace/types.h \
+	babeltrace/crc32.h \
+	babeltrace/debug-info.h \
+	babeltrace/trace-debug-info.h \
+	babeltrace/dwarf.h \
+	babeltrace/bin-info.h \
+	babeltrace/utils.h \
 	babeltrace/ctf-ir/metadata.h \
 	babeltrace/ctf/events-internal.h \
 	babeltrace/ctf/metadata.h \
@@ -58,5 +64,6 @@ noinst_HEADERS = \
 	babeltrace/compat/stdlib.h \
 	babeltrace/compat/dirent.h \
 	babeltrace/compat/stdio.h \
+	babeltrace/compat/mman.h \
 	babeltrace/endian.h \
 	babeltrace/mmap-align.h

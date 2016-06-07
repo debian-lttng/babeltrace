@@ -4,6 +4,7 @@ libbabeltrace-ctf-text.so.1 libbabeltrace-ctf1 #MINVER#
  opt_all_fields@Base 1.2.1
  opt_callsite_field@Base 1.2.1
  opt_context_field_names@Base 1.2.1
+ opt_debug_info_full_path@Base 1.4.0
  opt_delta_field@Base 1.2.1
  opt_emf_field@Base 1.2.1
  opt_header_field_names@Base 1.2.1
@@ -109,6 +110,7 @@ libbabeltrace-ctf.so.1 libbabeltrace-ctf1 #MINVER#
  bt_ctf_get_variant@Base 1.2.1
  bt_ctf_iter_add_callback@Base 1.2.1
  bt_ctf_iter_create@Base 1.2.1
+ bt_ctf_iter_create_intersect@Base 1.4.0
  bt_ctf_iter_destroy@Base 1.2.1
  bt_ctf_iter_read_event@Base 1.2.1
  bt_ctf_iter_read_event_flags@Base 1.2.1
@@ -162,6 +164,7 @@ libbabeltrace-ctf.so.1 libbabeltrace-ctf1 #MINVER#
  bt_yyset_lval@Base 1.2.1
  bt_yyset_out@Base 1.2.1
  ctf_append_trace_metadata@Base 1.2.1
+ ctf_find_tc_stream_packet_intersection_union@Base 1.4.0
  ctf_fini_pos@Base 1.2.1
  ctf_init_pos@Base 1.2.1
  ctf_packet_seek@Base 1.2.1
@@ -169,6 +172,7 @@ libbabeltrace-ctf.so.1 libbabeltrace-ctf1 #MINVER#
  ctf_scanner_alloc@Base 1.2.1
  ctf_scanner_append_ast@Base 1.2.1
  ctf_scanner_free@Base 1.2.1
+ ctf_tc_set_stream_intersection_mode@Base 1.4.0
  ctf_update_current_packet_index@Base 1.2.1
  opt_clock_cycles@Base 1.2.1
  opt_clock_date@Base 1.2.1
@@ -177,3 +181,5 @@ libbabeltrace-ctf.so.1 libbabeltrace-ctf1 #MINVER#
  opt_clock_offset@Base 1.2.1
  opt_clock_offset_ns@Base 1.2.1
  opt_clock_seconds@Base 1.2.1
+ opt_debug_info_dir@Base 1.4.0
+ opt_debug_info_target_prefix@Base 1.4.0

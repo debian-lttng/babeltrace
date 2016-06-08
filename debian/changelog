@@ -1,3 +1,13 @@
+babeltrace (1.4.0-1) unstable; urgency=medium
+
+  [ Michael Jeanson ]
+  * [fa3c097] New upstream version 1.4.0
+  * [f1d8c38] Add libdw-dev and libelf-dev to builddeps
+  * [f032bb0] Bump standard to 0.9.8, no changes necessary
+  * [b7011b4] Update symbols for 1.4.0
+
+ -- Jon Bernard <jbernard@debian.org>  Wed, 08 Jun 2016 17:39:56 +0000
+
 babeltrace (1.3.2-1) unstable; urgency=medium
 
   [ Michael Jeanson ]

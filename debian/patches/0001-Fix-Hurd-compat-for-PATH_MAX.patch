@@ -11,8 +11,6 @@ Signed-off-by: Michael Jeanson <mjeanson@efficios.com>
  tests/lib/test_dwarf.c                     | 1 +
  4 files changed, 8 insertions(+)
 
-diff --git a/include/babeltrace/compat/limits.h b/include/babeltrace/compat/limits.h
-index b276183..e602fa4 100644
 --- a/include/babeltrace/compat/limits.h
 +++ b/include/babeltrace/compat/limits.h
 @@ -43,4 +43,9 @@
@@ -25,8 +23,6 @@ index b276183..e602fa4 100644
 +#endif /* PATH_MAX */
 +
  #endif /* _BABELTRACE_LIMITS_H */
-diff --git a/include/babeltrace/trace-handle-internal.h b/include/babeltrace/trace-handle-internal.h
-index 924c730..2bee2b8 100644
 --- a/include/babeltrace/trace-handle-internal.h
 +++ b/include/babeltrace/trace-handle-internal.h
 @@ -34,6 +34,7 @@
@@ -37,8 +33,6 @@ index 924c730..2bee2b8 100644
  
  /*
   * trace_handle : unique identifier of a trace
-diff --git a/tests/lib/test_bin_info.c b/tests/lib/test_bin_info.c
-index fd9e4f1..2ce6962 100644
 --- a/tests/lib/test_bin_info.c
 +++ b/tests/lib/test_bin_info.c
 @@ -24,6 +24,7 @@
@@ -49,8 +43,6 @@ index fd9e4f1..2ce6962 100644
  #include "tap/tap.h"
  
  #define NR_TESTS 36
-diff --git a/tests/lib/test_dwarf.c b/tests/lib/test_dwarf.c
-index 90c1441..f4aad64 100644
 --- a/tests/lib/test_dwarf.c
 +++ b/tests/lib/test_dwarf.c
 @@ -26,6 +26,7 @@
@@ -61,6 +53,13 @@ index 90c1441..f4aad64 100644
  #include "tap/tap.h"
  
  #define NR_TESTS 15
--- 
-2.7.4
-
+--- a/include/babeltrace/format-internal.h
++++ b/include/babeltrace/format-internal.h
+@@ -33,6 +33,7 @@
+ #include <babeltrace/context-internal.h>
+ #include <babeltrace/babeltrace-internal.h>
+ #include <babeltrace/ctf/types.h>
++#include <babeltrace/compat/limits.h>
+ 
+ #ifdef __cplusplus
+ extern "C" {

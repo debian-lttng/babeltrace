@@ -1,3 +1,10 @@
+babeltrace (1.4.0-2) unstable; urgency=medium
+
+  * [bc07143] Add patch to fix hurd build
+  * [bb5467a] Add Michael Jeanson as uploader
+
+ -- Michael Jeanson <mjeanson@ubuntu.com>  Fri, 08 Jul 2016 05:46:43 -0400
+
 babeltrace (1.4.0-1) unstable; urgency=medium
 
   [ Michael Jeanson ]

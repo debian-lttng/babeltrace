@@ -1,3 +1,9 @@
+babeltrace (1.4.0-3) unstable; urgency=medium
+
+  * [21e296d] Update patch to fix hurd build
+
+ -- Michael Jeanson <mjeanson@ubuntu.com>  Fri, 08 Jul 2016 11:34:21 -0400
+
 babeltrace (1.4.0-2) unstable; urgency=medium
 
   * [bc07143] Add patch to fix hurd build

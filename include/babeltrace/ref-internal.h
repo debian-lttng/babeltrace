@@ -1,10 +1,10 @@
-#ifndef BABELTRACE_CTF_WRITER_CLOCK_INTERNAL_H
-#define BABELTRACE_CTF_WRITER_CLOCK_INTERNAL_H
+#ifndef BABELTRACE_REF_INTERNAL_H
+#define BABELTRACE_REF_INTERNAL_H
 
 /*
- * BabelTrace - CTF Writer: Clock internal
+ * Babeltrace - Reference Counting
  *
- * Copyright 2013 EfficiOS Inc.
+ * Copyright 2013, 2014 Jérémie Galarneau <jeremie.galarneau@efficios.com>
  *
  * Author: Jérémie Galarneau <jeremie.galarneau@efficios.com>
  *
@@ -27,39 +27,41 @@
  * SOFTWARE.
  */
 
-#include <babeltrace/ctf-writer/ref-internal.h>
-#include <babeltrace/ctf-writer/clock.h>
-#include <babeltrace/ctf-writer/writer-internal.h>
 #include <babeltrace/babeltrace-internal.h>
-#include <glib.h>
-#include <uuid/uuid.h>
+#include <assert.h>
 
-struct bt_ctf_clock {
-	struct bt_ctf_ref ref_count;
-	GString *name;
-	GString *description;
-	uint64_t frequency;
-	uint64_t precision;
-	uint64_t offset_s;	/* Offset in seconds */
-	uint64_t offset;	/* Offset in ticks */
-	uint64_t time;		/* Current clock value */
-	uuid_t uuid;
-	int absolute;
-	/*
-	 * A clock's properties can't be modified once it is added to a stream
-	 * class.
-	 */
-	int frozen;
+struct bt_object;
+typedef void (*bt_object_release_func)(struct bt_object *);
+
+struct bt_ref {
+	long count;
+	bt_object_release_func release;
 };
 
-BT_HIDDEN
-void bt_ctf_clock_freeze(struct bt_ctf_clock *clock);
+static inline
+void bt_ref_init(struct bt_ref *ref, bt_object_release_func release)
+{
+	assert(ref);
+	ref->count = 1;
+	ref->release = release;
+}
 
-BT_HIDDEN
-void bt_ctf_clock_serialize(struct bt_ctf_clock *clock,
-		struct metadata_context *context);
+static inline
+void bt_ref_get(struct bt_ref *ref)
+{
+	assert(ref);
+	ref->count++;
+}
 
-BT_HIDDEN
-uint64_t bt_ctf_clock_get_time(struct bt_ctf_clock *clock);
+static inline
+void bt_ref_put(struct bt_ref *ref)
+{
+	assert(ref);
+	/* Only assert if the object has opted-in for reference counting. */
+	assert(!ref->release || ref->count > 0);
+	if ((--ref->count) == 0 && ref->release) {
+		ref->release((struct bt_object *) ref);
+	}
+}
 
-#endif /* BABELTRACE_CTF_WRITER_CLOCK_INTERNAL_H */
+#endif /* BABELTRACE_REF_INTERNAL_H */

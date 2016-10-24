@@ -113,8 +113,7 @@ DIST_COMMON = $(srcdir)/Makefile.am $(dist_noinst_SCRIPTS) \
 	$(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
-CONFIG_CLEAN_FILES = test_intersection bt_python_helper.py \
-	test_multi_trace_intersection.py
+CONFIG_CLEAN_FILES = test_intersection bt_python_helper.py
 CONFIG_CLEAN_VPATH_FILES =
 SCRIPTS = $(dist_noinst_SCRIPTS)
 AM_V_P = $(am__v_P_@AM_V@)
@@ -139,8 +138,7 @@ am__can_run_installinfo = \
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 am__DIST_COMMON = $(srcdir)/Makefile.in \
 	$(srcdir)/bt_python_helper.py.in \
-	$(srcdir)/test_intersection.in \
-	$(srcdir)/test_multi_trace_intersection.py
+	$(srcdir)/test_intersection.in
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 ALLOCA = @ALLOCA@
@@ -241,6 +239,8 @@ SHELL = @SHELL@
 STRIP = @STRIP@
 SWIG = @SWIG@
 SWIG_LIB = @SWIG_LIB@
+UUID_CFLAGS = @UUID_CFLAGS@
+UUID_LIBS = @UUID_LIBS@
 VERSION = @VERSION@
 YACC = @YACC@
 YFLAGS = @YFLAGS@
@@ -258,6 +258,7 @@ am__tar = @am__tar@
 am__untar = @am__untar@
 ax_pthread_config = @ax_pthread_config@
 babeltracectfincludedir = @babeltracectfincludedir@
+babeltracectfirincludedir = @babeltracectfirincludedir@
 babeltracectfwriterincludedir = @babeltracectfwriterincludedir@
 babeltraceincludedir = @babeltraceincludedir@
 bindir = @bindir@
@@ -313,8 +314,8 @@ check_SCRIPTS = test_intersection \
 		bt_python_helper.py \
 		test_multi_trace_intersection.py
 
-SCRIPT_LIST = test_multi_trace_intersection.py
 dist_noinst_SCRIPTS = test_multi_trace_intersection.py
+EXTRA_DIST = test_multi_trace_intersection.py
 all: all-am
 
 .SUFFIXES:
@@ -350,8 +351,6 @@ $(am__aclocal_m4_deps):
 test_intersection: $(top_builddir)/config.status $(srcdir)/test_intersection.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 bt_python_helper.py: $(top_builddir)/config.status $(srcdir)/bt_python_helper.py.in
-	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
-test_multi_trace_intersection.py: $(top_builddir)/config.status $(srcdir)/test_multi_trace_intersection.py
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 
 mostlyclean-libtool:
@@ -399,7 +398,7 @@ distdir: $(DISTFILES)
 check-am: all-am
 	$(MAKE) $(AM_MAKEFLAGS) $(check_SCRIPTS)
 check: check-am
-all-am: Makefile $(SCRIPTS)
+all-am: Makefile $(SCRIPTS) all-local
 installdirs:
 install: install-am
 install-exec: install-exec-am
@@ -433,7 +432,7 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic clean-libtool mostlyclean-am
+clean-am: clean-generic clean-libtool clean-local mostlyclean-am
 
 distclean: distclean-am
 	-rm -f Makefile
@@ -499,20 +498,35 @@ uninstall-am:
 
 .MAKE: check-am install-am install-strip
 
-.PHONY: all all-am check check-am clean clean-generic clean-libtool \
-	cscopelist-am ctags-am distclean distclean-generic \
-	distclean-libtool distdir dvi dvi-am html html-am info info-am \
-	install install-am install-data install-data-am install-dvi \
-	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-info install-info-am install-man \
-	install-pdf install-pdf-am install-ps install-ps-am \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags-am uninstall uninstall-am
+.PHONY: all all-am all-local check check-am clean clean-generic \
+	clean-libtool clean-local cscopelist-am ctags-am distclean \
+	distclean-generic distclean-libtool distdir dvi dvi-am html \
+	html-am info info-am install install-am install-data \
+	install-data-am install-dvi install-dvi-am install-exec \
+	install-exec-am install-html install-html-am install-info \
+	install-info-am install-man install-pdf install-pdf-am \
+	install-ps install-ps-am install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am tags-am uninstall \
+	uninstall-am
 
 .PRECIOUS: Makefile
 
+
+all-local:
+	@if [ x"$(srcdir)" != x"$(builddir)" ]; then \
+		for script in $(EXTRA_DIST); do \
+			cp -f $(srcdir)/$$script $(builddir); \
+		done; \
+	fi
+
+clean-local:
+	@if [ x"$(srcdir)" != x"$(builddir)" ]; then \
+		for script in $(EXTRA_DIST); do \
+			rm -f $(builddir)/$$script; \
+		done; \
+	fi
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

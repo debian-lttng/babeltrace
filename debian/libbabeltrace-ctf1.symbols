@@ -32,6 +32,7 @@ libbabeltrace-ctf.so.1 libbabeltrace-ctf1 #MINVER#
  bt_ctf_event_class_add_field@Base 1.2.1
  bt_ctf_event_class_create@Base 1.2.1
  bt_ctf_event_class_get@Base 1.2.1
+ bt_ctf_event_class_get_field_by_name@Base 1.5.0~rc1
  bt_ctf_event_class_put@Base 1.2.1
  bt_ctf_event_create@Base 1.2.1
  bt_ctf_event_get@Base 1.2.1
@@ -63,6 +64,7 @@ libbabeltrace-ctf.so.1 libbabeltrace-ctf1 #MINVER#
  bt_ctf_field_type_floating_point_set_mantissa_digits@Base 1.2.1
  bt_ctf_field_type_get@Base 1.2.1
  bt_ctf_field_type_integer_create@Base 1.2.1
+ bt_ctf_field_type_integer_get_signed@Base 1.5.0~rc1
  bt_ctf_field_type_integer_set_base@Base 1.2.1
  bt_ctf_field_type_integer_set_encoding@Base 1.2.1
  bt_ctf_field_type_integer_set_signed@Base 1.2.1
@@ -74,6 +76,7 @@ libbabeltrace-ctf.so.1 libbabeltrace-ctf1 #MINVER#
  bt_ctf_field_type_string_set_encoding@Base 1.2.1
  bt_ctf_field_type_structure_add_field@Base 1.2.1
  bt_ctf_field_type_structure_create@Base 1.2.1
+ bt_ctf_field_type_structure_get_field@Base 1.5.0~rc1
  bt_ctf_field_type_variant_add_field@Base 1.2.1
  bt_ctf_field_type_variant_create@Base 1.2.1
  bt_ctf_field_unsigned_integer_set_value@Base 1.2.1
@@ -120,11 +123,14 @@ libbabeltrace-ctf.so.1 libbabeltrace-ctf1 #MINVER#
  bt_ctf_stream_class_add_event_class@Base 1.2.1
  bt_ctf_stream_class_create@Base 1.2.1
  bt_ctf_stream_class_get@Base 1.2.1
+ bt_ctf_stream_class_get_packet_context_type@Base 1.5.0~rc1
  bt_ctf_stream_class_put@Base 1.2.1
  bt_ctf_stream_class_set_clock@Base 1.2.1
  bt_ctf_stream_flush@Base 1.2.1
  bt_ctf_stream_get@Base 1.2.1
+ bt_ctf_stream_get_packet_context@Base 1.5.0~rc1
  bt_ctf_stream_put@Base 1.2.1
+ bt_ctf_validate_identifier@Base 1.5.0~rc1
  bt_ctf_writer_add_clock@Base 1.2.1
  bt_ctf_writer_add_environment_field@Base 1.2.1
  bt_ctf_writer_create@Base 1.2.1

@@ -82,7 +82,7 @@ Description: Common Trace Format (CTF) development files
 Package: python3-babeltrace
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends}
-Description: Babeltrace conversion libraries
+Description: Babeltrace Python 3 bindings
  Babeltrace provides trace reading and writing libraries, as well as a trace
  converter. Plugins can be created for any trace format to allow its conversion
  to/from any other supported format.

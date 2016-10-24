@@ -1,12 +1,9 @@
-#ifndef BABELTRACE_CTF_WRITER_REF_INTERNAL_H
-#define BABELTRACE_CTF_WRITER_REF_INTERNAL_H
-
 /*
- * BabelTrace - CTF Writer: Reference count
+ * ref.c: reference counting
  *
- * Copyright 2013 EfficiOS Inc.
+ * Babeltrace Library
  *
- * Author: Jérémie Galarneau <jeremie.galarneau@efficios.com>
+ * Copyright (c) 2015 Jérémie Galarneau <jeremie.galarneau@efficios.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,35 +24,34 @@
  * SOFTWARE.
  */
 
-#include <assert.h>
+#include <babeltrace/ref-internal.h>
+#include <babeltrace/object-internal.h>
 
-struct bt_ctf_ref {
-	long refcount;
-};
-
-static inline
-void bt_ctf_ref_init(struct bt_ctf_ref *ref)
+BT_HIDDEN
+void *bt_get(void *ptr)
 {
-	assert(ref);
-	ref->refcount = 1;
-}
+	struct bt_object *obj = ptr;
 
-static inline
-void bt_ctf_ref_get(struct bt_ctf_ref *ref)
-{
-	assert(ref);
-	ref->refcount++;
-}
-
-static inline
-void bt_ctf_ref_put(struct bt_ctf_ref *ref,
-		void (*release)(struct bt_ctf_ref *))
-{
-	assert(ref);
-	assert(release);
-	if ((--ref->refcount) == 0) {
-		release(ref);
+	if (!obj) {
+		goto end;
 	}
+
+	if (obj->parent && bt_object_get_ref_count(obj) == 0) {
+		bt_get(obj->parent);
+	}
+	bt_ref_get(&obj->ref_count);
+end:
+	return obj;
 }
 
-#endif /* BABELTRACE_CTF_WRITER_REF_INTERNAL_H */
+BT_HIDDEN
+void bt_put(void *ptr)
+{
+	struct bt_object *obj = ptr;
+
+	if (!obj) {
+		return;
+	}
+
+	bt_ref_put(&obj->ref_count);
+}

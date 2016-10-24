@@ -120,8 +120,7 @@ LTLIBRARIES = $(noinst_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libctf_writer_la_DEPENDENCIES = $(top_builddir)/lib/libbabeltrace.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am_libctf_writer_la_OBJECTS = writer.lo clock.lo stream.lo \
-	event-types.lo event-fields.lo event.lo functor.lo
+am_libctf_writer_la_OBJECTS = writer.lo functor.lo
 libctf_writer_la_OBJECTS = $(am_libctf_writer_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -287,6 +286,8 @@ SHELL = @SHELL@
 STRIP = @STRIP@
 SWIG = @SWIG@
 SWIG_LIB = @SWIG_LIB@
+UUID_CFLAGS = @UUID_CFLAGS@
+UUID_LIBS = @UUID_LIBS@
 VERSION = @VERSION@
 YACC = @YACC@
 YFLAGS = @YFLAGS@
@@ -304,6 +305,7 @@ am__tar = @am__tar@
 am__untar = @am__untar@
 ax_pthread_config = @ax_pthread_config@
 babeltracectfincludedir = @babeltracectfincludedir@
+babeltracectfirincludedir = @babeltracectfirincludedir@
 babeltracectfwriterincludedir = @babeltracectfwriterincludedir@
 babeltraceincludedir = @babeltraceincludedir@
 bindir = @bindir@
@@ -359,11 +361,6 @@ AM_CFLAGS = $(PACKAGE_CFLAGS) -I$(top_srcdir)/include
 noinst_LTLIBRARIES = libctf-writer.la
 libctf_writer_la_SOURCES = \
 	writer.c \
-	clock.c \
-	stream.c \
-	event-types.c \
-	event-fields.c \
-	event.c \
 	functor.c
 
 libctf_writer_la_LIBADD = $(top_builddir)/lib/libbabeltrace.la \
@@ -422,12 +419,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clock.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/event-fields.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/event-types.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/event.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/functor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stream.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/writer.Plo@am__quote@
 
 .c.o:

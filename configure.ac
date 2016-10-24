@@ -1,5 +1,5 @@
 AC_PREREQ([2.50])
-AC_INIT([babeltrace],[1.4.0],[jeremie.galarneau@efficios.com],[],[https://diamon.org/babeltrace])
+AC_INIT([babeltrace],[1.5.0-rc1],[jeremie.galarneau@efficios.com],[],[https://diamon.org/babeltrace])
 AC_SUBST([BABELTRACE_LIBRARY_VERSION], [1:0:0])
 
 AC_CONFIG_HEADERS([config.h])
@@ -152,24 +152,35 @@ AC_CHECK_FUNCS([uuid_generate],
   link_with_libuuid=no
 ],
 [
-  # Check for libuuid
-  AC_CHECK_LIB([uuid], [uuid_generate],
+  # First, check the pkg-config module is available, otherwise explicitly check
+  # for libuuid, or uuid support in the C-library.
+  PKG_CHECK_MODULES([UUID], [uuid],
   [
+    LIBS="${UUID_LIBS} ${LIBS}"
+    CFLAGS="${CFLAGS} ${UUID_CFLAGS}"
     AC_DEFINE_UNQUOTED([BABELTRACE_HAVE_LIBUUID], 1, [Has libuuid support.])
     link_with_libuuid=yes
   ],
   [
-    # libuuid not found, check for uuid_create in libc.
-    AC_CHECK_LIB([c], [uuid_create],
+    # Check for libuuid
+    AC_CHECK_LIB([uuid], [uuid_generate],
     [
-      AC_DEFINE_UNQUOTED([BABELTRACE_HAVE_LIBC_UUID], 1, [Has libc uuid support.])
-      link_with_libc_uuid=yes
+      AC_DEFINE_UNQUOTED([BABELTRACE_HAVE_LIBUUID], 1, [Has libuuid support.])
+      link_with_libuuid=yes
     ],
     [
-      # for MinGW32 we have our own internal implemenation of uuid using Windows functions.
-      if test "x$MINGW32" = xno; then
-        AC_MSG_ERROR([Cannot find libuuid uuid_generate nor libc uuid_create. Use [LDFLAGS]=-Ldir to specify their location.])
-      fi
+      # libuuid not found, check for uuid_create in libc.
+      AC_CHECK_LIB([c], [uuid_create],
+      [
+        AC_DEFINE_UNQUOTED([BABELTRACE_HAVE_LIBC_UUID], 1, [Has libc uuid support.])
+        link_with_libc_uuid=yes
+      ],
+      [
+        # for MinGW32 we have our own internal implementation of uuid using Windows functions.
+        if test "x$MINGW32" = xno; then
+          AC_MSG_ERROR([Cannot find libuuid uuid_generate nor libc uuid_create. Use [LDFLAGS]=-Ldir to specify their location.])
+        fi
+      ])
     ])
   ])
 ])
@@ -291,6 +302,9 @@ AC_SUBST(babeltracectfincludedir)
 babeltracectfwriterincludedir="${includedir}/babeltrace/ctf-writer"
 AC_SUBST(babeltracectfwriterincludedir)
 
+babeltracectfirincludedir="${includedir}/babeltrace/ctf-ir"
+AC_SUBST(babeltracectfirincludedir)
+
 AC_CONFIG_FILES([
 	Makefile
 	types/Makefile
@@ -305,6 +319,7 @@ AC_CONFIG_FILES([
 	formats/lttng-live/Makefile
 	formats/ctf/metadata/Makefile
 	formats/ctf/writer/Makefile
+	formats/ctf/ir/Makefile
 	converter/Makefile
 	doc/Makefile
 	lib/Makefile
@@ -335,7 +350,6 @@ AC_CONFIG_FILES([tests/bin/test_trace_read], [chmod +x tests/bin/test_trace_read
 AC_CONFIG_FILES([tests/bin/intersection/test_intersection], [chmod +x tests/bin/intersection/test_intersection])
 AC_CONFIG_FILES([tests/bin/intersection/bt_python_helper.py])
 AC_CONFIG_FILES([tests/bin/test_packet_seq_num], [chmod +x tests/bin/test_packet_seq_num])
-AC_CONFIG_FILES([tests/bin/intersection/test_multi_trace_intersection.py:tests/bin/intersection/test_multi_trace_intersection.py], [chmod +x tests/bin/intersection/test_multi_trace_intersection.py])
 
 AC_OUTPUT
 

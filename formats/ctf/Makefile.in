@@ -147,7 +147,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 libbabeltrace_ctf_la_DEPENDENCIES =  \
 	$(top_builddir)/lib/libbabeltrace.la types/libctf-types.la \
 	metadata/libctf-parser.la metadata/libctf-ast.la \
-	writer/libctf-writer.la $(am__append_1)
+	writer/libctf-writer.la ir/libctf-ir.la $(am__append_1)
 am_libbabeltrace_ctf_la_OBJECTS = ctf.lo events.lo iterator.lo \
 	callbacks.lo
 libbabeltrace_ctf_la_OBJECTS = $(am_libbabeltrace_ctf_la_OBJECTS)
@@ -361,6 +361,8 @@ SHELL = @SHELL@
 STRIP = @STRIP@
 SWIG = @SWIG@
 SWIG_LIB = @SWIG_LIB@
+UUID_CFLAGS = @UUID_CFLAGS@
+UUID_LIBS = @UUID_LIBS@
 VERSION = @VERSION@
 YACC = @YACC@
 YFLAGS = @YFLAGS@
@@ -378,6 +380,7 @@ am__tar = @am__tar@
 am__untar = @am__untar@
 ax_pthread_config = @ax_pthread_config@
 babeltracectfincludedir = @babeltracectfincludedir@
+babeltracectfirincludedir = @babeltracectfirincludedir@
 babeltracectfwriterincludedir = @babeltracectfwriterincludedir@
 babeltraceincludedir = @babeltraceincludedir@
 bindir = @bindir@
@@ -430,7 +433,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CFLAGS = $(PACKAGE_CFLAGS) -I$(top_srcdir)/include -I$(builddir)
-SUBDIRS = types metadata writer .
+SUBDIRS = types metadata writer ir .
 lib_LTLIBRARIES = libbabeltrace-ctf.la
 libbabeltrace_ctf_la_SOURCES = \
 	ctf.c \
@@ -446,7 +449,8 @@ libbabeltrace_ctf_la_LDFLAGS = \
 
 libbabeltrace_ctf_la_LIBADD = $(top_builddir)/lib/libbabeltrace.la \
 	types/libctf-types.la metadata/libctf-parser.la \
-	metadata/libctf-ast.la writer/libctf-writer.la $(am__append_1)
+	metadata/libctf-ast.la writer/libctf-writer.la ir/libctf-ir.la \
+	$(am__append_1)
 all: all-recursive
 
 .SUFFIXES:

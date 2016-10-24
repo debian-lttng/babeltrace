@@ -1,3 +1,12 @@
+babeltrace (1.5.0~rc1-1) unstable; urgency=medium
+
+  * [aae4124] New upstream version 1.5.0~rc1
+  * [a8b027f] Update description of python3-babeltrace
+  * [f718eef] Update symbols for 1.5.0~rc1
+  * [e5c2920] Use uversionmangle in watch file
+
+ -- Michael Jeanson <mjeanson@ubuntu.com>  Mon, 24 Oct 2016 14:10:34 -0400
+
 babeltrace (1.4.0-3) unstable; urgency=medium
 
   * [21e296d] Update patch to fix hurd build

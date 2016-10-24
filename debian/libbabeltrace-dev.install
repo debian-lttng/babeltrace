@@ -1,6 +1,5 @@
 usr/include/babeltrace/babeltrace.h
 usr/include/babeltrace/clock-types.h
-usr/include/babeltrace/ctf-writer
 usr/include/babeltrace/context.h
 usr/include/babeltrace/format.h
 usr/include/babeltrace/iterator.h

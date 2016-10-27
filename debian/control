@@ -38,7 +38,8 @@ Description: Babeltrace conversion libraries
 Package: libbabeltrace-dev
 Section: libdevel
 Architecture: any
-Depends: ${misc:Depends}, libbabeltrace1 (= ${binary:Version})
+Depends: ${misc:Depends}, libbabeltrace1 (= ${binary:Version}),
+ libbabeltrace-ctf-dev (= ${binary:Version})
 Description: Babeltrace development files
  Babeltrace provides trace reading and writing libraries, as well as a trace
  converter. Plugins can be created for any trace format to allow its conversion
@@ -67,6 +68,8 @@ Package: libbabeltrace-ctf-dev
 Section: libdevel
 Architecture: any
 Depends: ${misc:Depends}, libbabeltrace-ctf1 (= ${binary:Version})
+Replaces: libbabeltrace-dev (<< 1.5.0~rc1-2)
+Breaks: libbabeltrace-dev (<< 1.5.0~rc1-2)
 Description: Common Trace Format (CTF) development files
  Babeltrace provides trace reading and writing libraries, as well as a trace
  converter. Plugins can be created for any trace format to allow its conversion

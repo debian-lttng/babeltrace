@@ -142,6 +142,7 @@ libbabeltrace-ctf.so.1 libbabeltrace-ctf1 #MINVER#
  bt_ctf_writer_set_byte_order@Base 1.2.1
  bt_dependencies_create@Base 1.2.1
  bt_get_float@Base 1.2.1
+ bt_value_null@Base 1.5.0
  bt_yy_create_buffer@Base 1.2.1
  bt_yy_delete_buffer@Base 1.2.1
  bt_yy_flush_buffer@Base 1.2.1

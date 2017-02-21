@@ -122,6 +122,10 @@ AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+libprio_heap_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libprio_heap_la_LDFLAGS) $(LDFLAGS) \
+	-o $@
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -241,6 +245,7 @@ LIBTOOL = @LIBTOOL@
 LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
+LT_NO_UNDEFINED = @LT_NO_UNDEFINED@
 LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
@@ -357,6 +362,7 @@ top_srcdir = @top_srcdir@
 AM_CFLAGS = $(PACKAGE_CFLAGS) -I$(top_srcdir)/include
 noinst_LTLIBRARIES = libprio_heap.la
 libprio_heap_la_SOURCES = prio_heap.c
+libprio_heap_la_LDFLAGS = $(LT_NO_UNDEFINED)
 all: all-am
 
 .SUFFIXES:
@@ -403,7 +409,7 @@ clean-noinstLTLIBRARIES:
 	}
 
 libprio_heap.la: $(libprio_heap_la_OBJECTS) $(libprio_heap_la_DEPENDENCIES) $(EXTRA_libprio_heap_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(LINK)  $(libprio_heap_la_OBJECTS) $(libprio_heap_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libprio_heap_la_LINK)  $(libprio_heap_la_OBJECTS) $(libprio_heap_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

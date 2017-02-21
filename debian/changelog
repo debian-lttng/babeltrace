@@ -1,3 +1,10 @@
+babeltrace (1.5.2-1) unstable; urgency=medium
+
+  * [7bb1102] New upstream version 1.5.2
+  * [f524d13] Update symbols for 1.5.2
+
+ -- Michael Jeanson <mjeanson@ubuntu.com>  Tue, 21 Feb 2017 17:16:39 -0500
+
 babeltrace (1.5.1-1) unstable; urgency=medium
 
   * [9a98181] New upstream version 1.5.1

@@ -137,15 +137,15 @@ am__v_lt_0 = --silent
 am__v_lt_1 = 
 libctf_ast_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(libctf_ast_la_CFLAGS) \
-	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+	$(CFLAGS) $(libctf_ast_la_LDFLAGS) $(LDFLAGS) -o $@
 libctf_parser_la_LIBADD =
 am_libctf_parser_la_OBJECTS = libctf_parser_la-ctf-lexer.lo \
 	libctf_parser_la-ctf-parser.lo libctf_parser_la-objstack.lo
 libctf_parser_la_OBJECTS = $(am_libctf_parser_la_OBJECTS)
 libctf_parser_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
-	$(libctf_parser_la_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
-	-o $@
+	$(libctf_parser_la_CFLAGS) $(CFLAGS) \
+	$(libctf_parser_la_LDFLAGS) $(LDFLAGS) -o $@
 PROGRAMS = $(noinst_PROGRAMS)
 am_ctf_parser_test_OBJECTS =  \
 	ctf_parser_test-ctf-parser-test.$(OBJEXT)
@@ -298,6 +298,7 @@ LIBTOOL = @LIBTOOL@
 LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
+LT_NO_UNDEFINED = @LT_NO_UNDEFINED@
 LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
@@ -429,6 +430,7 @@ libctf_parser_la_SOURCES = ctf-lexer.l ctf-parser.y objstack.c
 libctf_parser_la_CFLAGS = $(AM_CFLAGS) -I$(srcdir) \
 		-include $(srcdir)/ctf-scanner-symbols.h
 
+libctf_parser_la_LDFLAGS = $(LT_NO_UNDEFINED)
 libctf_ast_la_CFLAGS = $(AM_CFLAGS) -I$(builddir)
 libctf_ast_la_SOURCES = ctf-visitor-xml.c \
 		ctf-visitor-parent-links.c \
@@ -437,6 +439,7 @@ libctf_ast_la_SOURCES = ctf-visitor-xml.c \
 
 libctf_ast_la_LIBADD = $(top_builddir)/lib/libbabeltrace.la \
 	$(am__append_1) $(am__append_2) $(am__append_3)
+libctf_ast_la_LDFLAGS = $(LT_NO_UNDEFINED)
 ctf_parser_test_SOURCES = ctf-parser-test.c
 ctf_parser_test_CFLAGS = $(AM_CFLAGS) -I$(builddir)
 ctf_parser_test_LDADD = \

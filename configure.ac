@@ -1,5 +1,5 @@
 AC_PREREQ([2.50])
-AC_INIT([babeltrace],[1.5.1],[jeremie.galarneau@efficios.com],[],[https://diamon.org/babeltrace])
+AC_INIT([babeltrace],[1.5.2],[jeremie.galarneau@efficios.com],[],[https://diamon.org/babeltrace])
 AC_SUBST([BABELTRACE_LIBRARY_VERSION], [1:0:0])
 
 AC_CONFIG_HEADERS([config.h])
@@ -97,7 +97,6 @@ AC_FUNC_MALLOC
 AC_FUNC_MKTIME
 AC_FUNC_MMAP
 AC_FUNC_REALLOC
-AC_FUNC_STRERROR_R
 AC_CHECK_FUNCS([ \
 	atexit \
 	dirfd \
@@ -129,6 +128,7 @@ AC_CHECK_FUNCS([ \
 
 MINGW32=no
 DEFAULT_ENABLE_DEBUG_INFO=yes
+LT_NO_UNDEFINED=""
 AS_CASE([$host_os],
   [solaris*|darwin*],
     [
@@ -137,10 +137,16 @@ AS_CASE([$host_os],
   [mingw*],
     [
 	MINGW32=yes
+	LT_NO_UNDEFINED="-no-undefined"
+    ],
+  [cygwin*],
+    [
+	LT_NO_UNDEFINED="-no-undefined"
     ]
 )
 
 AM_CONDITIONAL([BABELTRACE_BUILD_WITH_MINGW], [test "x$MINGW32" = "xyes"])
+AC_SUBST(LT_NO_UNDEFINED)
 
 # Check what libraries are required on this platform to link sockets programs.
 AX_LIB_SOCKET_NSL

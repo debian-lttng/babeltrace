@@ -146,7 +146,8 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libbabeltrace_lttng_live_la_DEPENDENCIES =  \
-	$(top_builddir)/lib/libbabeltrace.la
+	$(top_builddir)/lib/libbabeltrace.la \
+	$(top_builddir)/formats/ctf/libbabeltrace-ctf.la
 am_libbabeltrace_lttng_live_la_OBJECTS = lttng-live-plugin.lo \
 	lttng-live-comm.lo
 libbabeltrace_lttng_live_la_OBJECTS =  \
@@ -279,6 +280,7 @@ LIBTOOL = @LIBTOOL@
 LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
+LT_NO_UNDEFINED = @LT_NO_UNDEFINED@
 LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
@@ -404,10 +406,12 @@ libbabeltrace_lttng_live_la_SOURCES = \
 
 # Request that the linker keeps all static libraries objects.
 libbabeltrace_lttng_live_la_LDFLAGS = \
+	$(LT_NO_UNDEFINED) \
 	$(LD_NO_AS_NEEDED) -version-info $(BABELTRACE_LIBRARY_VERSION)
 
 libbabeltrace_lttng_live_la_LIBADD = \
-	$(top_builddir)/lib/libbabeltrace.la
+	$(top_builddir)/lib/libbabeltrace.la \
+	$(top_builddir)/formats/ctf/libbabeltrace-ctf.la
 
 all: all-am
 

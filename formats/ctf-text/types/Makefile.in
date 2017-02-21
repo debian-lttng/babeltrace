@@ -124,6 +124,10 @@ AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+libctf_text_types_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libctf_text_types_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -243,6 +247,7 @@ LIBTOOL = @LIBTOOL@
 LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
+LT_NO_UNDEFINED = @LT_NO_UNDEFINED@
 LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
@@ -368,6 +373,7 @@ libctf_text_types_la_SOURCES = \
 	struct.c \
 	variant.c
 
+libctf_text_types_la_LDFLAGS = $(LT_NO_UNDEFINED)
 libctf_text_types_la_LIBADD = \
 	$(top_builddir)/lib/libbabeltrace.la
 
@@ -417,7 +423,7 @@ clean-noinstLTLIBRARIES:
 	}
 
 libctf-text-types.la: $(libctf_text_types_la_OBJECTS) $(libctf_text_types_la_DEPENDENCIES) $(EXTRA_libctf_text_types_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(LINK)  $(libctf_text_types_la_OBJECTS) $(libctf_text_types_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libctf_text_types_la_LINK)  $(libctf_text_types_la_OBJECTS) $(libctf_text_types_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

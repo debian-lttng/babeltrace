@@ -1,5 +1,7 @@
 libbabeltrace-ctf-metadata.so.1 libbabeltrace-ctf1 #MINVER#
+ bt_ctf_metadata_hook@Base 1.5.2
 libbabeltrace-ctf-text.so.1 libbabeltrace-ctf1 #MINVER#
+ bt_ctf_text_hook@Base 1.5.2
  opt_all_field_names@Base 1.2.1
  opt_all_fields@Base 1.2.1
  opt_callsite_field@Base 1.2.1
@@ -111,6 +113,7 @@ libbabeltrace-ctf.so.1 libbabeltrace-ctf1 #MINVER#
  bt_ctf_get_top_level_scope@Base 1.2.1
  bt_ctf_get_uint64@Base 1.2.1
  bt_ctf_get_variant@Base 1.2.1
+ bt_ctf_hook@Base 1.5.2
  bt_ctf_iter_add_callback@Base 1.2.1
  bt_ctf_iter_create@Base 1.2.1
  bt_ctf_iter_create_intersect@Base 1.4.0

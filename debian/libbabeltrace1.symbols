@@ -1,5 +1,7 @@
 libbabeltrace-dummy.so.1 libbabeltrace1 #MINVER#
+ bt_dummy_hook@Base 1.5.2
 libbabeltrace-lttng-live.so.1 libbabeltrace1 #MINVER#
+ bt_lttng_live_hook@Base 1.5.2
  lttng_live_attach_session@Base 1.2.1
  lttng_live_connect_viewer@Base 1.2.1
  lttng_live_create_viewer_session@Base 1.2.1

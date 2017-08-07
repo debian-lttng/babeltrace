@@ -1,3 +1,13 @@
+babeltrace (1.5.3-1) unstable; urgency=medium
+
+  * [ac63ca0] Do not consider rc versions in watch file
+  * [cd63c5f] Move to DEP-14 branch naming
+  * [60f347a] New upstream version 1.5.3
+  * [76c1fb4] Remove python install hack fixed upstream
+  * [dc2939b] Bump standard to 4.0.0
+
+ -- Michael Jeanson <mjeanson@ubuntu.com>  Mon, 07 Aug 2017 16:22:31 -0400
+
 babeltrace (1.5.2-1) unstable; urgency=medium
 
   * [7bb1102] New upstream version 1.5.2

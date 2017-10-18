@@ -1,3 +1,13 @@
+babeltrace (1.5.3-2) unstable; urgency=medium
+
+  * [a5b4bb1] Merge libbabeltrace-ctf1 into libbabeltrace1
+  * [13d8932] Changed deprecated extra priority to optional
+  * [fa19188] Use https url in watch file
+  * [f5ea759] Set python section for python3-babeltrace
+  * [cae5b76] Bump standards version to 4.1.1
+
+ -- Michael Jeanson <mjeanson@ubuntu.com>  Wed, 18 Oct 2017 15:56:22 -0400
+
 babeltrace (1.5.3-1) unstable; urgency=medium
 
   * [ac63ca0] Do not consider rc versions in watch file

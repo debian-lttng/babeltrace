@@ -54,6 +54,7 @@ Description: Babeltrace development files
  libbabeltrace.
 
 Package: python3-babeltrace
+Section: python
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends}
 Description: Babeltrace Python 3 bindings

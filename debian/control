@@ -28,8 +28,8 @@ Architecture: any
 Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Replaces: libbabeltrace-ctf1 (<< 1.5.3-2)
-Breaks: libbabeltrace-ctf1 (<< 1.5.3-2)
+Replaces: libbabeltrace-ctf1 (<< 1.5.3-2~)
+Breaks: libbabeltrace-ctf1 (<< 1.5.3-2~)
 Provides: libbabeltrace-ctf1 (= ${binary:Version})
 Description: Babeltrace conversion libraries
  Babeltrace provides trace reading and writing libraries, as well as a trace
@@ -38,12 +38,23 @@ Description: Babeltrace conversion libraries
  .
  This package provides the babeltrace trace reading and conversion library.
 
+Package: libbabeltrace-ctf1
+Section: oldlibs
+Architecture: all
+Depends: libbabeltrace1, ${misc:Depends}
+Description: Babeltrace conversion libraries (transitional package)
+ Babeltrace provides trace reading and writing libraries, as well as a trace
+ converter. Plugins can be created for any trace format to allow its conversion
+ to/from any other supported format.
+ .
+ This is a transitional package. It can safely be removed.
+
 Package: libbabeltrace-dev
 Section: libdevel
 Architecture: any
 Depends: ${misc:Depends}, libbabeltrace1 (= ${binary:Version})
-Replaces: libbabeltrace-ctf-dev (<< 1.5.3-2)
-Breaks: libbabeltrace-ctf-dev (<< 1.5.3-2)
+Replaces: libbabeltrace-ctf-dev (<< 1.5.3-2~)
+Breaks: libbabeltrace-ctf-dev (<< 1.5.3-2~)
 Provides: libbabeltrace-ctf-dev (= ${binary:Version})
 Description: Babeltrace development files
  Babeltrace provides trace reading and writing libraries, as well as a trace
@@ -52,6 +63,17 @@ Description: Babeltrace development files
  .
  This package provides the development headers for linking applications against
  libbabeltrace.
+
+Package: libbabeltrace-ctf-dev
+Section: oldlibs
+Architecture: all
+Depends: libbabeltrace-dev, ${misc:Depends}
+Description: Babeltrace development files (transitional package)
+ Babeltrace provides trace reading and writing libraries, as well as a trace
+ converter. Plugins can be created for any trace format to allow its conversion
+ to/from any other supported format.
+ .
+ This is a transitional package. It can safely be removed.
 
 Package: python3-babeltrace
 Section: python

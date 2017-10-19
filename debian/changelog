@@ -1,3 +1,9 @@
+babeltrace (1.5.3-4) unstable; urgency=medium
+
+  * [bc6b49b] Add transitional ctf packages (Closes: #879116)
+
+ -- Michael Jeanson <mjeanson@ubuntu.com>  Thu, 19 Oct 2017 15:52:28 -0400
+
 babeltrace (1.5.3-3) unstable; urgency=medium
 
   * [c0ecf19] Add versioned provides for ctf (Closes: #879088)

@@ -1,3 +1,9 @@
+babeltrace (1.5.3-3) unstable; urgency=medium
+
+  * [c0ecf19] Add versioned provides for ctf (Closes: #879088)
+
+ -- Michael Jeanson <mjeanson@ubuntu.com>  Thu, 19 Oct 2017 10:45:25 -0400
+
 babeltrace (1.5.3-2) unstable; urgency=medium
 
   * [a5b4bb1] Merge libbabeltrace-ctf1 into libbabeltrace1

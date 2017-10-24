@@ -1,3 +1,10 @@
+babeltrace (1.5.3-4~xenial1) xenial; urgency=medium
+
+  * Source backport to Xenial
+  * [2d67cd4] Set gbp branch config
+
+ -- Michael Jeanson <mjeanson@ubuntu.com>  Tue, 24 Oct 2017 15:53:13 -0400
+
 babeltrace (1.5.3-4) unstable; urgency=medium
 
   * [bc6b49b] Add transitional ctf packages (Closes: #879116)

@@ -1,3 +1,10 @@
+babeltrace (1.5.3-4~trusty1) trusty; urgency=medium
+
+  * Source backport to Trusty
+  * [2774b22] Set gbp branch config
+
+ -- Michael Jeanson <mjeanson@ubuntu.com>  Tue, 24 Oct 2017 15:57:46 -0400
+
 babeltrace (1.5.3-4) unstable; urgency=medium
 
   * [bc6b49b] Add transitional ctf packages (Closes: #879116)

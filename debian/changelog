@@ -1,3 +1,10 @@
+babeltrace (1.5.3-4~trusty2) trusty; urgency=medium
+
+  * [ff1c783] Fix python bindings build with PIE
+  * [76260bb] Set gbp config
+
+ -- Michael Jeanson <mjeanson@ubuntu.com>  Wed, 25 Oct 2017 16:57:36 -0400
+
 babeltrace (1.5.3-4~trusty1) trusty; urgency=medium
 
   * Source backport to Trusty

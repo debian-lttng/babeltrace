@@ -1,0 +1,31 @@
+From fdf53a089f3a1200c8aa7ca0d45cce555ea6669b Mon Sep 17 00:00:00 2001
+From: Michael Jeanson <mjeanson@efficios.com>
+Date: Wed, 25 Oct 2017 16:20:34 -0400
+Subject: [PATCH] Fix: python bindings when building with PIE hardening
+
+Work around a bug/limitation in python distutils where object files are
+built with -fPIC appended after the CFLAGS but the final shared object
+is linked with -shared before the LDFLAGS which can then be overriden by
+hardening flags and result in an invalid build.
+
+The work around is to append -shared to the LDFLAGS making sure it's not
+overriden.
+
+Signed-off-by: Michael Jeanson <mjeanson@efficios.com>
+---
+ bindings/python/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/bindings/python/Makefile.am b/bindings/python/Makefile.am
+index 2ceab037..5e4dde84 100644
+--- a/bindings/python/Makefile.am
++++ b/bindings/python/Makefile.am
+@@ -25,7 +25,7 @@ BINDINGS_DEPS=setup.py \
+ BUILD_FLAGS=CC="$(CC)" \
+ 		CFLAGS="$(GLIB_CFLAGS) $(AM_CFLAGS) $(CFLAGS)" \
+ 		CPPFLAGS="$(DEFS) $(DEFAULT_INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS)" \
+-		LDFLAGS="$(AM_LDFLAGS) $(LDFLAGS) $(GLIB_LIBS) $(LIBS)"
++		LDFLAGS="$(AM_LDFLAGS) $(LDFLAGS) $(GLIB_LIBS) -shared $(LIBS)"
+ 
+ build-python-bindings.stamp: $(BINDINGS_DEPS)
+ 	$(BUILD_FLAGS) $(PYTHON) $(builddir)/setup.py build_ext

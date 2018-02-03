@@ -1,3 +1,13 @@
+babeltrace (1.5.4-1) unstable; urgency=medium
+
+  * [d7747bc] Switched my uploader email to @debian.org
+  * [a2037ba] New upstream version 1.5.4
+  * [153912f] Update symbols for 1.5.4
+  * [33d7b01] Moved VCS to salsa.debian.org
+  * [559a42a] Use secure url for homepage
+
+ -- Michael Jeanson <mjeanson@debian.org>  Sat, 03 Feb 2018 11:07:04 -0500
+
 babeltrace (1.5.3-4) unstable; urgency=medium
 
   * [bc6b49b] Add transitional ctf packages (Closes: #879116)

@@ -83,6 +83,8 @@ libbabeltrace.so.1 libbabeltrace1 #MINVER#
  bt_new_declaration_scope@Base 1.2.1
  bt_new_definition_path@Base 1.2.1
  bt_new_definition_scope@Base 1.2.1
+ bt_packet_seek_get_error@Base 1.5.4
+ bt_packet_seek_set_error@Base 1.5.4
  bt_register_declaration@Base 1.2.1
  bt_register_enum_declaration@Base 1.2.1
  bt_register_field_definition@Base 1.2.1
@@ -295,6 +297,7 @@ libbabeltrace-ctf.so.1 libbabeltrace1 #MINVER#
  ctf_fini_pos@Base 1.2.1
  ctf_init_pos@Base 1.2.1
  ctf_packet_seek@Base 1.2.1
+ ctf_print_discarded_lost@Base 1.5.4
  ctf_print_timestamp@Base 1.2.1
  ctf_scanner_alloc@Base 1.2.1
  ctf_scanner_append_ast@Base 1.2.1

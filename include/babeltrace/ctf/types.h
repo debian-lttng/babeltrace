@@ -39,6 +39,7 @@
 #include <stdio.h>
 #include <inttypes.h>
 #include <babeltrace/mmap-align.h>
+#include <babeltrace/error.h>
 
 #define LAST_OFFSET_POISON	((int64_t) ~0ULL)
 
@@ -223,9 +224,10 @@ int ctf_pos_packet(struct ctf_stream_pos *dummy)
 }
 
 static inline
-void ctf_pos_pad_packet(struct ctf_stream_pos *pos)
+int ctf_pos_pad_packet(struct ctf_stream_pos *pos)
 {
 	ctf_packet_seek(&pos->parent, 0, SEEK_CUR);
+	return bt_packet_seek_get_error();
 }
 
 /*
@@ -233,8 +235,10 @@ void ctf_pos_pad_packet(struct ctf_stream_pos *pos)
  * the next packet if we are located at the end of the current packet.
  */
 static inline
-void ctf_pos_get_event(struct ctf_stream_pos *pos)
+int ctf_pos_get_event(struct ctf_stream_pos *pos)
 {
+	int ret = 0;
+
 	assert(pos->offset <= pos->content_size);
 	if (pos->offset == pos->content_size) {
 		printf_debug("ctf_packet_seek (before call): %" PRId64 "\n",
@@ -242,12 +246,15 @@ void ctf_pos_get_event(struct ctf_stream_pos *pos)
 		pos->packet_seek(&pos->parent, 0, SEEK_CUR);
 		printf_debug("ctf_packet_seek (after call): %" PRId64 "\n",
 			     pos->offset);
+		ret = bt_packet_seek_get_error();
 	}
+	return ret;
 }
 
 void ctf_print_timestamp(FILE *fp, struct ctf_stream_definition *stream,
 			uint64_t timestamp);
 int ctf_append_trace_metadata(struct bt_trace_descriptor *tdp,
 			FILE *metadata_fp);
+void ctf_print_discarded_lost(FILE *fp, struct ctf_stream_definition *stream);
 
 #endif /* _BABELTRACE_CTF_TYPES_H */

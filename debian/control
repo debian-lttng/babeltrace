@@ -41,7 +41,7 @@ Description: Babeltrace conversion libraries
 Package: libbabeltrace-ctf1
 Section: oldlibs
 Architecture: all
-Depends: libbabeltrace1, ${misc:Depends}
+Depends: libbabeltrace1 (>= 1.5.3-4~), ${misc:Depends}
 Description: Babeltrace conversion libraries (transitional package)
  Babeltrace provides trace reading and writing libraries, as well as a trace
  converter. Plugins can be created for any trace format to allow its conversion
@@ -67,7 +67,7 @@ Description: Babeltrace development files
 Package: libbabeltrace-ctf-dev
 Section: oldlibs
 Architecture: all
-Depends: libbabeltrace-dev, ${misc:Depends}
+Depends: libbabeltrace-dev (>= 1.5.3-4~), ${misc:Depends}
 Description: Babeltrace development files (transitional package)
  Babeltrace provides trace reading and writing libraries, as well as a trace
  converter. Plugins can be created for any trace format to allow its conversion

@@ -52,6 +52,7 @@ Description: Babeltrace conversion libraries (transitional package)
 Package: libbabeltrace-dev
 Section: libdevel
 Architecture: any
+Multi-Arch: same
 Depends: ${misc:Depends}, libbabeltrace1 (= ${binary:Version})
 Replaces: libbabeltrace-ctf-dev (<< 1.5.3-2~)
 Breaks: libbabeltrace-ctf-dev (<< 1.5.3-2~)

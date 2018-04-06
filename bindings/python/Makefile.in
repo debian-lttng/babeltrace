@@ -383,7 +383,7 @@ top_srcdir = @top_srcdir@
 @USE_PYTHON_TRUE@BUILD_FLAGS = CC="$(CC)" \
 @USE_PYTHON_TRUE@		CFLAGS="$(GLIB_CFLAGS) $(AM_CFLAGS) $(CFLAGS)" \
 @USE_PYTHON_TRUE@		CPPFLAGS="$(DEFS) $(DEFAULT_INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS)" \
-@USE_PYTHON_TRUE@		LDFLAGS="$(AM_LDFLAGS) $(LDFLAGS) $(GLIB_LIBS) $(LIBS)"
+@USE_PYTHON_TRUE@		LDFLAGS="$(AM_LDFLAGS) $(LDFLAGS) $(GLIB_LIBS) -shared $(LIBS)"
 
 @USE_PYTHON_TRUE@CLEANFILES = babeltrace/babeltrace_wrap.c babeltrace/babeltrace.py build-python-bindings.stamp
 @USE_PYTHON_TRUE@DISTCLEANFILES = setup.py
@@ -620,8 +620,8 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-@USE_PYTHON_FALSE@install-exec-local:
 @USE_PYTHON_FALSE@clean-local:
+@USE_PYTHON_FALSE@install-exec-local:
 @USE_PYTHON_FALSE@uninstall-local:
 clean: clean-recursive
 

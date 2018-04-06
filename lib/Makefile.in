@@ -147,7 +147,7 @@ libbabeltrace_la_DEPENDENCIES = prio_heap/libprio_heap.la \
 	$(top_builddir)/types/libbabeltrace_types.la \
 	$(top_builddir)/compat/libcompat.la
 am_libbabeltrace_la_OBJECTS = babeltrace.lo iterator.lo context.lo \
-	trace-handle.lo trace-collection.lo registry.lo
+	trace-handle.lo trace-collection.lo registry.lo error.lo
 libbabeltrace_la_OBJECTS = $(am_libbabeltrace_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -453,7 +453,8 @@ libbabeltrace_la_SOURCES = babeltrace.c \
 			   context.c \
 			   trace-handle.c \
 			   trace-collection.c \
-			   registry.c
+			   registry.c \
+			   error.c
 
 libbabeltrace_la_LDFLAGS = \
 	$(LT_NO_UNDEFINED) -version-info $(BABELTRACE_LIBRARY_VERSION)
@@ -570,6 +571,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/crc32.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/debug-info.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dwarf.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/error.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/iterator.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/registry.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/trace-collection.Plo@am__quote@

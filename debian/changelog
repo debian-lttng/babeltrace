@@ -1,3 +1,18 @@
+babeltrace (1.5.5-1~ubuntu16.04.1) xenial; urgency=medium
+
+  * [a2037ba] New upstream version 1.5.4
+  * [5e18412] New upstream version 1.5.5
+  * [c1cfe38] Switched my uploader email to @debian.org
+  * [0c2361f] Update symbols for 1.5.4
+  * [5a80d95] Moved VCS to salsa.debian.org
+  * [83aed93] Use secure url for homepage
+  * [0d9cf82] Version the transitionnal depends (Closes: #890670)
+  * [dd6a036] Bump standard to 4.1.3, no changes necessary
+  * [8912e45] Mark libbabeltrace-dev 'Multi-Arch: same'
+  * [d44331f] Drop patch PIE patch applied upstream
+
+ -- Michael Jeanson <mjeanson@debian.org>  Fri, 06 Apr 2018 14:23:06 -0400
+
 babeltrace (1.5.3-4~xenial2) xenial; urgency=medium
 
   * [b30e560] Fix python bindings build with PIE

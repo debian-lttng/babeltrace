@@ -1,3 +1,9 @@
+babeltrace (1.5.5-1~ubuntu16.04.2) xenial; urgency=medium
+
+  * Rebuild for new ppa architectures.
+
+ -- Michael Jeanson <mjeanson@debian.org>  Mon, 30 Apr 2018 16:59:46 -0400
+
 babeltrace (1.5.5-1~ubuntu16.04.1) xenial; urgency=medium
 
   * [a2037ba] New upstream version 1.5.4

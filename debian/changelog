@@ -1,3 +1,11 @@
+babeltrace (1.5.6-1) unstable; urgency=medium
+
+  * [6ebf331] New upstream version 1.5.6
+  * [824703a] Bump standard to 4.1.4, no changes necessary
+  * [20d7f24] Use salsa canonical uri in VCS-Browser
+
+ -- Michael Jeanson <mjeanson@debian.org>  Tue, 03 Jul 2018 18:02:13 -0400
+
 babeltrace (1.5.5-1) unstable; urgency=medium
 
   * [d159cca] Version the transitionnal depends (Closes: #890670)

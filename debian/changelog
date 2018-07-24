@@ -1,3 +1,9 @@
+babeltrace (1.5.6-1~ubuntu18.04.1) bionic; urgency=medium
+
+  * [12edc9e] Update gbp config for bionic
+
+ -- Michael Jeanson <mjeanson@debian.org>  Tue, 24 Jul 2018 14:50:37 -0400
+
 babeltrace (1.5.6-1) unstable; urgency=medium
 
   * [6ebf331] New upstream version 1.5.6

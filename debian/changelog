@@ -1,3 +1,11 @@
+babeltrace (1.5.6-1~ubuntu16.04.1) xenial; urgency=medium
+
+  * [6ebf331] New upstream version 1.5.6
+  * [f2b87dc] Bump standard to 4.1.4, no changes necessary
+  * [28e5490] Use salsa canonical uri in VCS-Browser
+
+ -- Michael Jeanson <mjeanson@debian.org>  Tue, 24 Jul 2018 14:46:27 -0400
+
 babeltrace (1.5.5-1~ubuntu16.04.2) xenial; urgency=medium
 
   * Rebuild for new ppa architectures.

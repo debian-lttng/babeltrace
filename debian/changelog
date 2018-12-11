@@ -1,3 +1,15 @@
+babeltrace (1.5.6-2) unstable; urgency=medium
+
+  [ Jelmer Vernooĳ ]
+  * [8be51d5] Remove unnecessary X-Python{,3}-Version field in debian/control.
+
+  [ Michael Jeanson ]
+  * [55f7b4a] Force shlibs depends on >=1.5.3-2 (Closes: #910577)
+  * [9ba4f13] Add Build-Depends-Package to symbols file
+  * [d96442e] Bump standards version to 4.2.1
+
+ -- Michael Jeanson <mjeanson@debian.org>  Tue, 11 Dec 2018 16:52:03 -0500
+
 babeltrace (1.5.6-1) unstable; urgency=medium
 
   * [6ebf331] New upstream version 1.5.6

@@ -1,6 +1,8 @@
 libbabeltrace-dummy.so.1 libbabeltrace1 #MINVER#
+* Build-Depends-Package: libabeltrace-dev
  bt_dummy_hook@Base 1.5.2
 libbabeltrace-lttng-live.so.1 libbabeltrace1 #MINVER#
+* Build-Depends-Package: libabeltrace-dev
  bt_lttng_live_hook@Base 1.5.2
  lttng_live_attach_session@Base 1.2.1
  lttng_live_connect_viewer@Base 1.2.1
@@ -12,6 +14,7 @@ libbabeltrace-lttng-live.so.1 libbabeltrace1 #MINVER#
  lttng_live_read@Base 1.2.1
  lttng_live_should_quit@Base 1.2.1
 libbabeltrace.so.1 libbabeltrace1 #MINVER#
+* Build-Depends-Package: libabeltrace-dev
  babeltrace_debug@Base 1.2.1
  babeltrace_verbose@Base 1.2.1
  bt_append_scope_path@Base 1.2.1
@@ -118,8 +121,10 @@ libbabeltrace.so.1 libbabeltrace1 #MINVER#
  bt_variant_get_current_field@Base 1.2.1
  bt_variant_rw@Base 1.2.1
 libbabeltrace-ctf-metadata.so.1 libbabeltrace1 #MINVER#
+* Build-Depends-Package: libabeltrace-dev
  bt_ctf_metadata_hook@Base 1.5.2
 libbabeltrace-ctf-text.so.1 libbabeltrace1 #MINVER#
+* Build-Depends-Package: libabeltrace-dev
  bt_ctf_text_hook@Base 1.5.2
  opt_all_field_names@Base 1.2.1
  opt_all_fields@Base 1.2.1
@@ -139,6 +144,7 @@ libbabeltrace-ctf-text.so.1 libbabeltrace1 #MINVER#
  opt_trace_procname_field@Base 1.2.1
  opt_trace_vpid_field@Base 1.2.1
 libbabeltrace-ctf.so.1 libbabeltrace1 #MINVER#
+* Build-Depends-Package: libabeltrace-dev
  babeltrace_ctf_console_output@Base 1.2.1
  bt_ctf_clock_create@Base 1.2.1
  bt_ctf_clock_get@Base 1.2.1

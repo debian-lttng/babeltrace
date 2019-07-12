@@ -1,3 +1,14 @@
+babeltrace (1.5.7-1) unstable; urgency=medium
+
+  * [bb5426d] Add Salsa CI configuration
+  * [1af32cb] New upstream version 1.5.7
+  * [dfd1b39] Update symbols for 1.5.7
+  * [26148af] Bump debhelper compat to 10
+  * [00e6858] Bump standards version to 4.4.0
+  * [1e88433] Bump ctf symbols depends to post merge version (Closes: #931147)
+
+ -- Michael Jeanson <mjeanson@debian.org>  Fri, 12 Jul 2019 15:49:24 -0400
+
 babeltrace (1.5.6-2) unstable; urgency=medium
 
   [ Jelmer Vernooĳ ]

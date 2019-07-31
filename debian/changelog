@@ -1,3 +1,9 @@
+babeltrace (1.5.7-1~ubuntu14.04.1) trusty; urgency=medium
+
+  * [58787bb] New upstream version 1.5.7
+
+ -- Michael Jeanson <mjeanson@debian.org>  Wed, 31 Jul 2019 13:35:08 -0400
+
 babeltrace (1.5.6-1~ubuntu14.04.1) trusty; urgency=medium
 
   * [6ebf331] New upstream version 1.5.6

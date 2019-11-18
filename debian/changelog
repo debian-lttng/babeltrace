@@ -1,3 +1,9 @@
+babeltrace (1.5.7-2) unstable; urgency=medium
+
+  * [1062de0] Add build dependency on dh-python (Closes: #944933)
+
+ -- Michael Jeanson <mjeanson@debian.org>  Mon, 18 Nov 2019 15:51:11 -0500
+
 babeltrace (1.5.7-1) unstable; urgency=medium
 
   * [bb5426d] Add Salsa CI configuration

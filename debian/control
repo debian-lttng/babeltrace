@@ -3,9 +3,15 @@ Section: libs
 Priority: optional
 Maintainer: Jon Bernard <jbernard@debian.org>
 Uploaders: Michael Jeanson <mjeanson@debian.org>
-Build-Depends: debhelper (>= 10~), libglib2.0-dev (>= 2.16), uuid-dev,
- libpopt-dev, python3-all-dev, swig (>= 2.0),
- libdw-dev (>= 0.154), libelf-dev (>= 0.154)
+Build-Depends: debhelper (>= 10~),
+ dh-python,
+ libdw-dev (>= 0.154),
+ libelf-dev (>= 0.154),
+ libglib2.0-dev (>= 2.16),
+ libpopt-dev,
+ python3-all-dev,
+ swig (>= 2.0),
+ uuid-dev
 Standards-Version: 4.4.0
 Vcs-Git: https://salsa.debian.org/debian/babeltrace.git
 Vcs-Browser: https://salsa.debian.org/debian/babeltrace

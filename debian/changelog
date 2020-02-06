@@ -1,3 +1,13 @@
+babeltrace (1.5.8-1) unstable; urgency=medium
+
+  * [68134b2] d/watch: restrict this package to the 1.x series
+  * [f3450d9] New upstream version 1.5.8
+  * [d3be500] d/control: Set Rules-Requires-Root to no
+  * [d51cdba] Add upstream metadata file
+  * [cd105e9] Bump standard to 4.5.0, no changes necessary
+
+ -- Michael Jeanson <mjeanson@debian.org>  Thu, 06 Feb 2020 11:04:49 -0500
+
 babeltrace (1.5.7-2) unstable; urgency=medium
 
   * [1062de0] Add build dependency on dh-python (Closes: #944933)

@@ -1,3 +1,13 @@
+babeltrace (1.5.8-2) unstable; urgency=medium
+
+  * [dd92c82] Add support for python 3.10 (Closes: #1002390)
+  * [5ccdfe4] Move to debhelper 12
+  * [55baa0e] Bump watch file to version 4
+  * [62bb766] Remove 'Homepage' from upstream metadata
+  * [1a6eaf3] Add lintian overrides for tests artifacts
+
+ -- Michael Jeanson <mjeanson@debian.org>  Sat, 22 Jan 2022 11:14:17 -0500
+
 babeltrace (1.5.8-1) unstable; urgency=medium
 
   * [68134b2] d/watch: restrict this package to the 1.x series

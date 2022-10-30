@@ -1,3 +1,12 @@
+babeltrace (1.5.8-3) unstable; urgency=medium
+
+  * [d06a2f0] Update Salsa CI configuration
+  * [8d0c59c] Fix popt use after free (Closes: #1022419)
+  * [577d3d3] Migrate to debhelper 13
+  * [b689c6f] d/control: Drop X-Python3-Version
+
+ -- Michael Jeanson <mjeanson@debian.org>  Sun, 30 Oct 2022 14:56:36 -0400
+
 babeltrace (1.5.8-2) unstable; urgency=medium
 
   * [dd92c82] Add support for python 3.10 (Closes: #1002390)

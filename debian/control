@@ -60,17 +60,6 @@ Description: Babeltrace development files
  This package provides the development headers for linking applications against
  libbabeltrace.
 
-Package: libbabeltrace-ctf-dev
-Section: oldlibs
-Architecture: all
-Depends: libbabeltrace-dev (>= 1.5.3-4~), ${misc:Depends}
-Description: Babeltrace development files (transitional package)
- Babeltrace provides trace reading and writing libraries, as well as a trace
- converter. Plugins can be created for any trace format to allow its conversion
- to/from any other supported format.
- .
- This is a transitional package. It can safely be removed.
-
 Package: python3-babeltrace
 Section: python
 Architecture: any

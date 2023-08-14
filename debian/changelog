@@ -1,3 +1,12 @@
+babeltrace (1.5.11-2) unstable; urgency=medium
+
+  * [9b783d2] Clean python files (Closes: #1043700)
+  * [9e260da] Remove libbabeltrace-ctf1 transitionnal package (Closes: #1032634)
+  * [b1a6aca] Remove libbabeltrace-ctf-dev transitionnal package (Closes: #1032633)
+  * [b1e489d] Update upstream signing key
+
+ -- Michael Jeanson <mjeanson@debian.org>  Mon, 14 Aug 2023 11:49:17 -0400
+
 babeltrace (1.5.11-1) unstable; urgency=medium
 
   * [84c2292] New upstream version 1.5.11

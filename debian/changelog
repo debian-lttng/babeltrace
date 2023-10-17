@@ -1,3 +1,11 @@
+babeltrace (1.5.11-3) unstable; urgency=medium
+
+  * [d8f26f8] Don't delete bison files on distclean (Closes: #1049822)
+  * [c3567d8] Use execute_after_ to clean python files
+  * [1ca60d2] Bump standard to 4.6.2, no changes necessary
+
+ -- Michael Jeanson <mjeanson@debian.org>  Tue, 17 Oct 2023 15:43:03 -0400
+
 babeltrace (1.5.11-2) unstable; urgency=medium
 
   * [9b783d2] Clean python files (Closes: #1043700)
